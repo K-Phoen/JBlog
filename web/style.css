@@ -1,0 +1,840 @@
+/*
+Theme Name: Ubly
+Theme URI: http://csstemplatesmarket.com/freecsstemplates/ubly/
+Description: Ubly , free wordpresstheme by csstemplatesmarket.com
+Author: csstemplatesmarket.com
+Author URI: http://csstemplatesmarket.com
+*/
+
+
+/* Begin Typography & Colors */
+html{
+background:url(images/html_bg.jpg) repeat-x top  #016b93;
+}
+body {
+background:url(images/bg.jpg) no-repeat top center;
+margin:0px;
+padding:0px;
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#4c3349;
+}
+
+a, h2 a:hover, h3 a:hover {
+color: #c541ce;
+text-decoration: underline;
+font-weight:bold;
+}
+
+a:hover {
+color: #c541ce;
+text-decoration: underline;
+}
+
+/*	Begin Headers */
+h1 {
+padding-top: 70px;
+margin: 0;
+}
+
+h2 {
+margin:0;
+}
+
+h2.pagetitle {
+padding:0 0 10px 0;
+color:#c541ce;
+text-align: center;
+}
+
+
+
+h3 {
+padding: 0;
+margin: 30px 0 0;
+}
+
+h3.comments {
+padding: 0;
+margin: 40px auto 20px ;
+}
+/* End Headers */
+
+h1, h2, h3 {
+font-family: 'Trebuchet MS', 'Lucida Grande', Verdana, Arial, Sans-Serif;
+font-weight: bold;
+}
+
+h1 {
+font-size: 4em;
+text-align: center;
+}
+
+
+h2 {
+font-size:22px;
+color:#c541ce;
+}
+
+.comments_content{
+padding:0 20px 20px 30px;
+}
+
+h3 {
+font-size: 1.3em;
+}
+
+h1, h1 a, h1 a:hover, h1 a:visited, #headerimg .description {
+text-decoration: none;
+color: white;
+}
+
+h2, h2 a, h2 a:visited, h3, h3 a, h3 a:visited {
+color: #c541ce;
+}
+
+h2, h2 a, h2 a:hover, h2 a:visited, h3, h3 a, h3 a:hover, h3 a:visited, #sidebar h2, #wp-calendar caption, cite {
+text-decoration: none;
+}
+/*--------------------main container---------------------*/
+#main_container{
+width:960px;
+height:auto;
+margin:auto;
+}
+#page {
+text-align: left;
+}
+#header{
+width:960px;
+height:114px;
+margin:auto;
+}
+#logo{
+padding:12px 0 0 0px;
+float:left;
+}
+.main_content{
+width:960px;
+background-color:#f8f6ef;
+margin:16px 0 0 0;
+}
+/*-------------top_menu---------------*/
+.top_menu{
+width:960px;
+height:33px;
+}
+.top_menu ul{
+padding:0px 0 0 10px;
+margin:0px;
+width:600px;
+float:left;
+list-style:none;
+}
+.top_menu ul li{
+padding:0px;
+margin:0px;
+float:left;
+list-style:none;
+line-height:32px;
+}
+.top_menu ul li a{
+float:left;
+display:block;
+text-decoration:none;
+color:#fff;
+font-size:12px;
+padding:0 15px 0 15px;
+}
+.top_menu ul li a:hover{
+background-color:#c541ce;
+color:#FFFFFF;
+text-decoration:none;
+}
+.rss{
+float:right;
+padding:8px 10px 0 0;
+}
+/*------------search_top-------------*/
+#search_top{
+text-align:left;
+float:right;
+margin:5px 25px 0 0;
+}
+#searchform{
+margin:0px;
+padding:0px;
+}
+input.searchfield{
+width:170px;
+height:19px;
+background-color:#cae1d3;
+border:1px #e7f9f0 solid;
+float:left;
+color:#000;
+padding:2px 0 0 2px;
+}
+input.searchbutton{
+float:left;
+border:none;
+background:none;
+color:#fff;
+font-size:14px;
+font-weight:bold;
+padding:2px 0 0 5px;
+}
+/*---------------------------content------------------------*/
+#content {
+width:725px;
+padding:14px 0 0 15px;
+}
+.narrowcolumn {
+float:left;
+width:725px;
+padding:0px 0 0 0px;
+}
+.post {
+width:725px;
+text-align: justify;
+padding:0px 0px 20px 0px;
+margin:0 0 20px 0;
+}
+
+.widecolumn {
+padding: 10px 0 20px 0;
+width:725px;
+}
+
+.narrowcolumn .entry p {
+padding:10px 2px 0 2px;
+clear:both;
+}
+.entry p img{
+border:1px  #CCCCCC solid;
+padding:2px;
+}
+.narrowcolumn .entry, .widecolumn .entry {
+line-height: 1.4em;
+}
+
+.date{
+width:49px;
+height:45px;
+background:url(images/date_bg.gif) no-repeat center;
+text-align:center;
+float:left;
+padding:14px 0 0 0;
+}
+span.day{ font-size:11px; color:#cf65d5;}
+span.month{ font-size:14px; color:#cf65d5; font-weight:bold;}
+span.year{ font-size:11px; color:#ffffff;}
+
+.post_content_right{
+width:660px;
+float:left;
+padding:0 0 0 15px;
+}
+.post_title{
+width:660px;
+float:left;
+}
+.post_title h2 a{
+font-size:22px;
+color:#c541ce;
+text-decoration:none;
+}
+.post_subdetails{
+width:655px;
+padding:2px;
+background-color:#FFFFFF;
+float:left;
+border-bottom:1px #EFECE0 solid;
+}
+.post_categories{
+float:left;
+width:500px;
+color:#788375;
+}
+.post_categories a{
+text-decoration:none;
+color:#788375;
+}
+.comments_box{
+float:right;
+width:120px;
+color:#cf65d5;
+}
+.comments_box a{
+text-decoration:none;
+float:right;
+color:#cf65d5;
+}
+
+
+
+/* Begin Sidebar */
+#sidebar
+{
+width:190px;
+float:right;
+padding:0px 15px 50px 0px;
+}
+.sidebar_top
+{
+width:190px;
+height:12px;
+background:url(images/sidebar_top.gif) no-repeat center bottom;
+}
+.sidebar_bottom
+{
+width:190px;
+height:12px;
+background:url(images/sidebar_bottom.gif) no-repeat center top;
+}
+.sidebar_block{
+width:190px;
+background-color:#e2e0d7;
+}
+.sidebar_divider{
+width:190px;
+height:38px;
+background:url(images/sidebar_divider.gif) no-repeat center;
+}
+#sidebar h2{
+padding:0 0 0 10px;
+font-size:26px;
+color:#fff;
+font-weight:normal;
+margin:0;
+}
+#sidebar ul, #sidebar ul ol{
+margin:0px;
+padding:0px;
+list-style:none;
+text-align:left;
+}
+#sidebar ul li{
+list-style-type: none;
+list-style-image: none;
+padding:0px;
+margin:0px;
+}
+#sidebar ul li ul{
+padding:5px 0 5px 0px;
+margin:0px;
+}
+#sidebar ul li ul li a{
+list-style:none;
+display:block;
+padding:2px 0 5px 5px;
+margin:0px 10px 0 10px;
+font-size:12px;
+color:#4c3349;
+text-decoration:none;
+border-bottom:1px #FFFFFF dotted;
+font-weight:normal;
+}
+#sidebar ul li ul li a:hover{
+text-decoration:none;
+background-color:#C541CE;
+color:#FFFFFF;
+}
+p.about{
+padding:0px 10px 10px 10px;
+margin:0px;
+}
+
+/*------------------footer----------------*/
+.footer{
+width:960px;
+clear:both;
+text-align:center;
+height:22px;
+margin:auto;
+background:url(images/footer_bg.gif) no-repeat center bottom;
+color:#4c3349;
+border-top:1px #ce5fd3 dotted;
+padding:15px 0 25px 0;
+}
+.footer_left{
+float:left;
+width:310px;
+padding:0 0 0 10px;
+}
+.footer_left ul{
+float:left;
+display:block;
+margin:0px;
+padding:0px;
+list-style:none;
+}
+.footer_left ul li{
+list-style:none;
+float:left;
+}
+.footer_left ul li a{
+float:left;
+display:block;
+padding:0 10px 0 0;
+
+}
+.right_footer{
+float:right;
+padding:0 10px 0 0;
+}
+.footer_center{
+float:left;
+}
+#headerimg 	{
+margin: 7px 9px 0;
+height: 192px;
+width: 725px;
+}
+
+
+
+
+.widecolumn {
+line-height: 1.6em;
+}
+
+.narrowcolumn .postmetadata {
+text-align: center;
+}
+
+.thread-alt {
+background-color: #f8f8f8;
+}
+.thread-even {
+background-color: white;
+}
+.depth-1 {
+border: 1px solid #ddd;
+}
+
+.even, .alt {
+
+
+}
+
+
+small {
+font-family: Arial, Helvetica, Sans-Serif;
+font-size: 0.9em;
+line-height: 1.5em;
+color:#990000;
+}
+
+
+
+.entry p a:visited {
+color: #b85b5a;
+}
+
+.commentlist li, #commentform input, #commentform textarea {
+font: 0.9em 'Lucida Grande', Verdana, Arial, Sans-Serif;
+background-color:#fff;
+border:1px #EFE8D1 solid;
+}
+.commentlist li ul li {
+font-size: 1em;
+}
+
+.commentlist li {
+font-weight: bold;
+}
+
+.commentlist li .avatar { 
+float: right;
+border: 1px solid #eee;
+padding: 2px;
+background: #fff;
+}
+
+.commentlist cite, .commentlist cite a {
+font-weight: bold;
+font-style: normal;
+font-size: 1.1em;
+}
+
+.commentlist p {
+font-weight: normal;
+line-height: 1.5em;
+text-transform: none;
+}
+
+#commentform p {
+font-family: 'Lucida Grande', Verdana, Arial, Sans-Serif;
+}
+
+.commentmetadata {
+font-weight: normal;
+}
+
+
+
+small, #sidebar ul ul li, #sidebar ul ol li, .nocomments, .postmetadata, blockquote, strike {
+color:#B69BBF;
+}
+
+code {
+font: 1.1em 'Courier New', Courier, Fixed;
+}
+
+acronym, abbr, span.caps
+{
+font-size: 0.9em;
+letter-spacing: .07em;
+}
+
+
+#wp-calendar #prev a, #wp-calendar #next a {
+font-size: 9pt;
+}
+
+#wp-calendar a {
+text-decoration: none;
+}
+
+#wp-calendar caption {
+font: bold 1.3em 'Lucida Grande', Verdana, Arial, Sans-Serif;
+text-align: center;
+}
+
+#wp-calendar th {
+font-style: normal;
+text-transform: capitalize;
+}
+/* End Typography & Colors */
+
+
+
+
+
+
+.post hr {
+display: block;
+}
+
+.widecolumn .post {
+margin: 0;
+}
+
+.narrowcolumn .postmetadata {
+padding-top: 5px;
+}
+
+.widecolumn .postmetadata {
+margin: 30px 0;
+}
+
+.widecolumn .smallattachment {
+text-align: center;
+float: left;
+width: 128px;
+margin: 5px 5px 5px 0px;
+}
+
+.widecolumn .attachment {
+text-align: center;
+margin: 5px 0px;
+}
+
+.postmetadata {
+clear: both;
+}
+
+.clear {
+clear: both;
+}
+
+
+
+
+
+
+/* Begin Images */
+p img {
+padding: 0;
+max-width: 100%;
+}
+
+/*	Using 'class="alignright"' on an image will (who would've
+thought?!) align the image to the right. And using 'class="centered',
+will of course center the image. This is much better than using
+align="center", being much more futureproof (and valid) */
+
+img.centered {
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+img.alignright {
+padding: 4px;
+margin: 0 0 2px 7px;
+display: inline;
+}
+
+img.alignleft {
+padding: 4px;
+margin: 0 7px 2px 0;
+display: inline;
+}
+
+.alignright {
+float: right;
+}
+
+.alignleft {
+float: left
+}
+/* End Images */
+
+
+
+/* Begin Lists
+
+Special stylized non-IE bullets
+Do not work in Internet Explorer, which merely default to normal bullets. */
+
+html>body .entry ul {
+margin-left: 0px;
+padding: 0 0 0 30px;
+list-style: none;
+padding-left: 10px;
+text-indent: -10px;
+}
+
+html>body .entry li {
+margin: 7px 0 8px 10px;
+}
+
+.entry ul li:before, #sidebar ul ul li:before {
+
+}
+
+.entry ol {
+padding: 0 0 0 35px;
+margin: 0;
+}
+
+.entry ol li {
+margin: 0;
+padding: 0;
+}
+
+.postmetadata ul, .postmetadata li {
+display: inline;
+list-style-type: none;
+list-style-image: none;
+}
+
+
+
+
+
+
+
+.entry form { /* This is mainly for password protected posts, makes them look better. */
+text-align:center;
+}
+
+select {
+width: 130px;
+}
+
+#commentform input {
+width: 170px;
+padding: 2px;
+margin: 5px 5px 1px 0;
+}
+
+#commentform {
+margin: 5px 10px 0 0;
+}
+#commentform textarea {
+width: 100%;
+padding: 2px;
+}
+#respond:after {
+	content: "."; 
+	display: block; 
+	height: 0; 
+	clear: both; 
+	visibility: hidden;
+}
+#commentform #submit {
+margin: 0 0 5px auto;
+float: right;
+}
+/* End Form Elements */
+
+
+
+/* Begin Comments*/
+.alt {
+margin: 0;
+padding: 10px;
+}
+
+.commentlist {
+padding: 0;
+text-align: justify;
+}
+
+.commentlist li {
+margin: 15px 0 10px;
+padding: 5px 5px 10px 10px;
+list-style: none;
+
+}
+.commentlist li ul li { 
+margin-right: -5px;
+margin-left: 10px;
+}
+
+.commentlist p {
+margin: 10px 5px 10px 0;
+}
+.children { padding: 0; }
+
+#commentform p {
+margin: 5px 0;
+}
+
+.nocomments {
+text-align: center;
+margin: 0;
+padding: 0;
+}
+
+.commentmetadata {
+margin: 0;
+display: block;
+}
+/* End Comments */
+
+
+
+
+
+
+
+/* Begin Calendar */
+#wp-calendar {
+empty-cells: show;
+margin: 10px auto 0;
+width: 155px;
+}
+
+#wp-calendar #next a {
+padding-right: 10px;
+text-align: right;
+}
+
+#wp-calendar #prev a {
+padding-left: 10px;
+text-align: left;
+}
+
+#wp-calendar a {
+display: block;
+}
+
+#wp-calendar caption {
+text-align: center;
+width: 100%;
+}
+
+#wp-calendar td {
+padding: 3px 0;
+text-align: center;
+}
+
+#wp-calendar td.pad:hover { /* Doesn't work in IE */
+background-color: #fff; }
+/* End Calendar */
+
+
+
+/* Begin Various Tags & Classes */
+acronym, abbr, span.caps {
+cursor: help;
+}
+
+acronym, abbr {
+border-bottom: 1px dashed #999;
+}
+
+blockquote {
+margin: 15px 30px 0 10px;
+padding-left: 20px;
+
+}
+
+blockquote cite {
+margin: 5px 0 0;
+display: block;
+}
+
+.center {
+text-align: center;
+}
+
+.hidden {
+display: none;
+}
+
+hr {
+display: none;
+}
+
+a img {
+border: none;
+}
+
+.navigation {
+display: block;
+text-align: center;
+margin-top: 10px;
+margin-bottom: 60px;
+}
+/* End Various Tags & Classes*/
+
+
+
+/* Captions */
+.aligncenter,
+div.aligncenter {
+display: block;
+margin-left: auto;
+margin-right: auto;
+}
+
+.wp-caption {
+border: 1px solid #ddd;
+text-align: center;
+background-color: #f3f3f3;
+padding-top: 4px;
+margin: 10px;
+}
+
+.wp-caption img {
+margin: 0;
+padding: 0;
+border: 0 none;
+}
+
+.wp-caption p.wp-caption-text {
+font-size: 11px;
+line-height: 17px;
+padding: 0 4px 5px;
+margin: 0;
+}
+/* End captions */
+
+
+/* "Daisy, Daisy, give me your answer do. I'm half crazy all for the love of you.
+It won't be a stylish marriage, I can't afford a carriage.
+But you'll look sweet upon the seat of a bicycle built for two." */

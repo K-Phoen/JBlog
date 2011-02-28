@@ -1,0 +1,40 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <title><%= request.getAttribute("TITLE") %></title>
+    <base href="<%= request.getAttribute("BASE_URL") %>/" />
+
+    <link rel="stylesheet" href="./style.css" type="text/css" media="screen" />
+</head>
+<body>
+<div id="main_container">
+    <div id="page">
+        <div id="header">
+            <div id="logo">
+                <a href="./"><img src="./images/logo.gif" alt="" title="" /></a>
+            </div>
+        </div>
+
+        <div class="top_menu">
+            <ul>
+                <li><a href="./">Home</a></li>
+            </ul>
+
+            <div id="search_top">
+                <form method="get" id="searchform" action="">
+                    <input type="text" value="" name="s" id="s" class="searchfield" />
+                    <input type="submit" value="Search" class="searchbutton" id="searchsubmit" />
+                </form>
+            </div>
+
+			<div class="rss">
+                <a href=""><img src="./images/rss.gif" alt="" title="" /></a>
+            </div>
+    </div>
+
+    <div class="main_content">
+        <div id="content" class="narrowcolumn">

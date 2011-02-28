@@ -1,0 +1,60 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+        </div>
+
+        <div id="sidebar">
+            <div class="sidebar_top"></div>
+
+            <ul>
+                <li>
+                    <div class="sidebar_block">
+                        <h2>About Us</h2>
+
+                        <p class="about">
+                            A little something about you, the author. Nothing
+                            lengthy, just an overview.
+                        </p>
+                    </div>
+                </li>
+
+                <li>
+                    <div class="sidebar_divider"></div>
+                </li>
+
+                <li>
+                    <div class="sidebar_block">
+                        <h2>Categories</h2>
+
+                        <ul>
+                            <li class="cat-item cat-item-3">
+                                <a href="./">category name</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+            <div class="sidebar_bottom"></div>
+        </div>
+
+        <div class="footer">
+            <div class="footer_left">
+                <ul>
+                    <li><a href="./">Home</a></li>
+                </ul>
+            </div>
+
+            <div class="footer_center">
+                &copy; Copyright Website.com. All Rights Reserved.
+            </div>
+
+            <div class="clear"></div>
+        </div>
+
+        <div class="clear"></div>
+
+        </div> <!--end of main_content-->
+    </div> <!--end of page-->
+</div><!--end of main container-->
+</body>
+</html>
