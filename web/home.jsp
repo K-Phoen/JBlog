@@ -15,9 +15,9 @@ for(Article a : list) {
 %>
 <div id="post-<%= a.getId() %>">
     <div class="date">
-        <span class="day">M</span><br />
-        <span class="month">d</span><br />
-        <span class="year">Y</span>
+        <span class="day"><%= a.dateToString("dd") %></span><br />
+        <span class="month"><%= a.dateToString("MM") %></span><br />
+        <span class="year"><%= a.dateToString("yy") %></span>
     </div>
 
     <div class="post_content_right">
