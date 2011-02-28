@@ -12,6 +12,11 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import libs.form.Form;
+import libs.form.fields.HiddenField;
+import libs.form.fields.SubmitButton;
+import libs.form.fields.TextArea;
+import libs.form.fields.TextField;
 import metier.Article;
 import models.ArticlesModel;
 
@@ -35,7 +40,9 @@ public class ArticlesController extends ModuleController {
     
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        throw new UnsupportedOperationException("Not supported yet.");
+        String slug = request.getParameter("slug");
+        
+        doShowArticle(slug.trim(), request, response);
     }
     
     
@@ -80,6 +87,31 @@ public class ArticlesController extends ModuleController {
             return;
         }
 
+        Form form = new Form();
+        TextField nom = new TextField("nom");
+
+        nom.setLabel("Nom");
+        nom.setMinLength(5);
+
+        form.add(nom);
+        form.add(
+                    (new TextArea("comment"))
+                    .cols("50%")
+                    .setMinLength(10)
+                    .setLabel("Commentaire")
+                );
+        form.add(new HiddenField("hidden", "val"));
+        form.add(new SubmitButton("toto"));
+
+        form.bind(request);
+        if(form.isValid()) {
+            System.out.println("valid");
+        } else {
+            System.out.println("not valid");
+            System.out.println(form.getErrors());
+        }
+
+        request.setAttribute("form", form);
         request.setAttribute("article", a);
 
         forward(JSP.ARTICLE, request, response);

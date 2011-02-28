@@ -75,7 +75,14 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        error(request, response);
+        ModuleController controller = getModuleController(request.getParameter("module"));
+
+        if(controller == null) {
+            error("Erreur 404", request, response);
+            return;
+        }
+
+        controller.doPost(request, response);
     }
     
     

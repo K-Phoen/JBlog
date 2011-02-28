@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import libs.form.Form;
 
 public abstract class FormField {
     private boolean required = true;
@@ -28,9 +29,9 @@ public abstract class FormField {
         attrs.put("name", name);
         setID(getName());
         setValue("");
-    }
 
-    public abstract String toHTML();
+        setErrorText("required", "Ce champ est obligatoire.");
+    }
 
     /**
      * Dit si le contenu du champ est valide et crée les erreurs si besoin
@@ -40,8 +41,7 @@ public abstract class FormField {
      */
     public boolean isValid() {
         // empty considérant les valeurs telles que 0 comme vides
-        if(isRequired() && attrs.containsKey("value")
-            && attrs.get("value").isEmpty()) {
+        if(isRequired() && getValue().isEmpty()) {
             error("required");
             return false;
         }
@@ -255,7 +255,7 @@ public abstract class FormField {
      * @return obj (le champ en question)
      */
     public final FormField setID(String text) {
-        attrs.put("d", text);
+        attrs.put("id", text);
 
         return this;
     }
@@ -268,8 +268,7 @@ public abstract class FormField {
      *
      * @return obj (le champ en question)
      */
-    public FormField setErrorText(String errorId, String text)
-    {
+    public final FormField setErrorText(String errorId, String text) {
         error_list.put(errorId, text);
 
         return this;
@@ -282,12 +281,43 @@ public abstract class FormField {
      *
      * @return void
      */
-    protected final void error(String msg)  {
-        error_messages.add(msg);
+    protected final void error(String msg, Object ... params)  {
+        String errorMsg = error_list.get(msg);
+
+        if(errorMsg == null)
+            errorMsg = msg;
+        
+        error_messages.add(String.format(errorMsg, params));
+    }
+
+    @Override
+    public int hashCode() {
+        return getName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof FormField))
+            return false;
+
+        return getName().equals(((FormField) obj).getName());
     }
 
     @Override
     public String toString() {
         return toHTML();
+    }
+
+    public String toHTML() {
+        StringBuilder sb = new StringBuilder();
+        makeClass();
+
+        Map<String, String> html_attrs = getAttrs();
+        html_attrs.put("value", canBound() ? html_attrs.get("value") : "");
+
+        sb.append("<input ").append(Form.toStringAttrs(html_attrs))
+          .append(" />");
+
+        return sb.toString();
     }
 }
