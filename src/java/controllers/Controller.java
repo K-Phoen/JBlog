@@ -55,14 +55,9 @@ public class Controller extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-        ModuleController controller = getModuleController(request.getParameter("module"));
-        
-        if(controller == null) {
-            error("Erreur 404", request, response);
-            return;
-        }
-        
-        controller.doGet(request, response);
+        request.setAttribute("HTTP_METHOD", "GET");
+
+        dispatchToModulesControllers(request, response);
     } 
 
     /** 
@@ -75,6 +70,13 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        request.setAttribute("HTTP_METHOD", "POST");
+
+        dispatchToModulesControllers(request, response);
+    }
+
+    private void dispatchToModulesControllers(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
         ModuleController controller = getModuleController(request.getParameter("module"));
 
         if(controller == null) {
@@ -82,7 +84,7 @@ public class Controller extends HttpServlet {
             return;
         }
 
-        controller.doPost(request, response);
+        controller.handle(request, response);
     }
     
     
@@ -90,13 +92,13 @@ public class Controller extends HttpServlet {
     private void defineViewVariables(HttpServletRequest request) {
         for(Field key : Blog.class.getFields()) {
             try {
-				String val = null;
-				val = key.get(val).toString();
+                String val = null;
+                val = key.get(val).toString();
                 
                 request.setAttribute(key.getName(), val);
-			} catch (Exception e) {
-				
-			}
+            } catch (Exception e) {
+
+            }
         }
     }
     

@@ -19,19 +19,16 @@ public abstract class ModuleController {
         this.ctrl = parentCtrl;
     }
     
-    public abstract void doGet(HttpServletRequest request, HttpServletResponse response)
+    public abstract void handle(HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException;
+
     
-    public abstract void doPost(HttpServletRequest request, HttpServletResponse response)
-                         throws ServletException, IOException;
-    
-    
-    public final void forward(String to, HttpServletRequest request, HttpServletResponse response)
+    protected final void forward(String to, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         ctrl.forward(to, request, response);
     }
 
-    public final void error(HttpServletRequest request, HttpServletResponse response)
+    protected final void error(HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         ctrl.error(request, response);
     }

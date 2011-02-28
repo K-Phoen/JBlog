@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import libs.form.Form;
 import libs.form.fields.EmailField;
-import libs.form.fields.HiddenField;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
 import libs.form.fields.TextField;
@@ -29,23 +28,15 @@ public class ArticlesController extends ModuleController {
     }
 
     @Override
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String slug = request.getParameter("slug");
         
         // page d'accueil
         if(slug == null || slug.trim().isEmpty())
             doIndex(request, response);
         else
-            doShowArticle(slug.trim(), request, response);
+            doArticlePage(slug.trim(), request, response);
     }
-    
-    @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String slug = request.getParameter("slug");
-        
-        doShowArticle(slug.trim(), request, response);
-    }
-    
     
     /**
      * Page d'accueil du site. On récupère la racine du répertoire à explorer
@@ -73,7 +64,7 @@ public class ArticlesController extends ModuleController {
         forward(JSP.INDEX, request, response);
     }
 
-    private void doShowArticle(String slug, HttpServletRequest request, HttpServletResponse response)
+    private void doArticlePage(String slug, HttpServletRequest request, HttpServletResponse response)
                  throws ServletException, IOException {
         Article a;
         ArticlesModel mdl = new ArticlesModel();
@@ -88,34 +79,37 @@ public class ArticlesController extends ModuleController {
             return;
         }
 
-        Form form = new Form();
-        TextField nom = new TextField("nom");
+        // formulaire d'ajout de commentaire
+        Form form = createCommentForm();
 
-        nom.setLabel("Nom");
-        nom.setMinLength(5);
+        if(request.getAttribute("HTTP_METHOD").equals("POST")) {
+            form.bind(request);
 
-        form.add(nom);
-        form.add(new EmailField("mail").setLabel("E-Mail"));
-        form.add(
-                    new TextArea("comment")
-                    .cols("50%")
-                    .setMinLength(10)
-                    .setLabel("Commentaire")
-                );
-        form.add(new HiddenField("hidden", "val"));
-        form.add(new SubmitButton("toto"));
-
-        form.bind(request);
-        if(form.isValid()) {
-            System.out.println("valid");
-        } else {
-            System.out.println("not valid");
-            System.out.println(form.getErrors());
+            if(form.isValid()) {
+                error("Impossible d'enregistrer le commentaire", request, response);
+                return;
+            }
         }
 
         request.setAttribute("form", form);
         request.setAttribute("article", a);
 
         forward(JSP.ARTICLE, request, response);
+    }
+
+    private Form createCommentForm() {
+        Form form = new Form();
+
+        form.add(new TextField("nom").setLabel("Nom"));
+        form.add(new EmailField("mail").setLabel("Mail"));
+        form.add(
+                    new TextArea("comment")
+                    .cols("50%")
+                    .setMinLength(10)
+                    .setLabel("Commentaire")
+                );
+        form.add(new SubmitButton("Envoyer"));
+
+        return form;
     }
 }
