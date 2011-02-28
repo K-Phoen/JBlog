@@ -1,12 +1,17 @@
 package metier;
 
+import java.sql.SQLClientInfoException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 public class Article {
     private int id = 0;
     private String title;
     private String url;
     private String content;
-    private String date;
+    private Date date;
     private boolean valid;
     private int nbComs;
 
@@ -72,15 +77,24 @@ public class Article {
     /**
      * @return the date
      */
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
     /**
      * @param date the date to set
      */
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
+    }
+
+    public void setDate(String sDate) throws ParseException {
+        setDate(sDate, "yyyy-MM-dd");
+    }
+
+    public void setDate(String sDate, String format) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        setDate(sdf.parse(sDate));
     }
 
     /**
@@ -103,4 +117,14 @@ public class Article {
     public int getNbComs() {
         return nbComs;
     }
+
+
+    public String dateToString(String format) throws Exception
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+
+   
+
 }

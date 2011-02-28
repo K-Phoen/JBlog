@@ -9,13 +9,15 @@ import db.Connexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import metier.Article;
 
 
 public class ArticlesFactory {
-    public static List<Article> getN(int first, int nb) throws ClassNotFoundException, SQLException {
+    public static List<Article> getN(int first, int nb) throws ClassNotFoundException, SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Article> articles = new ArrayList<Article>();
         
@@ -35,7 +37,7 @@ public class ArticlesFactory {
         return articles;
     }
     
-    public static Article getBySlug(String slug) throws ClassNotFoundException, SQLException {
+    public static Article getBySlug(String slug) throws ClassNotFoundException, SQLException, Exception {
         Connexion con = Connexion.getInstance();
         Article a = null;
         
@@ -53,15 +55,16 @@ public class ArticlesFactory {
         
         return a;
     }
-    
-    private static Article resultToArticle(ResultSet res) throws SQLException {
-        Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
-        
-        a.setTitle(res.getString("title"));
-        a.setContent(res.getString("content"));
-        a.setUrl(res.getString("slug"));
-        a.setValid(res.getBoolean("valid"));
-        
-        return a;
+
+    private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
+
+            Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
+            a.setTitle(res.getString("title")); 
+            a.setDate(res.getString("date"));
+            a.setContent(res.getString("content"));
+            a.setUrl(res.getString("slug"));
+            a.setValid(res.getBoolean("valid"));
+
+            return a;
     }
 }

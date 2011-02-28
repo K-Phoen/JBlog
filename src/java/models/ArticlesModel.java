@@ -25,11 +25,11 @@ import metier.Article;
 
 
 public class ArticlesModel {
-    public List<Article> getLasts() throws SQLException, ClassNotFoundException {
+    public List<Article> getLasts() throws SQLException, ClassNotFoundException, Exception {
         return ArticlesFactory.getN(0, 5);
     }
 
-    public Article getBySlug(String slug) throws SQLException, ClassNotFoundException {
+    public Article getBySlug(String slug) throws SQLException, ClassNotFoundException, Exception {
         return ArticlesFactory.getBySlug(slug);
     }
 }

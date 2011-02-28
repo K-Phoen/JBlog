@@ -11,9 +11,9 @@ Article article = (Article) request.getAttribute("article");
 
 <div>
     <div class="date">
-        <span class="day">M</span><br />
-        <span class="month">d</span><br />
-        <span class="year">Y</span>
+        <span class="day"><%= article.dateToString("dd") %></span><br />
+        <span class="month"><%= article.dateToString("MM") %></span><br />
+        <span class="year"><%= article.dateToString("yy") %></span>
     </div>
 				
     <div class="post_content_right">

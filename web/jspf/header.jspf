@@ -11,8 +11,8 @@
     <link rel="stylesheet" href="./style.css" type="text/css" media="screen" />
 </head>
 <body>
-<div id="main_container">
-    <div id="page">
+<div id="main_container"/>
+    <div id="page"/>
         <div id="header">
             <div id="logo">
                 <a href="./"><img src="./images/logo.gif" alt="" title="" /></a>
@@ -36,5 +36,5 @@
             </div>
     </div>
 
-    <div class="main_content">
-        <div id="content" class="narrowcolumn">
+    <div class="main_content"/>
+        <div id="content" class="narrowcolumn"/>
