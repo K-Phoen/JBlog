@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import libs.form.Form;
+import libs.form.fields.EmailField;
 import libs.form.fields.HiddenField;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
@@ -94,8 +95,9 @@ public class ArticlesController extends ModuleController {
         nom.setMinLength(5);
 
         form.add(nom);
+        form.add(new EmailField("mail").setLabel("E-Mail"));
         form.add(
-                    (new TextArea("comment"))
+                    new TextArea("comment")
                     .cols("50%")
                     .setMinLength(10)
                     .setLabel("Commentaire")
