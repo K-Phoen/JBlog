@@ -34,7 +34,7 @@ Article article = (Article) request.getAttribute("article");
         
         <p class="postmetadata alt">
             <small>
-                Posté le 10/10/10 par moi
+                Posté le <%=  article.dateToString("dd-MM-yyyy") %> par moi
             </small>
         </p>           
     </div>
