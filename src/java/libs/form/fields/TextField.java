@@ -75,15 +75,16 @@ public class TextField extends FormField {
         {
             if(getValue().length() < minLength)
             {
-                error("minlength");//, minLength);
+                error("minlength", minLength);
                 return false;
             }
 
             Map<String, String> attrs = getAttrs();
             if(attrs.get("maxlength") != null) {
                 int max = Integer.parseInt(attrs.get("maxlength"));
+                
                 if(getValue().length() > max) {
-                    error("maxlength");//attrs['maxlength']);
+                    error("maxlength", max);
                     return false;
                 }
             }
@@ -92,18 +93,5 @@ public class TextField extends FormField {
         }
 
         return false;
-    }
-
-    public String toHTML() {
-        StringBuilder sb = new StringBuilder();
-        makeClass();
-
-        Map<String, String> attrs = getAttrs();
-        attrs.put("value", canBound() ? attrs.get("value") : "");
-
-        sb.append("<input ").append(Form.toStringAttrs(attrs))
-          .append(" />");
-
-        return sb.toString();
     }
 }

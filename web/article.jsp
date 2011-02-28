@@ -25,6 +25,7 @@ Article article = (Article) request.getAttribute("article");
         
         <div class="entry">
             <%= article.getContent() %>
+            <%= request.getAttribute("form") %>
         </div>
         
         <p class="postmetadata">
