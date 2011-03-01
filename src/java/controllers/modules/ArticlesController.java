@@ -93,6 +93,7 @@ public class ArticlesController extends ModuleController {
 
         request.setAttribute("form", form);
         request.setAttribute("article", a);
+        request.setAttribute("PAGE_TITLE", a.getTitle());
 
         forward(JSP.ARTICLE, request, response);
     }

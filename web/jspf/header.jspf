@@ -5,7 +5,16 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-    <title><%= request.getAttribute("TITLE") %></title>
+    <title>
+    <%
+    if(request.getAttribute("PAGE_TITLE") != null) {
+        out.print(request.getAttribute("PAGE_TITLE"));
+        out.print(" - ");
+    }
+    
+    out.print(request.getAttribute("TITLE"));
+    %>
+    </title>
     <base href="<%= request.getAttribute("BASE_URL") %>/" />
 
     <link rel="stylesheet" href="./style.css" type="text/css" media="screen" />
