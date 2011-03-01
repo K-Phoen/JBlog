@@ -23,7 +23,7 @@ public class TextArea extends TextField {
     /**
      * Change la valeur de l'attribut cols
      *
-     * @param $nb_cols nouvelle valeur
+     * @param nbCols nouvelle valeur
      *
      * @return obj (le champ en question)
      */
@@ -36,7 +36,7 @@ public class TextArea extends TextField {
     /**
      * Change la valeur de l'attribut cols
      *
-     * @param $nbCols nouvelle valeur
+     * @param colsPercent nouvelle valeur
      *
      * @return obj (le champ en question)
      */
@@ -54,7 +54,7 @@ public class TextArea extends TextField {
     /**
      * Change la valeur de l'attribut Rows
      *
-     * @param $nbRows nouvelle valeur
+     * @param nbRows nouvelle valeur
      *
      * @return obj (le champ en question)
      */
@@ -67,7 +67,7 @@ public class TextArea extends TextField {
     /**
      * Change la valeur de l'attribut cols
      *
-     * @param $nbRows nouvelle valeur
+     * @param rowsPercent nouvelle valeur
      *
      * @return obj (le champ en question)
      */

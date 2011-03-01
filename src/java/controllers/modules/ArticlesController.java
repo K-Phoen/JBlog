@@ -8,11 +8,8 @@ package controllers.modules;
 import conf.JSP;
 import controllers.Controller;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -100,13 +97,16 @@ public class ArticlesController extends ModuleController {
                 c.setValid(true);
                 c.setDate(new Date());
                 
+                a.addComment(c);
+                
                 try {
                     mdl.saveComment(c);
+                    mdl.saveArticle(a);
                 } catch (Exception ex) {
                     error("Impossible d'enregistrer le commentaire : "+ex.getMessage(), request, response);
                 }
                 
-                redirect("./article/"+a.getUrl(), "Commentaire enregistré", request, response);;
+                redirect("./article/"+a.getUrl(), "Commentaire enregistré", request, response);
                 return;
             }
         }

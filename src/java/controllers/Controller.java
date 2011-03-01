@@ -70,6 +70,9 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
+        // pour gérer l'utf-8 dans les formulaires
+        request.setCharacterEncoding("UTF-8");
+        
         request.setAttribute("HTTP_METHOD", "POST");
 
         dispatchToModulesControllers(request, response);
@@ -78,7 +81,7 @@ public class Controller extends HttpServlet {
     private void dispatchToModulesControllers(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ModuleController controller = getModuleController(request.getParameter("module"));
-
+        
         if(controller == null) {
             error("Erreur 404", request, response);
             return;

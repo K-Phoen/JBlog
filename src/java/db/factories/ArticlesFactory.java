@@ -62,7 +62,33 @@ public class ArticlesFactory {
         a.setContent(res.getString("content"));
         a.setUrl(res.getString("slug"));
         a.setValid(res.getBoolean("valid"));
+        a.setUId(res.getInt("u_ID"));
+        a.setCId(res.getInt("c_ID"));
 
         return a;
+    }
+
+    public static void save(Article a) throws ClassNotFoundException, SQLException, Exception {
+        if(a.isNew())
+            insert(a);
+        else
+            update(a);
+    }
+    
+    
+    private static void insert(Article a) throws ClassNotFoundException, SQLException, Exception {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private static void update(Article a) throws ClassNotFoundException, SQLException, Exception {
+        Connexion con = Connexion.getInstance();
+        String sql = "UPDATE articles SET u_ID = ?, c_ID = ?, slug = ?, title = ?, "+
+                                         "content = ?, date = ?, nb_coms = ?, "+
+                                         "valid  = ? "+
+                     "WHERE aID = ?";
+        
+        con.execute(sql, a.getUId(), a.getCId(), a.getUrl(), a.getTitle(),
+                    a.getContent(), a.dateToString("yyyy-MM-dd"), a.getNbComs(),
+                    a.isValid(), a.getId());
     }
 }

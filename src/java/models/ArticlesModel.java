@@ -38,4 +38,8 @@ public class ArticlesModel {
     public void saveComment(Comment c) throws ClassNotFoundException, SQLException, Exception {
         CommentsFactory.save(c);
     }
+
+    public void saveArticle(Article a) throws ClassNotFoundException, SQLException, Exception {
+        ArticlesFactory.save(a);
+    }
 }

@@ -2,12 +2,15 @@ package metier;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 
 public class Article extends Entity {
     private int id = 0;
+    private int u_ID = 0;
+    private int c_ID = 0;
     private String title;
     private String url;
     private String content;
@@ -80,14 +83,14 @@ public class Article extends Entity {
      * @return the date
      */
     public Date getDate() {
-        return date;
+        return (Date) date.clone();
     }
 
     /**
      * @param date the date to set
      */
     public void setDate(Date date) {
-        this.date = date;
+        this.date = (Date) date.clone();
     }
 
     public void setDate(String sDate) throws ParseException {
@@ -131,6 +134,26 @@ public class Article extends Entity {
     }
     
     public List<Comment> getComments() {
-        return comments;
+        return Collections.unmodifiableList(comments);
+    }
+
+    public void addComment(Comment c) {
+        comments.add(c);
+    }
+
+    public void setUId(int uID) {
+        u_ID = uID;
+    }
+    
+    public void setCId(int cID) {
+        c_ID = cID;
+    }
+    
+    public int getUId() {
+        return u_ID;
+    }
+    
+    public int getCId() {
+        return c_ID;
     }
 }
