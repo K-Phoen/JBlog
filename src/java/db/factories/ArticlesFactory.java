@@ -9,9 +9,7 @@ import db.Connexion;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import metier.Article;
 
@@ -47,8 +45,11 @@ public class ArticlesFactory {
         Connexion.bindParams(stmt, slug);
 
         ResultSet res = stmt.executeQuery();
-        if(res.next())
+        if(res.next()) {
             a = resultToArticle(res);
+            
+            CommentsFactory.get(a);
+        }
         
         res.close();
         stmt.close();

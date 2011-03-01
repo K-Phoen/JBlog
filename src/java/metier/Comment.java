@@ -3,63 +3,72 @@ package metier;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 
-public class Article {
+public class Comment {
     private int id = 0;
-    private String title;
-    private String url;
+    private int aID;
+    private String author;
+    private String mail;
     private String content;
     private Date date;
     private boolean valid;
-    private int nbComs;
-    
-    private List<Comment> comments;
 
 
-    public Article() {
+    public Comment() {
     }
 
-    public Article(int id) {
+    public Comment(int id) {
         this.id = id;
     }
-    
-    public Article(int id, int nbComs) {
-        this.id = id;
-        this.nbComs = nbComs;
-    }
 
+    /**
+     * @return the id
+     */
     public int getId() {
         return id;
     }
 
     /**
-     * @return the title
+     * @return the aID
      */
-    public String getTitle() {
-        return title;
+    public int getaID() {
+        return aID;
     }
 
     /**
-     * @param title the title to set
+     * @param aID the aID to set
      */
-    public void setTitle(String title) {
-        this.title = title;
+    public void setaID(int aID) {
+        this.aID = aID;
     }
 
     /**
-     * @return the url
+     * @return the author
      */
-    public String getUrl() {
-        return url;
+    public String getAuthor() {
+        return author;
     }
 
     /**
-     * @param url the url to set
+     * @param author the author to set
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    /**
+     * @return the mail
+     */
+    public String getMail() {
+        return mail;
+    }
+
+    /**
+     * @param mail the mail to set
+     */
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     /**
@@ -89,7 +98,7 @@ public class Article {
     public void setDate(Date date) {
         this.date = date;
     }
-
+    
     public void setDate(String sDate) throws ParseException {
         setDate(sDate, "yyyy-MM-dd");
     }
@@ -112,25 +121,9 @@ public class Article {
     public void setValid(boolean valid) {
         this.valid = valid;
     }
-
-    /**
-     * @return the nbComs
-     */
-    public int getNbComs() {
-        return nbComs;
-    }
-
-    public String dateToString(String format) throws Exception
-    {
+    
+    public String dateToString(String format) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-    
-    public List<Comment> getComments() {
-        return comments;
     }
 }
