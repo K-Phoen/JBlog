@@ -102,6 +102,16 @@ public class Controller extends HttpServlet {
         }
     }
     
+    
+    public final void redirect(String to, String msg, HttpServletRequest request, HttpServletResponse response)
+                         throws ServletException, IOException {
+        request.setAttribute("redir_msg", msg);
+        request.setAttribute("redir_url", to);
+        request.setAttribute("redir_time", "3");
+        
+        forward(JSP.MESSAGE, request, response);
+    }
+    
     public final void forward(String to, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         defineViewVariables(request);

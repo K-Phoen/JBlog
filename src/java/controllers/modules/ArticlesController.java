@@ -8,7 +8,11 @@ package controllers.modules;
 import conf.JSP;
 import controllers.Controller;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +22,7 @@ import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
 import libs.form.fields.TextField;
 import metier.Article;
+import metier.Comment;
 import models.ArticlesModel;
 
 
@@ -86,7 +91,22 @@ public class ArticlesController extends ModuleController {
             form.bind(request);
 
             if(form.isValid()) {
-                error("Impossible d'enregistrer le commentaire", request, response);
+                Comment c = new Comment();
+                
+                c.setAuthor(request.getParameter("nom"));
+                c.setMail(request.getParameter("mail"));
+                c.setContent(request.getParameter("comment"));
+                c.setaID(a.getId());
+                c.setValid(true);
+                c.setDate(new Date());
+                
+                try {
+                    mdl.saveComment(c);
+                } catch (Exception ex) {
+                    error("Impossible d'enregistrer le commentaire : "+ex.getMessage(), request, response);
+                }
+                
+                redirect("./article/"+a.getUrl(), "Commentaire enregistré", request, response);;
                 return;
             }
         }
@@ -105,8 +125,8 @@ public class ArticlesController extends ModuleController {
         form.add(new EmailField("mail").setLabel("Mail"));
         form.add(
                     new TextArea("comment")
-                    .cols("50%")
-                    .setMinLength(10)
+                    .cols("100%")
+                    .rows("10")
                     .setLabel("Commentaire")
                 );
         form.add(new SubmitButton("Envoyer"));

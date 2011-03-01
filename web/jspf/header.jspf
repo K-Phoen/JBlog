@@ -16,6 +16,15 @@
     %>
     </title>
     <base href="<%= request.getAttribute("BASE_URL") %>/" />
+    
+    <%
+    if(request.getAttribute("redir_url") != null) {
+        String time = (String) request.getAttribute("redir_time");
+        String url = (String) request.getAttribute("redir_url");
+        
+        out.print("<meta http-equiv=\"refresh\" content=\""+time+"; url="+url+"\" />");
+    }
+    %>
 
     <link rel="stylesheet" href="./style.css" type="text/css" media="screen" />
 </head>

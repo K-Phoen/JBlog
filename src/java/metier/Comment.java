@@ -5,14 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 
-public class Comment {
+public class Comment extends Entity {
     private int id = 0;
-    private int aID;
+    private int aID = 0;
     private String author;
     private String mail;
     private String content;
     private Date date;
-    private boolean valid;
+    private boolean valid = true;
 
 
     public Comment() {

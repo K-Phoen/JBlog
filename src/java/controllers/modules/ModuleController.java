@@ -23,6 +23,11 @@ public abstract class ModuleController {
                          throws ServletException, IOException;
 
     
+    protected final void redirect(String to, String msg, HttpServletRequest request, HttpServletResponse response)
+                         throws ServletException, IOException {
+        ctrl.redirect(to, msg, request, response);
+    }
+    
     protected final void forward(String to, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         ctrl.forward(to, request, response);

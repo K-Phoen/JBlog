@@ -43,7 +43,7 @@ public final class Connexion {
         con = DriverManager.getConnection(url, login, pass);
     }
 
-    public void execute(String sql, String ... params) throws SQLException {
+    public void execute(String sql, Object ... params) throws SQLException {
         PreparedStatement stmt = con.prepareStatement(sql);
 
         bindParams(stmt, (Object[]) params);

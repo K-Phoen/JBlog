@@ -19,9 +19,11 @@
 package models;
 
 import db.factories.ArticlesFactory;
+import db.factories.CommentsFactory;
 import java.sql.SQLException;
 import java.util.List;
 import metier.Article;
+import metier.Comment;
 
 
 public class ArticlesModel {
@@ -31,5 +33,9 @@ public class ArticlesModel {
 
     public Article getBySlug(String slug) throws SQLException, ClassNotFoundException, Exception {
         return ArticlesFactory.getBySlug(slug);
+    }
+    
+    public void saveComment(Comment c) throws ClassNotFoundException, SQLException, Exception {
+        CommentsFactory.save(c);
     }
 }

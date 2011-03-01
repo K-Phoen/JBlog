@@ -6,14 +6,14 @@ import java.util.Date;
 import java.util.List;
 
 
-public class Article {
+public class Article extends Entity {
     private int id = 0;
     private String title;
     private String url;
     private String content;
     private Date date;
     private boolean valid;
-    private int nbComs;
+    private int nbComs = 0;
     
     private List<Comment> comments;
 
@@ -117,7 +117,7 @@ public class Article {
      * @return the nbComs
      */
     public int getNbComs() {
-        return nbComs;
+        return comments == null ? nbComs : comments.size();
     }
 
     public String dateToString(String format) throws Exception

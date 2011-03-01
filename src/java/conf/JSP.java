@@ -23,4 +23,5 @@ public interface JSP {
     String ARTICLE  = "/article.jsp";
     
     String ERROR    = "/error.jsp";
+    String MESSAGE  = "/message.jsp";
 }

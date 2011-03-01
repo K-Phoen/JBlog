@@ -45,11 +45,8 @@ public class ArticlesFactory {
         Connexion.bindParams(stmt, slug);
 
         ResultSet res = stmt.executeQuery();
-        if(res.next()) {
-            a = resultToArticle(res);
-            
-            CommentsFactory.get(a);
-        }
+        if(res.next())
+            a = CommentsFactory.get(resultToArticle(res));
         
         res.close();
         stmt.close();
@@ -58,14 +55,14 @@ public class ArticlesFactory {
     }
 
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
+        Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
 
-            Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
-            a.setTitle(res.getString("title")); 
-            a.setDate(res.getString("date"));
-            a.setContent(res.getString("content"));
-            a.setUrl(res.getString("slug"));
-            a.setValid(res.getBoolean("valid"));
+        a.setTitle(res.getString("title")); 
+        a.setDate(res.getString("date"));
+        a.setContent(res.getString("content"));
+        a.setUrl(res.getString("slug"));
+        a.setValid(res.getBoolean("valid"));
 
-            return a;
+        return a;
     }
 }

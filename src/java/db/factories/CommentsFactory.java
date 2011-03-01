@@ -16,13 +16,13 @@ import metier.Comment;
 
 
 public class CommentsFactory {
-    public static void get(Article a) throws ClassNotFoundException, SQLException, Exception {
+    public static Article get(Article a) throws ClassNotFoundException, SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Comment> comments = new ArrayList<Comment>();
         
         
         String sql = "SELECT coID, a_ID, pseudo, mail, content, date, valide "+
-                     "FROM commentaires WHERE a_ID = ? ORDER BY coID DESC";
+                     "FROM commentaires WHERE a_ID = ? ORDER BY date ASC";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, a.getId());
 
@@ -34,6 +34,29 @@ public class CommentsFactory {
         stmt.close();
 
         a.setComments(comments);
+        
+        return a;
+    }
+    
+    public static void save(Comment c) throws ClassNotFoundException, SQLException, Exception {
+        if(c.isNew())
+            insert(c);
+        else
+            update(c);
+    }
+    
+    
+    private static void insert(Comment c) throws ClassNotFoundException, SQLException, Exception {
+        Connexion con = Connexion.getInstance();
+        String sql = "INSERT INTO commentaires (a_ID, pseudo, mail, content, date, valide) "+
+                     "VALUES (?, ?, ?, ?, ?, ?)";
+        
+        con.execute(sql, c.getaID(), c.getAuthor(), c.getMail(), c.getContent(),
+                    c.dateToString("yyyy-MM-dd HH:mm:ss"), c.isValid());
+    }
+
+    private static void update(Comment c) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
     
     private static Comment resultToComment(ResultSet res) throws SQLException, Exception {
