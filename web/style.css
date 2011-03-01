@@ -6,6 +6,11 @@ Author: csstemplatesmarket.com
 Author URI: http://csstemplatesmarket.com
 */
 
+label {
+    display:block;
+    width:120px;
+    float:left;
+}
 
 /* Begin Typography & Colors */
 html{

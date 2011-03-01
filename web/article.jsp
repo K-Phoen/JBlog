@@ -1,9 +1,5 @@
-<%@page import="java.util.Enumeration"%>
-<%@page import="java.util.Map"%>
-<%@page import="java.util.List"%>
-<%@page import="libs.form.fields.TextField"%>
-<%@page import="libs.form.Form"%>
 <%@page import="metier.Article"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <%@include file="jspf/header.jspf" %>
@@ -43,29 +39,31 @@ Article article = (Article) request.getAttribute("article");
 </div>
 
 <h2>Commentaires</h2>
-<%
-Form form = (Form) request.getAttribute("form");
 
-if(!form.getErrors().isEmpty()) {
-%>
-<h3>Erreurs</h3>
+<div class="comments_content">
+    <ol class="commentlist">
+        <li class="comment even thread-even depth-1" id="comment-1"> 
+            <div id="div-comment-1" class="comment-body"> 
+                <div class="comment-author vcard"> 
+                    <img alt="" src="http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=32" class="avatar avatar-32 photo avatar-default" height="32" width="32" />
+                    <cite class="fn">
+                        <a href="http://url.com" rel="external nofollow" class="url">Monsieur WordPress</a>,
+                        le 1 mars 2011 à 11h12
+                    </cite>
+                    <span class="says">dit :</span>
+                </div>
 
-<ul>
-    <%
-    Map<String, List<String>> errors = form.getErrors();
-    for(String field : errors.keySet()) {
-        for(String error : errors.get(field)) {
-    %>
-    <li><%= form.field(field).getLabel() %> : <%= error %></li>
-    <%
-        }
-    }
-    %>
-</ul>
-<%
-}
+                <p>
+                    Contenu du commentaire.
+                </p>
+            </div>
+        </li>
+    </ol>
+</div>
+    
+    
+<h2>Réagir</h2>
 
-out.print(form);
-%>
+<%@include file="jspf/form.jspf" %>
 
 <%@include file="jspf/footer.jspf" %>
