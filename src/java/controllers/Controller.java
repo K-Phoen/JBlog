@@ -1,7 +1,6 @@
 package controllers;
 
-import controllers.modules.ArticlesController;
-import controllers.modules.ModuleController;
+import controllers.modules.*;
 import conf.Blog;
 import conf.JSP;
 import controllers.modules.ConnectionController;
@@ -86,7 +85,15 @@ public class Controller extends HttpServlet {
         ModuleController controller = getModuleController(request.getParameter("module"));
         
         // création du modèle de session
-        request.setAttribute("session", new SessionModel());
+        try {
+            SessionModel mdl = new SessionModel();
+            mdl.tryConnect(request);
+            
+            request.setAttribute("session", mdl);
+        } catch (Exception e) {
+            error(e.getMessage(), request, response);
+            return;
+        }
         
         if(controller == null) {
             error("Erreur 404", request, response);
@@ -109,6 +116,8 @@ public class Controller extends HttpServlet {
 
             }
         }
+        
+        request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
     }
     
     

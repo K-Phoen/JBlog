@@ -40,6 +40,11 @@ public class ConnectionController extends ModuleController {
         Form form = new Form();
         SessionModel mdl = (SessionModel) request.getAttribute("session");
         
+        if(mdl.isLoggedIn()) {
+            redirect("./", "Vous êtes déjà connecté", request, response);
+            return;
+        }
+        
         form.add(new TextField("login").setLabel("Identifiant"));
         form.add(new TextField("pass").setLabel("Mot de passe"));
         form.add(new SubmitButton("Connexion"));

@@ -31,23 +31,66 @@ public class SessionModel {
     private User currentUser = null;
     
     
-    public boolean authenticate(String login, String pass, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException, Exception {
+    public boolean authenticate(String login, String pass, HttpServletRequest request) throws ClassNotFoundException, SQLException {
         User u = UsersFactory.get(login, pass);
         
         if(u == null)
             return false;
         
-        currentUser = u;
-            
-        HttpSession session = request.getSession();
-        session.setAttribute("currentUserId", u.getId());
+        connect(u, request);
+        
+        return true;
+    }
+    
+    public boolean authenticate(String login, String pass, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+        if(!authenticate(login, pass, request))
+            return false;
        
-        response.addCookie(new Cookie("login", String.format("%s||%s", login, pass)));
+        Cookie c = new Cookie("login", String.format("%s||%s", login, pass));
+        c.setMaxAge(3600 * 24 * 30); // 30 jours
+        
+        response.addCookie(c);
         
         return true;
     }
     
     public boolean isLoggedIn() {
         return currentUser != null;
+    }
+
+    public void tryConnect(HttpServletRequest request) throws ClassNotFoundException, SQLException {
+        HttpSession session = request.getSession();
+        Cookie authCookie = null;
+        
+        for(Cookie c : request.getCookies()) {
+            if(c.getName().equals("login"))
+                authCookie = c;
+        }
+        
+        if(session.getAttribute("currentUserId") != null)
+            connect((int) session.getAttribute("currentUserId"), request);
+        else if(authCookie != null) {
+            String[] data = authCookie.getValue().split("||");
+            
+            if(data.length == 2)
+                authenticate(data[0], data[1], request);
+        }
+    }
+    
+    private void connect(User u, HttpServletRequest request) {
+        if(u == null)
+            throw new IllegalArgumentException("Impossible de connecter un utilisateur valant null");
+        
+        currentUser = u;
+            
+        HttpSession session = request.getSession();
+        session.setAttribute("currentUserId", u.getId());
+    }
+
+    private void connect(int id, HttpServletRequest request) throws ClassNotFoundException, SQLException {
+        User u = UsersFactory.get(id);
+        
+        if(u != null)
+            connect(u, request);
     }
 }

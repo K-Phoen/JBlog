@@ -13,16 +13,32 @@ import metier.User;
 
 
 public class UsersFactory {
-    public static User get(String login, String pass) throws ClassNotFoundException, SQLException, Exception {
+    public static User get(String login, String pass) throws ClassNotFoundException, SQLException {
         Connexion con = Connexion.getInstance();
-        User u = null;
         
         String sql = "SELECT uID, login, pass, last_name, first_name, mail "+
                      "FROM users WHERE login = ? AND pass = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, login, pass);
 
+        return getOne(stmt);
+    }
+    
+    public static User get(int id) throws ClassNotFoundException, SQLException {
+        Connexion con = Connexion.getInstance();
+        
+        String sql = "SELECT uID, login, pass, last_name, first_name, mail "+
+                     "FROM users WHERE uID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, id);
+
+        return getOne(stmt);
+    }
+    
+    private static User getOne(PreparedStatement stmt) throws SQLException {
+        User u = null;
         ResultSet res = stmt.executeQuery();
+        
         if(res.next())
             u = resultToUser(res);
         
@@ -33,7 +49,7 @@ public class UsersFactory {
     }
     
     
-    private static User resultToUser(ResultSet res) throws SQLException, Exception {
+    private static User resultToUser(ResultSet res) throws SQLException {
         User u = new User(res.getInt("uID"));
         
         u.setLogin(res.getString("login"));
