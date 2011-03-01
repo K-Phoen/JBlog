@@ -32,7 +32,7 @@ public class SessionModel {
     
     
     public boolean authenticate(String login, String pass, HttpServletRequest request) throws ClassNotFoundException, SQLException {
-        User u = UsersFactory.get(login, pass);
+        User u = UsersFactory.get(login, User.hashPass(pass));
         
         if(u == null)
             return false;
@@ -46,10 +46,14 @@ public class SessionModel {
         if(!authenticate(login, pass, request))
             return false;
        
-        Cookie c = new Cookie("login", String.format("%s||%s", login, pass));
-        c.setMaxAge(3600 * 24 * 30); // 30 jours
+        Cookie cLogin = new Cookie("login", login);
+        cLogin.setMaxAge(3600 * 24 * 30); // 30 jours
         
-        response.addCookie(c);
+        Cookie cPass = new Cookie("pass", User.hashPass(pass));
+        cPass.setMaxAge(3600 * 24 * 30); // 30 jours
+        
+        response.addCookie(cLogin);
+        response.addCookie(cPass);
         
         return true;
     }
@@ -60,10 +64,14 @@ public class SessionModel {
         HttpSession session = request.getSession();
         session.invalidate();
         
-        Cookie c = new Cookie("login", "");
-        c.setMaxAge(-1);
+        Cookie cLogin = new Cookie("login", "");
+        cLogin.setMaxAge(-1);
         
-        response.addCookie(c);
+        Cookie cPass = new Cookie("pass", "");
+        cPass.setMaxAge(-1);
+        
+        response.addCookie(cLogin);
+        response.addCookie(cPass);
     }
     
     public boolean isLoggedIn() {
@@ -72,20 +80,24 @@ public class SessionModel {
 
     public void tryConnect(HttpServletRequest request) throws ClassNotFoundException, SQLException {
         HttpSession session = request.getSession();
-        Cookie authCookie = null;
+        Cookie loginCookie = null;
+        Cookie passCookie = null;
         
         for(Cookie c : request.getCookies()) {
             if(c.getName().equals("login"))
-                authCookie = c;
+                loginCookie = c;
+            else if(c.getName().equals("pass"))
+                passCookie = c;
         }
+        
         
         if(session.getAttribute("currentUserId") != null)
             connect((int) session.getAttribute("currentUserId"), request);
-        else if(authCookie != null) {
-            String[] data = authCookie.getValue().split("||");
+        else if(loginCookie != null && passCookie != null) {
+            User u = UsersFactory.get(loginCookie.getValue(), passCookie.getValue());
             
-            if(data.length == 2)
-                authenticate(data[0], data[1], request);
+            if(u != null)
+                connect(u, request);
         }
     }
     

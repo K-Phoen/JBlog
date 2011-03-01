@@ -5,6 +5,10 @@
 
 package metier;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import libs.SHA1;
+
 
 public class User extends Entity {
     private String login;
@@ -43,7 +47,18 @@ public class User extends Entity {
      * @param pass the pass to set
      */
     public void setPass(String pass) {
+        setHash(hashPass(pass));
+    }
+    
+    /**
+     * @param pass the pass to set
+     */
+    public void setHash(String pass) {
         this.pass = pass;
+    }
+    
+    public static String hashPass(String pass) {
+        return SHA1.hash(pass);
     }
 
     /**

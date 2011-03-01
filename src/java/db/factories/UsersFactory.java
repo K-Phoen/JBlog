@@ -53,7 +53,7 @@ public class UsersFactory {
         User u = new User(res.getInt("uID"));
         
         u.setLogin(res.getString("login"));
-        u.setPass(res.getString("pass"));
+        u.setHash(res.getString("pass"));
         u.setLastName(res.getString("last_name"));
         u.setFirstName(res.getString("first_name"));
         u.setMail(res.getString("mail"));
