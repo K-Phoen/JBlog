@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 
 public abstract class ModuleController {
-    Controller ctrl;
+    private Controller ctrl;
     
     public ModuleController(Controller parentCtrl) {
         this.ctrl = parentCtrl;

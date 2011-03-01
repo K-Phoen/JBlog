@@ -54,6 +54,18 @@ public class SessionModel {
         return true;
     }
     
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        currentUser = null;
+        
+        HttpSession session = request.getSession();
+        session.invalidate();
+        
+        Cookie c = new Cookie("login", "");
+        c.setMaxAge(-1);
+        
+        response.addCookie(c);
+    }
+    
     public boolean isLoggedIn() {
         return currentUser != null;
     }

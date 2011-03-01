@@ -68,18 +68,28 @@ public class ConnectionController extends ModuleController {
             }
             
             if(auth) {
-                redirect("./toto", "Connexion réussie !", request, response);
+                redirect("./", "Connexion réussie !", request, response);
                 return;
             }
             
-            
+            form.triggerError(form.field("login"), "Identifiants incorrects.");
         }
         
         forward(JSP.FORM, request, response);
     }
 
-    private void doLogout(HttpServletRequest request, HttpServletResponse response) {
+    private void doLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("PAGE_TITLE", "Déconnexion");
-        throw new UnsupportedOperationException("Not yet implemented");
+        
+        SessionModel mdl = (SessionModel) request.getAttribute("session");
+        
+        if(!mdl.isLoggedIn()) {
+            redirect("./", "Vous n'êtes pas connecté !", request, response);
+            return;
+        }
+        
+        mdl.logout(request, response);
+        
+        redirect("./", "Déconnexion réussie.", request, response);
     }
 }
