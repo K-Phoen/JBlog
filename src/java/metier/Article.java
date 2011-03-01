@@ -8,7 +8,6 @@ import java.util.List;
 
 
 public class Article extends Entity {
-    private int id = 0;
     private int u_ID = 0;
     private int c_ID = 0;
     private String title;
@@ -21,21 +20,11 @@ public class Article extends Entity {
     private List<Comment> comments;
 
 
-    public Article() {
-    }
-
-    public Article(int id) {
-        this.id = id;
-    }
-    
     public Article(int id, int nbComs) {
-        this.id = id;
+        super(id);
         this.nbComs = nbComs;
     }
 
-    public int getId() {
-        return id;
-    }
 
     /**
      * @return the title

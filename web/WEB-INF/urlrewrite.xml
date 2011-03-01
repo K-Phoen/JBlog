@@ -15,9 +15,22 @@
         <to>/index?module=articles</to>
     </rule>
     
+    <!-- Visualisation d'un article -->
     <rule>
         <from>^/article/([0-9a-zA-Z\-]+)$</from>
         <to>/index?module=articles&amp;slug=$1</to>
+    </rule>
+    
+    <!-- Connexion -->
+    <rule>
+        <from>^/connexion$</from>
+        <to>/index?module=connection</to>
+    </rule>
+    
+    <!-- Déconnexion -->
+    <rule>
+        <from>^/deconnexion$</from>
+        <to>/index?module=connection&amp;action=logout</to>
     </rule>
 
     <!--

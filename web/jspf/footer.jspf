@@ -23,7 +23,7 @@
 
                 <li>
                     <div class="sidebar_block">
-                        <h2>Categories</h2>
+                        <h2>Cat&eacutes;gories</h2>
 
                         <ul>
                             <li class="cat-item cat-item-3">
@@ -39,9 +39,7 @@
 
         <div class="footer">
             <div class="footer_left">
-                <ul>
-                    <li><a href="./">Home</a></li>
-                </ul>
+                <%@include file="menu.jspf" %>
             </div>
 
             <div class="footer_center">

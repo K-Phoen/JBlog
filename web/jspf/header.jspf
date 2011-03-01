@@ -38,9 +38,7 @@
         </div>
 
         <div class="top_menu">
-            <ul>
-                <li><a href="./">Home</a></li>
-            </ul>
+            <%@include file="menu.jspf" %>
 
             <div id="search_top">
                 <form method="get" id="searchform" action="">

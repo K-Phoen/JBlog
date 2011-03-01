@@ -7,7 +7,18 @@ package metier;
 
 
 public abstract class Entity {
-    public abstract int getId();
+    private int id = 0;
+    
+    public Entity() {
+    }
+
+    public Entity(int id) {
+        this.id = id;
+    }
+    
+    public int getId() {
+        return id;
+    }
     
     public boolean isNew() {
         return getId() == 0;

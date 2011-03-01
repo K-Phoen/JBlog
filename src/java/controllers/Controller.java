@@ -4,6 +4,7 @@ import controllers.modules.ArticlesController;
 import controllers.modules.ModuleController;
 import conf.Blog;
 import conf.JSP;
+import controllers.modules.ConnectionController;
 import db.Connexion;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -13,6 +14,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.SessionModel;
 
 
 public class Controller extends HttpServlet {
@@ -31,6 +33,7 @@ public class Controller extends HttpServlet {
     
     private void initModules() {
         addModule("articles", new ArticlesController(this));
+        addModule("connection", new ConnectionController(this));
     }
     
     protected final void addModule(String name, ModuleController ctrl) {
@@ -74,13 +77,16 @@ public class Controller extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         
         request.setAttribute("HTTP_METHOD", "POST");
-
+        
         dispatchToModulesControllers(request, response);
     }
 
     private void dispatchToModulesControllers(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ModuleController controller = getModuleController(request.getParameter("module"));
+        
+        // création du modèle de session
+        request.setAttribute("session", new SessionModel());
         
         if(controller == null) {
             error("Erreur 404", request, response);

@@ -6,7 +6,6 @@ import java.util.Date;
 
 
 public class Comment extends Entity {
-    private int id = 0;
     private int aID = 0;
     private String author;
     private String mail;
@@ -14,19 +13,12 @@ public class Comment extends Entity {
     private Date date;
     private boolean valid = true;
 
-
+    
     public Comment() {
     }
-
+    
     public Comment(int id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the id
-     */
-    public int getId() {
-        return id;
+        super(id);
     }
 
     /**
