@@ -72,12 +72,12 @@ public class TextArea extends TextField {
      * @return obj (le champ en question)
      */
     public TextArea rows(String rowsPercent) {
-        int cols = Integer.parseInt(
+        int rows = Integer.parseInt(
                     rowsPercent.endsWith("%")
                         ? rowsPercent.substring(0, rowsPercent.length()-1)
                         : rowsPercent);
 
-        cols(cols);
+        rows(rows);
 
         return this;
     }

@@ -125,8 +125,8 @@ public class ArticlesController extends ModuleController {
         form.add(new EmailField("mail").setLabel("Mail"));
         form.add(
                     new TextArea("comment")
-                    .cols("100%")
-                    .rows("10")
+                    .cols("50%")
+                    .rows("4")
                     .setLabel("Commentaire")
                 );
         form.add(new SubmitButton("Envoyer"));
