@@ -22,7 +22,7 @@ public class CommentsFactory {
         
         
         String sql = "SELECT coID, a_ID, pseudo, mail, content, date, valide "+
-                     "FROM commentaires WHERE a_ID = ? ORDER BY date ASC";
+                     "FROM commentaires WHERE a_ID = ? AND valide = 1 ORDER BY date ASC";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, a.getId());
 
