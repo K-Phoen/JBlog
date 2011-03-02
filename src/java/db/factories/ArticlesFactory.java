@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import metier.Article;
+import metier.Category;
 import metier.User;
 
 
@@ -21,10 +22,12 @@ public class ArticlesFactory {
         List<Article> articles = new ArrayList<Article>();
         
         
-        String sql = "SELECT aID, u_ID, c_ID, slug, title, content, date, "+
-                     "nb_coms, valid, uID, login, first_name, last_name "+
-                     "FROM articles "+
-                     "LEFT JOIN users ON users.uID = articles.u_ID "+
+        String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
+                     "nb_coms, valid, uID, login, first_name, last_name, cID, "+
+                     "c.slug, c.title "+
+                     "FROM articles a "+
+                     "LEFT JOIN users ON users.uID = a.u_ID "+
+                     "LEFT JOIN categories c ON c.cID = a.c_ID "+
                      "ORDER BY aID DESC LIMIT ?, ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, first, nb);
@@ -43,11 +46,13 @@ public class ArticlesFactory {
         Connexion con = Connexion.getInstance();
         Article a = null;
         
-        String sql = "SELECT aID, u_ID, c_ID, slug, title, content, date, "+
-                     "nb_coms, valid, uID, login, first_name, last_name "+
+        String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
+                     "nb_coms, valid, uID, login, first_name, last_name, cID, "+
+                     "c.slug, c.title "+
                      "FROM articles a "+
-                     "LEFT JOIN users u ON u.uID = a.u_ID "+
-                     "WHERE slug = ?";
+                     "LEFT JOIN users ON users.uID = a.u_ID "+
+                     "LEFT JOIN categories c ON c.cID = a.c_ID "+
+                     "WHERE a.slug = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, slug);
 
@@ -64,13 +69,15 @@ public class ArticlesFactory {
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
         User author = UsersFactory.resultToDisplayUser(res);
+        Category category = CategoryFactory.resultToCategory(res);
         
         a.setAuthor(author);
+        a.setCategory(category);
 
-        a.setTitle(res.getString("title")); 
+        a.setTitle(res.getString("a_title")); 
         a.setDate(res.getString("date"));
         a.setContent(res.getString("content"));
-        a.setUrl(res.getString("slug"));
+        a.setUrl(res.getString("a_slug"));
         a.setValid(res.getBoolean("valid"));
         a.setUId(res.getInt("u_ID"));
         a.setCId(res.getInt("c_ID"));

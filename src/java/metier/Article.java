@@ -18,6 +18,7 @@ public class Article extends Entity {
     private int nbComs = 0;
     
     private User author;
+    private Category category;
     private List<Comment> comments;
 
 
@@ -32,6 +33,14 @@ public class Article extends Entity {
 
     public void setAuthor(User author) {
         this.author = author;
+    }
+    
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     /**
