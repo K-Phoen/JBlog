@@ -17,6 +17,7 @@ public class Article extends Entity {
     private boolean valid;
     private int nbComs = 0;
     
+    private User author;
     private List<Comment> comments;
 
 
@@ -25,6 +26,13 @@ public class Article extends Entity {
         this.nbComs = nbComs;
     }
 
+    public User getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(User author) {
+        this.author = author;
+    }
 
     /**
      * @return the title

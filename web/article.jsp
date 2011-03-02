@@ -20,7 +20,7 @@ Article article = (Article) request.getAttribute("article");
         <h2 class="post_title"><a href="" rel="bookmark"><%= article.getTitle() %></a></h2>
         
         <div class="post_subdetails">
-            <span class="post_categories">Posté dans Général</span>
+            <span class="post_categories">Par <%= article.getAuthor().getDisplayName() %> dans Général</span>
         </div>
         
         <div class="entry">
@@ -33,7 +33,7 @@ Article article = (Article) request.getAttribute("article");
         
         <p class="postmetadata alt">
             <small>
-                Posté le <%=  article.dateToString("dd-MM-yyyy") %> par moi
+                Posté le <%=  article.dateToString("dd-MM-yyyy") %> par <%= article.getAuthor().getDisplayName() %>
             </small>
         </p>           
     </div>

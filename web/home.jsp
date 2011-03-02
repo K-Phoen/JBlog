@@ -26,7 +26,7 @@ for(Article a : list) {
         </h2>
 
         <div class="post_subdetails">
-            <span class="post_categories">Dans Général</span>
+            <span class="post_categories">Par <%= a.getAuthor().getDisplayName() %> dans Général</span>
             <span class="comments_box"><%= a.getNbComs() %> commentaires</span>
         </div>
 

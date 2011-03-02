@@ -60,4 +60,14 @@ public class UsersFactory {
         
         return u;
     }
+    
+    static User resultToDisplayUser(ResultSet res) throws SQLException {
+        User u = new User(res.getInt("uID"));
+        
+        u.setLogin(res.getString("login"));
+        u.setLastName(res.getString("last_name"));
+        u.setFirstName(res.getString("first_name"));
+        
+        return u;
+    }
 }

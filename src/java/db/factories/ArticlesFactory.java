@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import metier.Article;
+import metier.User;
 
 
 public class ArticlesFactory {
@@ -20,8 +21,11 @@ public class ArticlesFactory {
         List<Article> articles = new ArrayList<Article>();
         
         
-        String sql = "SELECT aID, u_ID, c_ID, slug, title, content, date, nb_coms, valid "+
-                     "FROM articles ORDER BY aID DESC LIMIT ?, ?";
+        String sql = "SELECT aID, u_ID, c_ID, slug, title, content, date, "+
+                     "nb_coms, valid, uID, login, first_name, last_name "+
+                     "FROM articles "+
+                     "LEFT JOIN users ON users.uID = articles.u_ID "+
+                     "ORDER BY aID DESC LIMIT ?, ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, first, nb);
 
@@ -39,8 +43,11 @@ public class ArticlesFactory {
         Connexion con = Connexion.getInstance();
         Article a = null;
         
-        String sql = "SELECT aID, u_ID, c_ID, slug, title, content, date, nb_coms, valid "+
-                     "FROM articles WHERE slug = ?";
+        String sql = "SELECT aID, u_ID, c_ID, slug, title, content, date, "+
+                     "nb_coms, valid, uID, login, first_name, last_name "+
+                     "FROM articles a "+
+                     "LEFT JOIN users u ON u.uID = a.u_ID "+
+                     "WHERE slug = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, slug);
 
@@ -56,6 +63,9 @@ public class ArticlesFactory {
 
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
+        User author = UsersFactory.resultToDisplayUser(res);
+        
+        a.setAuthor(author);
 
         a.setTitle(res.getString("title")); 
         a.setDate(res.getString("date"));

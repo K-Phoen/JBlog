@@ -5,8 +5,6 @@
 
 package metier;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import libs.SHA1;
 
 
@@ -87,6 +85,13 @@ public class User extends Entity {
      */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+    
+    public String getDisplayName() {
+        if(firstName == null && lastName == null)
+            return login;
+        else
+            return String.format("%s %s", firstName, lastName);
     }
 
     /**
