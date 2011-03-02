@@ -53,9 +53,25 @@ public class ArticlesController extends ModuleController {
     throws ServletException, IOException {
         List<Article> elems;
         ArticlesModel mdl = new ArticlesModel();
+        
+        int page = 1;
+        
+        if(request.getParameter("page") != null) {
+            String p = (String) request.getParameter("page");
+            
+            try {
+                page = Integer.parseInt(p);
+            } catch(NumberFormatException e) {
+                page = 1;
+            }
+            
+            if(page <= 0)
+                page = 1;
+        }
 
         try {
-            elems = mdl.getLasts();
+            System.out.println(page);
+            elems = mdl.getLasts(page);
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;

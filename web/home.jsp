@@ -48,13 +48,17 @@ if(list.isEmpty()) {
             -->
         </div>
     </div>
-            
-    <div class="navigation">
-        <span class="alignleft">Older</span>
-        <span class="alignright">Newer</span>
-    </div>
+    
+    <div style="clear:both; margin-top:110px"></div>
     <%
     }
+    %>
+    
+    <div class="navigation" style="clear:both; margin-top:120px">
+        <span class="alignleft"><a href="./page/1">Older</a></span>
+        <span class="alignright"><a href="./page/2">Newer</a></span>
+    </div>
+<%
 }
 %>
         

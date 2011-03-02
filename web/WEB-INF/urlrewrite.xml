@@ -15,6 +15,11 @@
         <to>/index?module=articles</to>
     </rule>
     
+    <rule>
+        <from>^(/index)?/page/([0-9]+)$</from>
+        <to>/index?module=articles&amp;page=$2</to>
+    </rule>
+    
     <!-- Visualisation d'un article -->
     <rule>
         <from>^/article/([0-9a-zA-Z\-]+)$</from>

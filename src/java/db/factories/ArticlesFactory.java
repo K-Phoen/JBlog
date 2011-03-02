@@ -66,6 +66,25 @@ public class ArticlesFactory {
         
         return a;
     }
+    
+    public static int countArticles(boolean valid) throws SQLException, ClassNotFoundException {
+        Connexion con = Connexion.getInstance();
+        
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     (valid ? "WHERE valid = 1 " : "");
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        
+        int total = res.getInt("total");
+        
+        res.close();
+        stmt.close();
+        
+        return total;
+    }
 
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
