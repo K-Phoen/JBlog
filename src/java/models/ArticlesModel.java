@@ -30,7 +30,7 @@ import metier.Comment;
 
 public class ArticlesModel {
     public List<Article> getLasts() throws SQLException, ClassNotFoundException, Exception {
-        return ArticlesFactory.getN(0, 5);
+        return ArticlesFactory.getN(0, 5, true);
     }
 
     public Article getBySlug(String slug) throws SQLException, ClassNotFoundException, Exception {

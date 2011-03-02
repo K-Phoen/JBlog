@@ -17,7 +17,7 @@ import metier.User;
 
 
 public class ArticlesFactory {
-    public static List<Article> getN(int first, int nb) throws ClassNotFoundException, SQLException, Exception {
+    public static List<Article> getN(int first, int nb, boolean valid) throws ClassNotFoundException, SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Article> articles = new ArrayList<Article>();
         
@@ -28,6 +28,7 @@ public class ArticlesFactory {
                      "FROM articles a "+
                      "LEFT JOIN users ON users.uID = a.u_ID "+
                      "LEFT JOIN categories c ON c.cID = a.c_ID "+
+                     (valid ? "WHERE valid = 1 " : "")+
                      "ORDER BY aID DESC LIMIT ?, ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, first, nb);

@@ -75,7 +75,10 @@ public class ArticlesController extends ModuleController {
             a = mdl.getBySlug(slug);
             
             if(a == null)
-                throw new Exception("Article inconnu");
+                throw new Exception("Article inconnu.");
+            
+            if(!a.isValid())
+                throw new Exception("Cet article n'est pas valide.");
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
