@@ -29,24 +29,23 @@ import java.sql.SQLException;
  */
 public final class Connexion {
     private static Connexion instance;
+    private static Connection con;
     
     private static String url;
     private static String driver = "com.mysql.jdbc.Driver";
     private static String login;
     private static String pass;
 
-    private Connection con;
 
-
-    private Connexion() throws ClassNotFoundException, SQLException {
-        Class.forName(driver);
-        con = DriverManager.getConnection(url, login, pass);
+    private Connexion() {
+        if(con == null)
+            throw new IllegalStateException("La méthode initConnexion doit être appelée avant d'utiliser la classe !");
     }
 
     public void execute(String sql, Object ... params) throws SQLException {
         PreparedStatement stmt = con.prepareStatement(sql);
 
-        bindParams(stmt, (Object[]) params);
+        bindParams(stmt, params);
 
         stmt.execute();
         stmt.close();
@@ -90,10 +89,18 @@ public final class Connexion {
         Connexion.pass = pass;
     }
 
-    public static Connexion getInstance() throws ClassNotFoundException, SQLException {
+    public static Connexion getInstance() {
         if(instance == null)
             instance = new Connexion();
 
         return instance;
+    }
+    
+    public static void initConnexion() throws ClassNotFoundException, SQLException {
+        if(con != null)
+            return;
+        
+        Class.forName(driver);
+        con = DriverManager.getConnection(url, login, pass);
     }
 }

@@ -31,7 +31,7 @@ public class SessionModel {
     private User currentUser = null;
     
     
-    public boolean authenticate(String login, String pass, HttpServletRequest request) throws ClassNotFoundException, SQLException {
+    public boolean authenticate(String login, String pass, HttpServletRequest request) throws SQLException {
         User u = UsersFactory.get(login, User.hashPass(pass));
         
         if(u == null)
@@ -42,7 +42,7 @@ public class SessionModel {
         return true;
     }
     
-    public boolean authenticate(String login, String pass, HttpServletRequest request, HttpServletResponse response) throws ClassNotFoundException, SQLException {
+    public boolean authenticate(String login, String pass, HttpServletRequest request, HttpServletResponse response) throws SQLException {
         if(!authenticate(login, pass, request))
             return false;
        
@@ -78,7 +78,7 @@ public class SessionModel {
         return currentUser != null;
     }
 
-    public void tryConnect(HttpServletRequest request) throws ClassNotFoundException, SQLException {
+    public void tryConnect(HttpServletRequest request) throws SQLException {
         HttpSession session = request.getSession();
         Cookie loginCookie = null;
         Cookie passCookie = null;
@@ -111,7 +111,7 @@ public class SessionModel {
         session.setAttribute("currentUserId", u.getId());
     }
 
-    private void connect(int id, HttpServletRequest request) throws ClassNotFoundException, SQLException {
+    private void connect(int id, HttpServletRequest request) throws SQLException {
         User u = UsersFactory.get(id);
         
         if(u != null)

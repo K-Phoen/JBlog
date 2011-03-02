@@ -13,7 +13,7 @@ import metier.User;
 
 
 public class UsersFactory {
-    public static User get(String login, String pass) throws ClassNotFoundException, SQLException {
+    public static User get(String login, String pass) throws SQLException {
         Connexion con = Connexion.getInstance();
         
         String sql = "SELECT uID, login, pass, last_name, first_name, mail "+
@@ -24,7 +24,7 @@ public class UsersFactory {
         return getOne(stmt);
     }
     
-    public static User get(int id) throws ClassNotFoundException, SQLException {
+    public static User get(int id) throws SQLException {
         Connexion con = Connexion.getInstance();
         
         String sql = "SELECT uID, login, pass, last_name, first_name, mail "+

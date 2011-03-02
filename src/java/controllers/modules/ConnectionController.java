@@ -8,6 +8,7 @@ package controllers.modules;
 import conf.JSP;
 import controllers.Controller;
 import java.io.IOException;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -60,7 +61,7 @@ public class ConnectionController extends ModuleController {
             
             try {
                 auth = mdl.authenticate(login, pass, request, response);
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 error(ex.getMessage(), request, response);
                 return;
             }

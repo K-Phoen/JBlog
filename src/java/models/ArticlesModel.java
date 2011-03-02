@@ -31,7 +31,7 @@ import metier.Comment;
 public class ArticlesModel {
     private static final int ARTICLES_PER_PAGE = 3;
         
-    public List<Article> getLasts(int page) throws SQLException, ClassNotFoundException, Exception {
+    public List<Article> getLasts(int page) throws SQLException, Exception {
         int first = (page - 1) * ARTICLES_PER_PAGE;
         
         return ArticlesFactory.getN(first, ARTICLES_PER_PAGE, true);
@@ -41,19 +41,19 @@ public class ArticlesModel {
         return ArticlesFactory.countArticles(true) / ARTICLES_PER_PAGE;
     }
 
-    public Article getBySlug(String slug) throws SQLException, ClassNotFoundException, Exception {
+    public Article getBySlug(String slug) throws SQLException, Exception {
         return ArticlesFactory.getBySlug(slug);
     }
     
-    public void saveComment(Comment c) throws ClassNotFoundException, SQLException, Exception {
+    public void saveComment(Comment c) throws SQLException, Exception {
         CommentsFactory.save(c);
     }
 
-    public void saveArticle(Article a) throws ClassNotFoundException, SQLException, Exception {
+    public void saveArticle(Article a) throws SQLException, Exception {
         ArticlesFactory.save(a);
     }
     
-    public List<Category> getCategories() throws ClassNotFoundException, SQLException, Exception
+    public List<Category> getCategories() throws SQLException, Exception
     {
         return CategoryFactory.getAll();
     }

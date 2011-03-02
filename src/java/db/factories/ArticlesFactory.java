@@ -17,10 +17,9 @@ import metier.User;
 
 
 public class ArticlesFactory {
-    public static List<Article> getN(int first, int nb, boolean valid) throws ClassNotFoundException, SQLException, Exception {
+    public static List<Article> getN(int first, int nb, boolean valid) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Article> articles = new ArrayList<Article>();
-        
         
         String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
                      "nb_coms, valid, uID, login, first_name, last_name, cID, "+
@@ -43,7 +42,7 @@ public class ArticlesFactory {
         return articles;
     }
     
-    public static Article getBySlug(String slug) throws ClassNotFoundException, SQLException, Exception {
+    public static Article getBySlug(String slug) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         Article a = null;
         
@@ -67,7 +66,7 @@ public class ArticlesFactory {
         return a;
     }
     
-    public static int countArticles(boolean valid) throws SQLException, ClassNotFoundException {
+    public static int countArticles(boolean valid) throws SQLException {
         Connexion con = Connexion.getInstance();
         
         String sql = "SELECT COUNT(1) as total "+
@@ -105,7 +104,7 @@ public class ArticlesFactory {
         return a;
     }
 
-    public static void save(Article a) throws ClassNotFoundException, SQLException, Exception {
+    public static void save(Article a) throws SQLException, Exception {
         if(a.isNew())
             insert(a);
         else
@@ -113,11 +112,11 @@ public class ArticlesFactory {
     }
     
     
-    private static void insert(Article a) throws ClassNotFoundException, SQLException, Exception {
+    private static void insert(Article a) throws SQLException, Exception {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
-    private static void update(Article a) throws ClassNotFoundException, SQLException, Exception {
+    private static void update(Article a) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         String sql = "UPDATE articles SET u_ID = ?, c_ID = ?, slug = ?, title = ?, "+
                                          "content = ?, date = ?, nb_coms = ?, "+

@@ -16,7 +16,7 @@ import metier.Comment;
 
 
 public class CommentsFactory {
-    public static Article get(Article a) throws ClassNotFoundException, SQLException, Exception {
+    public static Article get(Article a) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Comment> comments = new ArrayList<Comment>();
         
@@ -38,7 +38,7 @@ public class CommentsFactory {
         return a;
     }
     
-    public static void save(Comment c) throws ClassNotFoundException, SQLException, Exception {
+    public static void save(Comment c) throws SQLException, Exception {
         if(c.isNew())
             insert(c);
         else
@@ -46,7 +46,7 @@ public class CommentsFactory {
     }
     
     
-    private static void insert(Comment c) throws ClassNotFoundException, SQLException, Exception {
+    private static void insert(Comment c) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         String sql = "INSERT INTO commentaires (a_ID, pseudo, mail, content, date, valide) "+
                      "VALUES (?, ?, ?, ?, ?, ?)";

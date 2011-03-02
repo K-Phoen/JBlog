@@ -7,8 +7,11 @@ import controllers.modules.ConnectionController;
 import db.Connexion;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -85,6 +88,20 @@ public class Controller extends HttpServlet {
     throws ServletException, IOException {
         ModuleController controller = getModuleController(request.getParameter("module"));
         
+        // pas de contrôleur trouvé = requête incorrect : pas la peine d'aller plus loin
+        if(controller == null) {
+            error("Erreur 404", request, response);
+            return;
+        }
+        
+        // vérification de l'état de la connexion à la DB
+        try {
+            Connexion.initConnexion();
+        } catch (Exception ex) {
+            error(ex.getMessage(), request, response);
+            return;
+        }
+        
         // création du modèle de session
         SessionModel mdl = new SessionModel();
         request.setAttribute("session", mdl);
@@ -92,16 +109,12 @@ public class Controller extends HttpServlet {
         // connexion auto
         try {
             mdl.tryConnect(request);
-        } catch (Exception e) {
+        } catch (SQLException e) {
             error(e.getMessage(), request, response);
             return;
         }
-        
-        if(controller == null) {
-            error("Erreur 404", request, response);
-            return;
-        }
 
+        // on passe le relai au sous-contrôleur
         controller.handle(request, response);
     }
     

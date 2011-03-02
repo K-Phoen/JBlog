@@ -16,7 +16,7 @@ import metier.Category;
 
 public class CategoryFactory {
     
-    public static List<Category> getAll() throws ClassNotFoundException, SQLException, Exception {
+    public static List<Category> getAll() throws SQLException {
         Connexion con = Connexion.getInstance();
         List<Category> categories = new ArrayList<Category>();
         
@@ -40,5 +40,3 @@ public class CategoryFactory {
         return new Category(res.getInt("cID"), res.getString("slug"), res.getString("title"));
     }   
 }
-
-
