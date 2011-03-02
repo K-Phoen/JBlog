@@ -6,7 +6,6 @@
 package libs.form.fields;
 
 import java.util.Map;
-import libs.form.Form;
 
 
 public class TextField extends FormField {
