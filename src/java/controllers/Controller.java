@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import models.ArticlesModel;
 import models.SessionModel;
 
 
@@ -85,11 +86,12 @@ public class Controller extends HttpServlet {
         ModuleController controller = getModuleController(request.getParameter("module"));
         
         // création du modèle de session
+        SessionModel mdl = new SessionModel();
+        request.setAttribute("session", mdl);
+        
+        // connexion auto
         try {
-            SessionModel mdl = new SessionModel();
             mdl.tryConnect(request);
-            
-            request.setAttribute("session", mdl);
         } catch (Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -105,7 +107,7 @@ public class Controller extends HttpServlet {
     
     
     
-    private void defineViewVariables(HttpServletRequest request) {
+    private void defineViewVariables(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         for(Field key : Blog.class.getFields()) {
             try {
                 String val = null;
@@ -118,6 +120,14 @@ public class Controller extends HttpServlet {
         }
         
         request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
+        
+        ArticlesModel model = new ArticlesModel();
+        try {
+            request.setAttribute("LIST_CATEGORIES", model.getCategories());
+        } catch (Exception ex) {
+            error(ex.getMessage(), request, response);
+            return;
+        }
     }
     
     
@@ -132,7 +142,7 @@ public class Controller extends HttpServlet {
     
     public final void forward(String to, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
-        defineViewVariables(request);
+        defineViewVariables(request, response);
         getServletContext().getRequestDispatcher(to).forward(request, response);
     }
 

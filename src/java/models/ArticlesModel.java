@@ -19,10 +19,12 @@
 package models;
 
 import db.factories.ArticlesFactory;
+import db.factories.CategoryFactory;
 import db.factories.CommentsFactory;
 import java.sql.SQLException;
 import java.util.List;
 import metier.Article;
+import metier.Category;
 import metier.Comment;
 
 
@@ -41,5 +43,10 @@ public class ArticlesModel {
 
     public void saveArticle(Article a) throws ClassNotFoundException, SQLException, Exception {
         ArticlesFactory.save(a);
+    }
+    
+    public List<Category> getCategories() throws ClassNotFoundException, SQLException, Exception
+    {
+        return CategoryFactory.getAll();
     }
 }

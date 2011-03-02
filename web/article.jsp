@@ -52,7 +52,7 @@ Article article = (Article) request.getAttribute("article");
                     <img alt="" src="http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=32" class="avatar avatar-32 photo avatar-default" height="32" width="32" />
                     Le <%=  c.dateToString("dd-MM-yyyy") %>,
                     <cite class="fn">    
-                        <a href="http://url.com" rel="external nofollow" class="url">Monsieur WordPress</a>
+                        <a href="mailto:<%= c.getMail() %>" rel="external nofollow" class="url"><%= c.getAuthor() %></a>
                     </cite>
                     <span class="says">dit :</span>
                 </div>

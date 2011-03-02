@@ -1,3 +1,5 @@
+<%@page import="java.util.List"%>
+<%@page import="metier.Category"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 
         </div>
@@ -23,12 +25,18 @@
 
                 <li>
                     <div class="sidebar_block">
-                        <h2>Cat&eacutes;gories</h2>
+                        <h2>Cat&eacute;gories</h2>
 
                         <ul>
+                            <%
+                            for(Category c : (List<Category>) request.getAttribute("LIST_CATEGORIES")) {
+                            %>
                             <li class="cat-item cat-item-3">
-                                <a href="./">category name</a>
+                                <a href="./"><%= c.getTitle() %></a>
                             </li>
+                            <%
+                            }
+                            %>
                         </ul>
                     </div>
                 </li>
