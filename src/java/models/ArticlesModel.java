@@ -29,13 +29,16 @@ import metier.Comment;
 
 
 public class ArticlesModel {
-    private static final int ARTICLES_PER_PAGE = 1;
+    private static final int ARTICLES_PER_PAGE = 3;
         
     public List<Article> getLasts(int page) throws SQLException, ClassNotFoundException, Exception {
-        //int nbPages = ArticlesFactory.countArticles(true) / ARTICLES_PER_PAGE;
         int first = (page - 1) * ARTICLES_PER_PAGE;
         
         return ArticlesFactory.getN(first, ARTICLES_PER_PAGE, true);
+    }
+    
+    public int getNBPages() throws SQLException, ClassNotFoundException {
+        return ArticlesFactory.countArticles(true) / ARTICLES_PER_PAGE;
     }
 
     public Article getBySlug(String slug) throws SQLException, ClassNotFoundException, Exception {

@@ -55,9 +55,10 @@ public class ArticlesController extends ModuleController {
         ArticlesModel mdl = new ArticlesModel();
         
         int page = 1;
+        int nbPages = -1;
         
         if(request.getParameter("page") != null) {
-            String p = (String) request.getParameter("page");
+            String p = request.getParameter("page");
             
             try {
                 page = Integer.parseInt(p);
@@ -70,14 +71,19 @@ public class ArticlesController extends ModuleController {
         }
 
         try {
-            System.out.println(page);
             elems = mdl.getLasts(page);
+            nbPages = mdl.getNBPages();
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
         }
 
         request.setAttribute("elems", elems);
+        
+        if(page > 1)
+            request.setAttribute("PREV_PAGE", page - 1);
+        if(page < nbPages)
+            request.setAttribute("NEXT_PAGE", page + 1);
 
         forward(JSP.INDEX, request, response);
     }
