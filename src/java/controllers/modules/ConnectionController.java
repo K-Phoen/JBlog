@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import libs.form.Form;
+import libs.form.fields.PasswordField;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextField;
 import models.SessionModel;
@@ -46,7 +47,7 @@ public class ConnectionController extends ModuleController {
         }
         
         form.add(new TextField("login").setLabel("Identifiant"));
-        form.add(new TextField("pass").setLabel("Mot de passe"));
+        form.add(new PasswordField("pass").setLabel("Mot de passe"));
         form.add(new SubmitButton("Connexion"));
         
         request.setAttribute("form", form);
