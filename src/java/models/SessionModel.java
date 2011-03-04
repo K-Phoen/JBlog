@@ -83,6 +83,10 @@ public class SessionModel {
         Cookie loginCookie = null;
         Cookie passCookie = null;
         
+        // pas de cookies disponibles
+        if(request.getCookies() == null)
+            return;
+
         for(Cookie c : request.getCookies()) {
             if(c.getName().equals("login"))
                 loginCookie = c;
