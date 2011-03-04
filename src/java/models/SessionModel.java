@@ -92,7 +92,7 @@ public class SessionModel {
         
         
         if(session.getAttribute("currentUserId") != null)
-            connect((int) session.getAttribute("currentUserId"), request);
+            connect(((Integer) session.getAttribute("currentUserId")).intValue(), request);
         else if(loginCookie != null && passCookie != null) {
             User u = UsersFactory.get(loginCookie.getValue(), passCookie.getValue());
             
@@ -108,7 +108,7 @@ public class SessionModel {
         currentUser = u;
             
         HttpSession session = request.getSession();
-        session.setAttribute("currentUserId", u.getId());
+        session.setAttribute("currentUserId", new Integer(u.getId()));
     }
 
     private void connect(int id, HttpServletRequest request) throws SQLException {

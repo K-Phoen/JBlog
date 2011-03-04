@@ -10,8 +10,6 @@ import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -113,7 +111,7 @@ public class Controller extends HttpServlet {
             error(e.getMessage(), request, response);
             return;
         }
-
+        
         // on passe le relai au sous-contrôleur
         controller.handle(request, response);
     }
