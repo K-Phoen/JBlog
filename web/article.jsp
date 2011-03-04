@@ -1,3 +1,5 @@
+<%@page import="libs.BBCode"%>
+<%@page import="libs.HTML"%>
 <%@page import="metier.Comment"%>
 <%@page import="metier.Article"%>
 
@@ -58,7 +60,7 @@ Article article = (Article) request.getAttribute("article");
                 </div>
 
                 <p>
-                    <%= c.getContent() %>
+                    <%= BBCode.parse(HTML.escape(c.getContent())) %>
                 </p>
             </div>
         </li>

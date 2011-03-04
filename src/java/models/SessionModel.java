@@ -26,7 +26,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import metier.User;
 
-
 public class SessionModel {
     private User currentUser = null;
     
