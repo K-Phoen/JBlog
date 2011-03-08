@@ -26,38 +26,59 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import metier.User;
 
+/**
+ * Modèle gérant la session courante (connexion, déconnexion, authentification,
+ * etc).
+ */
 public class SessionModel {
     private User currentUser = null;
+    private HttpServletRequest request;
+    private HttpServletResponse response;
+
     
+    public SessionModel(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+    }
     
-    public boolean authenticate(String login, String pass, HttpServletRequest request) throws SQLException {
+    /**
+     * Tente d'authentifier un utilisateur. Et crée un cookie qui permettra de
+     * le ré-authentifier quand la session sera détruite.
+     * 
+     * @param login Identifiant
+     * @param pass Mot de passe (en clair)
+     * @param cookie Doit-on créer un cookie ?
+     * 
+     * @throws SQLException Si une erreur survient à la vérification des identifiants
+     * 
+     * @return True si la connexion a réussie, false sinon.
+     */
+    public boolean authenticate(String login, String pass, boolean cookie) throws SQLException {
         User u = UsersFactory.get(login, User.hashPass(pass));
         
         if(u == null)
             return false;
         
-        connect(u, request);
-        
-        return true;
-    }
-    
-    public boolean authenticate(String login, String pass, HttpServletRequest request, HttpServletResponse response) throws SQLException {
-        if(!authenticate(login, pass, request))
-            return false;
+        connect(u);
        
-        Cookie cLogin = new Cookie("login", login);
-        cLogin.setMaxAge(3600 * 24 * 30); // 30 jours
-        
-        Cookie cPass = new Cookie("pass", User.hashPass(pass));
-        cPass.setMaxAge(3600 * 24 * 30); // 30 jours
-        
-        response.addCookie(cLogin);
-        response.addCookie(cPass);
+        if(cookie) {
+            Cookie cLogin = new Cookie("login", login);
+            cLogin.setMaxAge(3600 * 24 * 30); // 30 jours
+
+            Cookie cPass = new Cookie("pass", User.hashPass(pass));
+            cPass.setMaxAge(3600 * 24 * 30); // 30 jours
+
+            response.addCookie(cLogin);
+            response.addCookie(cPass);
+        }
         
         return true;
     }
     
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
+    /**
+     * Déconnecte l'utilisateur courant.
+     */
+    public void logout() {
         currentUser = null;
         
         HttpSession session = request.getSession();
@@ -73,11 +94,22 @@ public class SessionModel {
         response.addCookie(cPass);
     }
     
+    /**
+     * Indique si l'utilisateur courant est connecté.
+     * 
+     * @return L'état de la session.
+     */
     public boolean isLoggedIn() {
         return currentUser != null;
     }
 
-    public void tryConnect(HttpServletRequest request) throws SQLException {
+    /**
+     * Tente une connexion automatique de l'utilisateur courant, d'abord en
+     * utilisant la session, puis en utilisant les cookies.
+     * 
+     * @throws SQLException 
+     */
+    public void tryConnect() throws SQLException {
         HttpSession session = request.getSession();
         Cookie loginCookie = null;
         Cookie passCookie = null;
@@ -95,16 +127,74 @@ public class SessionModel {
         
         
         if(session.getAttribute("currentUserId") != null)
-            connect(((Integer) session.getAttribute("currentUserId")).intValue(), request);
+            connect(((Integer) session.getAttribute("currentUserId")).intValue());
         else if(loginCookie != null && passCookie != null) {
             User u = UsersFactory.get(loginCookie.getValue(), passCookie.getValue());
             
             if(u != null)
-                connect(u, request);
+                connect(u);
         }
     }
     
-    private void connect(User u, HttpServletRequest request) {
+    /**
+     * Retourne l'utilisateur actuellement connecté (ou null s'il ne l'est pas).
+     * 
+     * @return L'object représentant l'utilisateur.
+     */
+    public User getCurrentUser() {
+        return currentUser;
+    }
+    
+    /**
+     * Le nom de l'utilisateur courant. On utilise le cookie "displayName" et s'il 
+     * n'existe pas on retourne une chaine vide.
+     * 
+     * @return Le nom de l'utilisateur courant.
+     */
+    public String getName() {
+        for(Cookie c : request.getCookies()) {
+            if(c.getName().equals("displayName"))
+                return c.getValue();
+        }
+        
+        return "";
+    }
+    
+    /**
+     * Le mail de l'utilisateur courant. On utilise le cookie "mail" et s'il 
+     * n'existe pas on retourne une chaine vide.
+     * 
+     * @return Le mail de l'utilisateur courant.
+     */
+    public String getMail() {
+        for(Cookie c : request.getCookies()) {
+            if(c.getName().equals("mail"))
+                return c.getValue();
+        }
+        
+        return "";
+    }
+    
+    public void saveMail(String mail) {
+        Cookie c = new Cookie("mail", mail);
+        c.setMaxAge(3600 * 24 * 30); // 30 jours
+
+        response.addCookie(c);
+    }
+
+    public void saveName(String name) {
+        Cookie c = new Cookie("displayName", name);
+        c.setMaxAge(3600 * 24 * 30); // 30 jours
+
+        response.addCookie(c);
+    }
+    
+    /**
+     * Connecte un utilisateur.
+     * 
+     * @param u Utilisateur à connecter.
+     */
+    private void connect(User u) {
         if(u == null)
             throw new IllegalArgumentException("Impossible de connecter un utilisateur valant null");
         
@@ -114,10 +204,15 @@ public class SessionModel {
         session.setAttribute("currentUserId", new Integer(u.getId()));
     }
 
-    private void connect(int id, HttpServletRequest request) throws SQLException {
+    /**
+     * Connecte un utilisateur.
+     * 
+     * @param id Identifiant de l'utilisateur à connecter.
+     */
+    private void connect(int id) throws SQLException {
         User u = UsersFactory.get(id);
         
         if(u != null)
-            connect(u, request);
+            connect(u);
     }
 }

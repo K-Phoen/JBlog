@@ -60,7 +60,7 @@ public class ConnectionController extends ModuleController {
             boolean auth = false;
             
             try {
-                auth = mdl.authenticate(login, pass, request, response);
+                auth = mdl.authenticate(login, pass, true);
             } catch (SQLException ex) {
                 error(ex.getMessage(), request, response);
                 return;
@@ -87,7 +87,7 @@ public class ConnectionController extends ModuleController {
             return;
         }
         
-        mdl.logout(request, response);
+        mdl.logout();
         
         redirect("./", "Déconnexion réussie.", request, response);
     }

@@ -101,12 +101,12 @@ public class Controller extends HttpServlet {
         }
         
         // création du modèle de session
-        SessionModel mdl = new SessionModel();
+        SessionModel mdl = new SessionModel(request, response);
         request.setAttribute("session", mdl);
         
         // connexion auto
         try {
-            mdl.tryConnect(request);
+            mdl.tryConnect();
         } catch (SQLException e) {
             error(e.getMessage(), request, response);
             return;

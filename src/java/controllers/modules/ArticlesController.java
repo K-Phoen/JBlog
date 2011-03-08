@@ -15,12 +15,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import libs.form.Form;
 import libs.form.fields.EmailField;
+import libs.form.fields.HiddenField;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
 import libs.form.fields.TextField;
 import metier.Article;
 import metier.Comment;
 import models.ArticlesModel;
+import models.SessionModel;
 
 
 public class ArticlesController extends ModuleController {
@@ -92,6 +94,7 @@ public class ArticlesController extends ModuleController {
                  throws ServletException, IOException {
         Article a;
         ArticlesModel mdl = new ArticlesModel();
+        SessionModel sessionMdl = (SessionModel) request.getAttribute("session");
 
         try {
             a = mdl.getBySlug(slug);
@@ -106,8 +109,25 @@ public class ArticlesController extends ModuleController {
             return;
         }
 
-        // formulaire d'ajout de commentaire
-        Form form = createCommentForm();
+        /* formulaire d'ajout de commentaire */
+        Form form = new Form();
+
+        // Nom
+        if(!sessionMdl.isLoggedIn())
+            form.add(new TextField("nom").setLabel("Nom").setValue(sessionMdl.getName()));
+        
+        // mail
+        if(!sessionMdl.isLoggedIn())
+            form.add(new EmailField("mail").setLabel("Mail").setValue(sessionMdl.getMail()));
+        
+        // commentaire
+        form.add(
+                    new TextArea("comment")
+                    .cols("50%")
+                    .rows("4")
+                    .setLabel("Commentaire")
+                );
+        form.add(new SubmitButton("Envoyer"));
 
         if(request.getAttribute("HTTP_METHOD").equals("POST")) {
             form.bind(request);
@@ -115,8 +135,17 @@ public class ArticlesController extends ModuleController {
             if(form.isValid()) {
                 Comment c = new Comment();
                 
-                c.setAuthor(request.getParameter("nom"));
-                c.setMail(request.getParameter("mail"));
+                if(sessionMdl.isLoggedIn()) {
+                    c.setAuthor(sessionMdl.getCurrentUser().getDisplayName());
+                    c.setMail(sessionMdl.getCurrentUser().getMail());
+                } else {
+                    c.setAuthor(request.getParameter("nom"));
+                    c.setMail(request.getParameter("mail"));
+                    
+                    sessionMdl.saveName(request.getParameter("nom"));
+                    sessionMdl.saveMail(request.getParameter("mail"));
+                }
+                
                 c.setContent(request.getParameter("comment"));
                 c.setaID(a.getId());
                 c.setValid(true);
@@ -141,21 +170,5 @@ public class ArticlesController extends ModuleController {
         request.setAttribute("PAGE_TITLE", a.getTitle());
 
         forward(JSP.ARTICLE, request, response);
-    }
-
-    private Form createCommentForm() {
-        Form form = new Form();
-
-        form.add(new TextField("nom").setLabel("Nom"));
-        form.add(new EmailField("mail").setLabel("Mail"));
-        form.add(
-                    new TextArea("comment")
-                    .cols("50%")
-                    .rows("4")
-                    .setLabel("Commentaire")
-                );
-        form.add(new SubmitButton("Envoyer"));
-
-        return form;
     }
 }
