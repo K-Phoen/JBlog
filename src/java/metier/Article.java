@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class Article extends Entity {
@@ -60,7 +61,7 @@ public class Article extends Entity {
     /**
      * @return the url
      */
-    public String getUrl() {
+    public String getSlug() {
         return url;
     }
 
@@ -132,6 +133,11 @@ public class Article extends Entity {
     public String dateToString(String format) throws Exception
     {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
+        return sdf.format(date);
+    }
+    
+    public String dateToString(String format, Locale locale) throws Exception {
+        SimpleDateFormat sdf = new SimpleDateFormat(format, locale);
         return sdf.format(date);
     }
 

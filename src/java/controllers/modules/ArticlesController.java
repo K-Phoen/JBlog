@@ -5,11 +5,14 @@
 
 package controllers.modules;
 
+import conf.Blog;
 import conf.JSP;
 import controllers.Controller;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +25,10 @@ import metier.Article;
 import metier.Comment;
 import models.ArticlesModel;
 import models.SessionModel;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
 
 
 public class ArticlesController extends ModuleController {
@@ -32,18 +39,101 @@ public class ArticlesController extends ModuleController {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String slug = request.getParameter("slug");
         String act = request.getParameter("act");
-        String search = request.getParameter("search");
         
-        if(act != null && act.equals("search"))
+        if(act == null || act.isEmpty()) {
+            error("Page inconnue", request, response);
+            return;
+        }
+        
+        if(act.equals("search_redirect"))
             doSearchRedirect(request, response);
-        else if(search != null && !search.isEmpty())
-            doSearch(search, request, response);
-        else if(slug == null || slug.isEmpty())
+        else if(act.equals("search"))
+            doSearch(request, response);
+        else if(act.equals("index"))
             doIndex(request, response);
+        else if(act.equals("show"))
+            doArticlePage(request, response);
+        else if(act.equals("rss"))
+            doRSS(request, response);
         else
-            doArticlePage(slug.trim(), request, response);
+            error("Page inconnue", request, response);
+    }
+    
+    
+    public void doRSS(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Article> elems;
+        
+        try {
+            elems = (new ArticlesModel()).getLasts(1);
+        } catch(Exception e) {
+            error(e.getMessage(), request, response);
+            return;
+        }
+        
+        /* début de la création du flux */
+        Document flux = new Document();
+        
+        // élément racine
+        Element root = new Element("rss");
+        root.setAttribute("version", "2.0");
+        
+        // channel
+        Element channel = new Element("channel");
+            // titre
+            Element title = new Element("title");
+            title.setText(Blog.TITLE);
+            channel.addContent(title);
+            
+            // description
+            Element desc = new Element("description");
+            desc.setText(""); // rien pour le moment
+            channel.addContent(desc);
+            
+            // description
+            Element lastDate = new Element("lastBuildDate");
+            SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+            lastDate.setText(formatter.format(new Date()));
+            channel.addContent(lastDate);
+            
+            // lien
+            Element link = new Element("link");
+            link.setText(Blog.BASE_URL);
+            channel.addContent(link);
+            
+            // articles
+            for(Article a : elems) {
+                Element item = new Element("item");
+                
+                    Element titre = new Element("title");
+                    titre.setText(a.getTitle());
+                    item.addContent(titre);
+                    
+                    Element description = new Element("description");
+                    description.setText(a.getContent());
+                    item.addContent(description);
+                    
+                    try {
+                        Element pubDate = new Element("pubDate");
+                        pubDate.setText(a.dateToString("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH));
+                        item.addContent(pubDate);
+                    } catch (Exception e) { 
+                        // pas grave
+                    }
+                    
+                    // lien
+                    Element url = new Element("link");
+                    url.setText(String.format("%s/article/%s", Blog.BASE_URL, a.getSlug()));
+                    item.addContent(url);
+                
+                channel.addContent(item);
+            }
+        
+        root.addContent(channel);
+        
+        flux.setRootElement(root);
+        XMLOutputter sortie = new XMLOutputter(Format.getPrettyFormat());
+        sortie.output(flux, response.getOutputStream());
     }
     
     /**
@@ -74,8 +164,15 @@ public class ArticlesController extends ModuleController {
         displayArticles(elems, nbPages, request, response);
     }
 
-    private void doArticlePage(String slug, HttpServletRequest request, HttpServletResponse response)
+    private void doArticlePage(HttpServletRequest request, HttpServletResponse response)
                  throws ServletException, IOException {
+        String slug = request.getParameter("slug");
+        
+        if(slug == null || slug.isEmpty()) {
+            error("Requête incorrecte", request, response);
+            return;
+        }
+        
         Article a;
         ArticlesModel mdl = new ArticlesModel();
         SessionModel sessionMdl = (SessionModel) request.getAttribute("session");
@@ -113,6 +210,7 @@ public class ArticlesController extends ModuleController {
                 );
         form.add(new SubmitButton("Envoyer"));
 
+        /* Traitement du formulaire */
         if(request.getAttribute("HTTP_METHOD").equals("POST")) {
             form.bind(request);
 
@@ -144,7 +242,7 @@ public class ArticlesController extends ModuleController {
                     error("Impossible d'enregistrer le commentaire : "+ex.getMessage(), request, response);
                 }
                 
-                redirect("./article/"+a.getUrl(), "Commentaire enregistré", request, response);
+                redirect("./article/"+a.getSlug(), "Commentaire enregistré", request, response);
                 return;
             }
         }
@@ -168,9 +266,15 @@ public class ArticlesController extends ModuleController {
                  request, response);
     }
 
-    private void doSearch(String search, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    private void doSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Article> elems;
         ArticlesModel mdl = new ArticlesModel();
+        String search = request.getParameter("search");
+        
+        if(search == null || search.isEmpty()) {
+            error("Requête incorrecte", request, response);
+            return;
+        }
         
         int page = getCurrentPage(request);
         int nbPages = -1;

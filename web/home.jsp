@@ -29,7 +29,7 @@ if(list.isEmpty()) {
 
         <div class="post_content_right">
             <h2 class="post_title">
-                <a href="./article/<%= a.getUrl() %>" rel="bookmark"><%= a.getTitle() %></a>
+                <a href="./article/<%= a.getSlug() %>" rel="bookmark"><%= a.getTitle() %></a>
             </h2>
 
             <div class="post_subdetails">

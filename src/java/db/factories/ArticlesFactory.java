@@ -173,7 +173,7 @@ public class ArticlesFactory {
                                          "valid  = ? "+
                      "WHERE aID = ?";
         
-        con.execute(sql, a.getUId(), a.getCId(), a.getUrl(), a.getTitle(),
+        con.execute(sql, a.getUId(), a.getCId(), a.getSlug(), a.getTitle(),
                     a.getContent(), a.dateToString("yyyy-MM-dd"), a.getNbComs(),
                     a.isValid(), a.getId());
     }

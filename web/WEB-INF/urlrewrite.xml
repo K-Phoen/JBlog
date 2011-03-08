@@ -12,29 +12,35 @@
     <!-- Page d'accueil -->
     <rule>
         <from>^/(index)?$</from>
-        <to>/index?module=articles</to>
+        <to>/index?module=articles&amp;act=index</to>
     </rule>
     
     <rule>
         <from>^(/index)?/page/([0-9]+)$</from>
-        <to>/index?module=articles&amp;page=$2</to>
+        <to>/index?module=articles&amp;act=index&amp;page=$2</to>
+    </rule>
+    
+    <!-- Flux Rss -->
+    <rule>
+        <from>^/rss</from>
+        <to>/index?module=articles&amp;act=rss</to>
     </rule>
     
     <!-- recherche -->
     <rule>
         <from>^/search$</from>
-        <to>/index?module=articles&amp;act=search</to>
+        <to>/index?module=articles&amp;act=search_redirect</to>
     </rule>
     
     <rule>
         <from>^/search/(.+)$</from>
-        <to>/index?module=articles&amp;search=$1</to>
+        <to>/index?module=articles&amp;act=search&amp;search=$1</to>
     </rule>
     
     <!-- Visualisation d'un article -->
     <rule>
         <from>^/article/([0-9a-zA-Z\-]+)$</from>
-        <to>/index?module=articles&amp;slug=$1</to>
+        <to>/index?module=articles&amp;act=show&amp;slug=$1</to>
     </rule>
     
     <!-- Connexion -->
