@@ -37,8 +37,16 @@ public class ArticlesModel {
         return ArticlesFactory.getN(first, ARTICLES_PER_PAGE, true);
     }
     
-    public int getNBPages() throws SQLException, ClassNotFoundException {
+    public int getNBPages() throws SQLException {
         return ArticlesFactory.countArticles(true) / ARTICLES_PER_PAGE;
+    }
+    
+    public int getNBArticles(boolean valid) throws SQLException {
+        return ArticlesFactory.countArticles(true);
+    }
+    
+    public int getNBComments(boolean valid) throws SQLException {
+        return CommentsFactory.count(true);
     }
 
     public Article getBySlug(String slug) throws SQLException, Exception {

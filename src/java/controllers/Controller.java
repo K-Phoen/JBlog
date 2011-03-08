@@ -119,6 +119,7 @@ public class Controller extends HttpServlet {
     
     
     private void defineViewVariables(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // variables de configuration
         for(Field key : Blog.class.getFields()) {
             try {
                 String val = null;
@@ -130,12 +131,22 @@ public class Controller extends HttpServlet {
             }
         }
         
+        // variable indiquant si le membre actuel est connecté
         request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
         
-        ArticlesModel model = new ArticlesModel();
+        // catégories
+        ArticlesModel articlesMdl = new ArticlesModel();
         try {
-            request.setAttribute("LIST_CATEGORIES", model.getCategories());
+            request.setAttribute("LIST_CATEGORIES", articlesMdl.getCategories());
         } catch (Exception ex) {
+            error(ex.getMessage(), request, response);
+            return;
+        }
+        try {
+            // statistiques
+            request.setAttribute("STATS_NB_ARTICLES", articlesMdl.getNBArticles(true));
+            request.setAttribute("STATS_NB_COMS", articlesMdl.getNBComments(true));
+        } catch (SQLException ex) {
             error(ex.getMessage(), request, response);
             return;
         }

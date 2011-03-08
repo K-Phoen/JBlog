@@ -328,7 +328,7 @@ margin:0px;
 padding:5px 0 5px 0px;
 margin:0px;
 }
-#sidebar ul li ul li a{
+#sidebar ul li ul li{
 list-style:none;
 display:block;
 padding:2px 0 5px 5px;
@@ -338,6 +338,11 @@ color:#4c3349;
 text-decoration:none;
 border-bottom:1px #FFFFFF dotted;
 font-weight:normal;
+}
+#sidebar ul li ul li a{
+    text-decoration:none;
+    font-weight:normal;
+    color:#4c3349;
 }
 #sidebar ul li ul li a:hover{
 text-decoration:none;

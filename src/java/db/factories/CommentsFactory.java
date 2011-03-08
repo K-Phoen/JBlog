@@ -38,6 +38,25 @@ public class CommentsFactory {
         return a;
     }
     
+    public static int count(boolean valid) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM commentaires "+
+                     (valid ? "WHERE valide = 1 " : "");
+        PreparedStatement stmt = con.prepareStatement(sql);
+
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        
+        int total = res.getInt("total");
+        
+        res.close();
+        stmt.close();
+        
+        return total;
+    }
+    
     public static void save(Comment c) throws SQLException, Exception {
         if(c.isNew())
             insert(c);

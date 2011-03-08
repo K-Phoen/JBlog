@@ -18,7 +18,7 @@
                         </p>
                     </div>
                 </li>
-
+                
                 <li>
                     <div class="sidebar_divider"></div>
                 </li>
@@ -31,12 +31,27 @@
                             <%
                             for(Category c : (List<Category>) request.getAttribute("LIST_CATEGORIES")) {
                             %>
-                            <li class="cat-item cat-item-3">
+                            <li class="cat-item">
                                 <a href="./"><%= c.getTitle() %></a>
                             </li>
                             <%
                             }
                             %>
+                        </ul>
+                    </div>
+                </li>
+                
+                <li>
+                    <div class="sidebar_divider"></div>
+                </li>
+                
+                <li>
+                    <div class="sidebar_block">
+                        <h2>Statistiques</h2>
+
+                        <ul>
+                            <li>Nombre d'articles : <%= request.getAttribute("STATS_NB_ARTICLES") %></li>
+                            <li>Nombre de commentaires : <%= request.getAttribute("STATS_NB_COMS") %></li>
                         </ul>
                     </div>
                 </li>
