@@ -34,6 +34,11 @@ public class SessionModel {
     private User currentUser = null;
     private HttpServletRequest request;
     private HttpServletResponse response;
+    
+    private static final String COOKIE_LOGIN    = "login";
+    private static final String COOKIE_PASS     = "pass";
+    private static final String COOKIE_NAME     = "displayName";
+    private static final String COOKIE_MAIL     = "mail";
 
     
     public SessionModel(HttpServletRequest request, HttpServletResponse response) {
@@ -62,10 +67,10 @@ public class SessionModel {
         connect(u);
        
         if(cookie) {
-            Cookie cLogin = new Cookie("login", login);
+            Cookie cLogin = new Cookie(COOKIE_LOGIN, login);
             cLogin.setMaxAge(3600 * 24 * 30); // 30 jours
 
-            Cookie cPass = new Cookie("pass", User.hashPass(pass));
+            Cookie cPass = new Cookie(COOKIE_PASS, User.hashPass(pass));
             cPass.setMaxAge(3600 * 24 * 30); // 30 jours
 
             response.addCookie(cLogin);
@@ -84,10 +89,10 @@ public class SessionModel {
         HttpSession session = request.getSession();
         session.invalidate();
         
-        Cookie cLogin = new Cookie("login", "");
+        Cookie cLogin = new Cookie(COOKIE_LOGIN, "");
         cLogin.setMaxAge(-1);
         
-        Cookie cPass = new Cookie("pass", "");
+        Cookie cPass = new Cookie(COOKIE_PASS, "");
         cPass.setMaxAge(-1);
         
         response.addCookie(cLogin);
@@ -119,9 +124,9 @@ public class SessionModel {
             return;
 
         for(Cookie c : request.getCookies()) {
-            if(c.getName().equals("login"))
+            if(c.getName().equals(COOKIE_LOGIN))
                 loginCookie = c;
-            else if(c.getName().equals("pass"))
+            else if(c.getName().equals(COOKIE_PASS))
                 passCookie = c;
         }
         
@@ -146,14 +151,14 @@ public class SessionModel {
     }
     
     /**
-     * Le nom de l'utilisateur courant. On utilise le cookie "displayName" et s'il 
+     * Le nom de l'utilisateur courant. On utilise le cookie COOKIE_NAME et s'il 
      * n'existe pas on retourne une chaine vide.
      * 
      * @return Le nom de l'utilisateur courant.
      */
     public String getName() {
         for(Cookie c : request.getCookies()) {
-            if(c.getName().equals("displayName"))
+            if(c.getName().equals(COOKIE_NAME))
                 return c.getValue();
         }
         
@@ -161,29 +166,45 @@ public class SessionModel {
     }
     
     /**
-     * Le mail de l'utilisateur courant. On utilise le cookie "mail" et s'il 
+     * Le mail de l'utilisateur courant. On utilise le cookie COOKIE_MAIL et s'il 
      * n'existe pas on retourne une chaine vide.
      * 
      * @return Le mail de l'utilisateur courant.
      */
     public String getMail() {
         for(Cookie c : request.getCookies()) {
-            if(c.getName().equals("mail"))
+            if(c.getName().equals(COOKIE_MAIL))
                 return c.getValue();
         }
         
         return "";
     }
     
+    /**
+     * Enregistre via un cookie le mail de l'utilisateur courant.
+     * 
+     * @param mail Mail à enregistrer
+     */
     public void saveMail(String mail) {
-        Cookie c = new Cookie("mail", mail);
+        if(isLoggedIn())
+            throw new IllegalStateException("Il est inutile d'enregistrer le mail d'un utilisateur connecté.");
+        
+        Cookie c = new Cookie(COOKIE_MAIL, mail);
         c.setMaxAge(3600 * 24 * 30); // 30 jours
 
         response.addCookie(c);
     }
 
+    /**
+     * Enregistre via un cookie le nom de l'utilisateur courant.
+     * 
+     * @param name Nom à enregistrer
+     */
     public void saveName(String name) {
-        Cookie c = new Cookie("displayName", name);
+        if(isLoggedIn())
+            throw new IllegalStateException("Il est inutile d'enregistrer le nom d'un utilisateur connecté.");
+        
+        Cookie c = new Cookie(COOKIE_NAME, name);
         c.setMaxAge(3600 * 24 * 30); // 30 jours
 
         response.addCookie(c);
