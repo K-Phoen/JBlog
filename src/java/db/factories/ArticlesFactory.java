@@ -42,6 +42,33 @@ public class ArticlesFactory {
         return articles;
     }
     
+    public static List<Article> getN(String search, int first, int nb, boolean valid) throws SQLException, Exception {
+        Connexion con = Connexion.getInstance();
+        List<Article> articles = new ArrayList<Article>();
+        String fSearch = String.format("%%%s%%", search);
+        
+        String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
+                     "nb_coms, valid, uID, login, first_name, last_name, cID, "+
+                     "c.slug, c.title "+
+                     "FROM articles a "+
+                     "LEFT JOIN users ON users.uID = a.u_ID "+
+                     "LEFT JOIN categories c ON c.cID = a.c_ID "+
+                     "WHERE (a.title LIKE ? OR content LIKE ?) "+
+                     (valid ? "AND valid = 1 " : "")+
+                     "ORDER BY aID DESC LIMIT ?, ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, fSearch, fSearch, first, nb);
+
+        ResultSet res = stmt.executeQuery();
+        while(res.next())
+            articles.add(resultToArticle(res));
+        
+        res.close();
+        stmt.close();
+
+        return articles;
+    }
+    
     public static Article getBySlug(String slug) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         Article a = null;
@@ -84,6 +111,29 @@ public class ArticlesFactory {
         
         return total;
     }
+    
+    public static int countArticles(String search, boolean valid) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        String fSearch = String.format("%%%s%%", search);
+        
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     "WHERE (title LIKE ? OR content LIKE ?) "+
+                     (valid ? "AND valid = 1 " : "");
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, fSearch, fSearch);
+
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        
+        int total = res.getInt("total");
+        
+        res.close();
+        stmt.close();
+        
+        return total;
+    }
+    
 
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));

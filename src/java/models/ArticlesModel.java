@@ -37,8 +37,18 @@ public class ArticlesModel {
         return ArticlesFactory.getN(first, ARTICLES_PER_PAGE, true);
     }
     
+    public List<Article> search(String search, int page) throws SQLException, Exception {
+        int first = (page - 1) * ARTICLES_PER_PAGE;
+        
+        return ArticlesFactory.getN(search, first, ARTICLES_PER_PAGE, true);
+    }
+    
     public int getNBPages() throws SQLException {
         return ArticlesFactory.countArticles(true) / ARTICLES_PER_PAGE;
+    }
+    
+    public int getNBPagesSearch(String search) throws SQLException {
+        return ArticlesFactory.countArticles(search, true) / ARTICLES_PER_PAGE;
     }
     
     public int getNBArticles(boolean valid) throws SQLException {

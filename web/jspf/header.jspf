@@ -1,3 +1,4 @@
+<%@page import="libs.HTML"%>
 <%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
 
 <!DOCTYPE html>
@@ -41,8 +42,13 @@
             <%@include file="menu.jspf" %>
 
             <div id="search_top">
-                <form method="get" id="searchform" action="">
-                    <input type="text" value="" name="s" id="s" class="searchfield" />
+                <%
+                String search = "";
+                if(request.getAttribute("SEARCH") != null)
+                    search = HTML.escape((String) request.getAttribute("SEARCH"));
+                %>
+                <form method="post" id="searchform" action="./search">
+                    <input type="text" value="<%= search %>" name="search" id="s" class="searchfield" />
                     <input type="submit" value="Search" class="searchbutton" id="searchsubmit" />
                 </form>
             </div>

@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import libs.form.Form;
 import libs.form.fields.EmailField;
-import libs.form.fields.HiddenField;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
 import libs.form.fields.TextField;
@@ -34,9 +33,14 @@ public class ArticlesController extends ModuleController {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String slug = request.getParameter("slug");
+        String act = request.getParameter("act");
+        String search = request.getParameter("search");
         
-        // page d'accueil
-        if(slug == null || slug.trim().isEmpty())
+        if(act != null && act.equals("search"))
+            doSearchRedirect(request, response);
+        else if(search != null && !search.isEmpty())
+            doSearch(search, request, response);
+        else if(slug == null || slug.isEmpty())
             doIndex(request, response);
         else
             doArticlePage(slug.trim(), request, response);
@@ -56,21 +60,8 @@ public class ArticlesController extends ModuleController {
         List<Article> elems;
         ArticlesModel mdl = new ArticlesModel();
         
-        int page = 1;
+        int page = getCurrentPage(request);
         int nbPages = -1;
-        
-        if(request.getParameter("page") != null) {
-            String p = request.getParameter("page");
-            
-            try {
-                page = Integer.parseInt(p);
-            } catch(NumberFormatException e) {
-                page = 1;
-            }
-            
-            if(page <= 0)
-                page = 1;
-        }
 
         try {
             elems = mdl.getLasts(page);
@@ -80,14 +71,7 @@ public class ArticlesController extends ModuleController {
             return;
         }
 
-        request.setAttribute("elems", elems);
-        
-        if(page > 1)
-            request.setAttribute("PREV_PAGE", page - 1);
-        if(page < nbPages)
-            request.setAttribute("NEXT_PAGE", page + 1);
-
-        forward(JSP.INDEX, request, response);
+        displayArticles(elems, nbPages, request, response);
     }
 
     private void doArticlePage(String slug, HttpServletRequest request, HttpServletResponse response)
@@ -170,5 +154,70 @@ public class ArticlesController extends ModuleController {
         request.setAttribute("PAGE_TITLE", a.getTitle());
 
         forward(JSP.ARTICLE, request, response);
+    }
+
+    private void doSearchRedirect(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String search = request.getParameter("search");
+        
+        if(search == null || search.trim().isEmpty()) {
+            error("Recherche invalide", request, response);
+            return;
+        }
+        
+        redirect(String.format("./search/%s", search), "Recherche en cours ...",
+                 request, response);
+    }
+
+    private void doSearch(String search, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        List<Article> elems;
+        ArticlesModel mdl = new ArticlesModel();
+        
+        int page = getCurrentPage(request);
+        int nbPages = -1;
+
+        try {
+            elems = mdl.search(search, page);
+            nbPages = mdl.getNBPagesSearch(search);
+        } catch(Exception e) {
+            error(e.getMessage(), request, response);
+            return;
+        }
+
+        request.setAttribute("PAGE_TITLE", "Recherche ...");
+        request.setAttribute("SEARCH", search);
+        
+        displayArticles(elems, nbPages, request, response);
+    }
+    
+    private void displayArticles(List<Article> elems, int nbPages, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int page = getCurrentPage(request);
+
+        request.setAttribute("elems", elems);
+        
+        if(page > 1)
+            request.setAttribute("PREV_PAGE", page - 1);
+        if(page < nbPages)
+            request.setAttribute("NEXT_PAGE", page + 1);
+
+        forward(JSP.INDEX, request, response);
+    }
+    
+    private int getCurrentPage(HttpServletRequest request) {
+        int page = 1;
+        
+        if(request.getParameter("page") != null) {
+            String p = request.getParameter("page");
+            
+            try {
+                page = Integer.parseInt(p);
+            } catch(NumberFormatException e) {
+                page = 1;
+            }
+            
+            if(page <= 0)
+                page = 1;
+        }
+        
+        return page;
     }
 }
