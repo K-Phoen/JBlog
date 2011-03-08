@@ -32,7 +32,7 @@
                             for(Category c : (List<Category>) request.getAttribute("LIST_CATEGORIES")) {
                             %>
                             <li class="cat-item">
-                                <a href="./"><%= c.getTitle() %></a>
+                                <a href="./article/categorie/<%= c.getSlug() %>"><%= c.getTitle() %></a>
                             </li>
                             <%
                             }

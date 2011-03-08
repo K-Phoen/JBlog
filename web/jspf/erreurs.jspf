@@ -1,0 +1,28 @@
+<%@page import="java.util.Map"%>
+<%@page import="java.util.List"%>
+<%@page import="libs.form.Form"%>
+
+<%@page pageEncoding="UTF-8" contentType="text/html; charset=UTF-8" %>
+
+<%
+Form form = (Form) request.getAttribute("form");
+
+if(!form.getErrors().isEmpty()) {
+%>
+<h3>Erreurs</h3>
+
+<ul>
+    <%
+    Map<String, List<String>> errors = form.getErrors();
+    for(String field : errors.keySet()) {
+        for(String error : errors.get(field)) {
+    %>
+            <li><%= form.field(field).getLabel() %> : <%= error %></li>
+    <%
+        }
+    }
+    %>
+</ul>
+<%
+}
+%>

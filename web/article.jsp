@@ -1,3 +1,4 @@
+<%@page import="libs.form.Form"%>
 <%@page import="libs.BBCode"%>
 <%@page import="libs.HTML"%>
 <%@page import="metier.Comment"%>
@@ -72,7 +73,60 @@ Article article = (Article) request.getAttribute("article");
     
     
 <h2>Réagir</h2>
+<script type="text/javascript">
+function insertTag(startTag, endTag, textareaId) {
+    var field  = document.getElementById(textareaId); 
+    var scroll = field.scrollTop;
+    field.focus();
 
-<%@include file="jspf/form.jspf" %>
+    if (window.ActiveXObject) { // C'est IE
+        var textRange = document.selection.createRange();            
+        var currentSelection = textRange.text;
+
+        textRange.text = startTag + currentSelection + endTag;
+        textRange.moveStart("character", -endTag.length - currentSelection.length);
+        textRange.moveEnd("character", -endTag.length);
+        textRange.select();     
+    } else { // Ce n'est pas IE
+        var startSelection = field.value.substring(0, field.selectionStart);
+        var currentSelection = field.value.substring(field.selectionStart, field.selectionEnd);
+        var endSelection = field.value.substring(field.selectionEnd);
+
+        field.value = startSelection + startTag + currentSelection + endTag + endSelection;
+        field.focus();
+        field.setSelectionRange(startSelection.length + startTag.length, startSelection.length + startTag.length + currentSelection.length);
+    }
+
+    field.scrollTop = scroll; // et on redéfinit le scroll.
+}    
+</script>
+
+<%@include file="jspf/erreurs.jspf" %>
+
+<form method="post" > 
+	<p> 
+		<label for=nom>Nom : </label> 
+		<%= form.field("nom") %>
+	</p> 
+	<p> 
+		<label for=mail>Mail : </label> 
+        <%= form.field("mail") %>
+	</p> 
+	<p> 
+		<label for=comment>Commentaire : </label> 
+        
+        <br />
+        <img src="images/text_bold.png" onclick="insertTag('[b]', '[/b]', 'comment')" title="Mettre en gras" alt="Gras" />
+        <img src="images/text_italic.png" onclick="insertTag('[i]', '[/i]', 'comment')" title="Mettre en italique" alt="Italique" />
+        <img src="images/text_underline.png" onclick="insertTag('[u]', '[/u]', 'comment')" title="Souligner" alt="Souligné" />
+        <br />
+        
+		<%= form.field("comment") %>
+	</p> 
+	<p> 
+		<input id="Envoyer" name="Envoyer" value="Envoyer" type="submit"  /> 
+	</p> 
+
+</form>
 
 <%@include file="jspf/footer.jspf" %>
