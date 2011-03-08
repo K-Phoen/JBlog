@@ -8,4 +8,8 @@
     <%= request.getAttribute("redir_msg") %>
 </p>
 
+<p>
+    <a href="<%= request.getAttribute("redir_url") %>">Ne pas attendre</a>
+</p>
+
 <%@include file="jspf/footer.jspf" %>
