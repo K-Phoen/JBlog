@@ -1,9 +1,11 @@
 package controllers;
 
+import controllers.modules.user.ArticlesController;
 import controllers.modules.*;
 import conf.Blog;
 import conf.JSP;
-import controllers.modules.ConnectionController;
+import controllers.modules.admin.AdminController;
+import controllers.modules.user.ConnectionController;
 import db.Connexion;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -35,6 +37,7 @@ public class Controller extends HttpServlet {
     private void initModules() {
         addModule("articles", new ArticlesController(this));
         addModule("connection", new ConnectionController(this));
+        addModule("admin", new AdminController(this));
     }
     
     protected final void addModule(String name, ModuleController ctrl) {

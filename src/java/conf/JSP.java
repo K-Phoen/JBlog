@@ -22,6 +22,8 @@ public interface JSP {
     String INDEX    = "/home.jsp";
     String ARTICLE  = "/article.jsp";
     
+    String ADMIN_HOME = "/admin/home.jsp";
+    
     String FORM     = "/form.jsp";
     
     String ERROR    = "/error.jsp";

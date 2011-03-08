@@ -3,11 +3,12 @@
  * and open the template in the editor.
  */
 
-package controllers.modules;
+package controllers.modules.user;
 
 import conf.Blog;
 import conf.JSP;
 import controllers.Controller;
+import controllers.modules.ModuleController;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;

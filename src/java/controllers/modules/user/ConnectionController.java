@@ -3,10 +3,11 @@
  * and open the template in the editor.
  */
 
-package controllers.modules;
+package controllers.modules.user;
 
 import conf.JSP;
 import controllers.Controller;
+import controllers.modules.ModuleController;
 import java.io.IOException;
 import java.sql.SQLException;
 import javax.servlet.ServletException;
