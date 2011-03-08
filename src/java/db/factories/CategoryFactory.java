@@ -36,7 +36,27 @@ public class CategoryFactory {
         return categories;
     }
     
+    public static Category get(String slug) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        Category c = null;
+        
+        String sql = "SELECT cID, title, slug "+
+                     "FROM categories "+
+                     "WHERE slug = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, slug);
+
+        ResultSet res = stmt.executeQuery();
+        if(res.next())
+            c = resultToCategory(res);
+        
+        res.close();
+        stmt.close();
+        
+        return c;
+    }
+    
     static Category resultToCategory(ResultSet res) throws SQLException {
         return new Category(res.getInt("cID"), res.getString("slug"), res.getString("title"));
-    }   
+    }
 }

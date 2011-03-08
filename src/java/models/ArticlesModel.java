@@ -47,6 +47,21 @@ public class ArticlesModel {
     }
     
     /**
+     * Retourne les N derniers articles publiés (et valides) dans une catégorie.
+     * 
+     * @param cId Id de la catégorie à parcourir
+     * @param page Page en cours de visualisation
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @return La liste des articles de la catégorie.
+     */
+    public List<Article> getLastsCategorie(int cId, int page) throws SQLException, Exception {
+        return ArticlesFactory.getNCategorie(cId, first(page), ARTICLES_PER_PAGE, true);
+    }
+    
+    /**
      * Retourne les N derniers articles publiés (et valides) pour une recherche
      * donnée.
      * 
@@ -67,7 +82,11 @@ public class ArticlesModel {
     }
     
     public int getNBPagesSearch(String search) throws SQLException {
-        return ArticlesFactory.countArticles(search, true) / ARTICLES_PER_PAGE;
+        return ArticlesFactory.countArticlesSearch(search, true) / ARTICLES_PER_PAGE;
+    }
+    
+    public int getNBPagesCategorie(int id) throws SQLException {
+        return ArticlesFactory.countArticlesCategorie(id, true) / ARTICLES_PER_PAGE;
     }
     
     public int getNBArticles(boolean valid) throws SQLException {
@@ -132,6 +151,10 @@ public class ArticlesModel {
      */
     public List<Category> getCategories() throws SQLException, Exception {
         return CategoryFactory.getAll();
+    }
+    
+    public Category getCategorie(String slug) throws SQLException, Exception {
+        return CategoryFactory.get(slug);
     }
     
     private int first(int page) {

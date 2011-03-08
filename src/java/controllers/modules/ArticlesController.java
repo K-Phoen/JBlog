@@ -22,6 +22,7 @@ import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
 import libs.form.fields.TextField;
 import metier.Article;
+import metier.Category;
 import metier.Comment;
 import models.ArticlesModel;
 import models.SessionModel;
@@ -50,6 +51,8 @@ public class ArticlesController extends ModuleController {
             doSearchRedirect(request, response);
         else if(act.equals("search"))
             doSearch(request, response);
+        else if(act.equals("categorie"))
+            doCategorie(request, response);
         else if(act.equals("index"))
             doIndex(request, response);
         else if(act.equals("show"))
@@ -61,6 +64,15 @@ public class ArticlesController extends ModuleController {
     }
     
     
+    /**
+     * Affichage du flux RSS du site. Il reprend les articles affichés sur la
+     * première page.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     public void doRSS(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Article> elems;
         
@@ -137,8 +149,8 @@ public class ArticlesController extends ModuleController {
     }
     
     /**
-     * Page d'accueil du site. On récupère la racine du répertoire à explorer
-     * et on l'affiche.
+     * Page d'accueil du site. On récupère la liste des derniers articles et on
+     * l'affiche.
      *
      * @param request
      * @param response
@@ -161,6 +173,47 @@ public class ArticlesController extends ModuleController {
             return;
         }
 
+        displayArticles(elems, nbPages, request, response);
+    }
+    
+    /**
+     * Liste des articles d'une catégorie.
+     *
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    private void doCategorie(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+        String slug = request.getParameter("slug");
+        
+        if(slug == null || slug.isEmpty()) {
+            error("Requête incorrecte", request, response);
+            return;
+        }
+        
+        List<Article> elems;
+        Category c;
+        ArticlesModel mdl = new ArticlesModel();
+        
+        int page = getCurrentPage(request);
+        int nbPages = -1;
+
+        try {
+            c = mdl.getCategorie(slug);
+            
+            if(c == null)
+                throw new Exception("Catégorie inconnue");
+            
+            elems = mdl.getLastsCategorie(c.getId(), page);
+            nbPages = mdl.getNBPagesCategorie(c.getId());
+        } catch(Exception e) {
+            error(e.getMessage(), request, response);
+            return;
+        }
+        
+        request.setAttribute("PAGE_TITLE", c.getTitle());
         displayArticles(elems, nbPages, request, response);
     }
 

@@ -37,6 +37,12 @@
         <to>/index?module=articles&amp;act=search&amp;search=$1</to>
     </rule>
     
+    <!-- Visualisation d'une catégorie d'articles -->
+    <rule>
+        <from>^/article/categorie/([0-9a-zA-Z\-]+)$</from>
+        <to>/index?module=articles&amp;act=categorie&amp;slug=$1</to>
+    </rule>
+    
     <!-- Visualisation d'un article -->
     <rule>
         <from>^/article/([0-9a-zA-Z\-]+)$</from>

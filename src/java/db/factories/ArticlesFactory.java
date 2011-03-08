@@ -39,7 +39,7 @@ public class ArticlesFactory {
         return getList(first, nb, limiters);
     }
     
-    public static List<Article> getNCategories(int categorie, int first, int nb, boolean valid) throws SQLException, Exception {
+    public static List<Article> getNCategorie(int categorie, int first, int nb, boolean valid) throws SQLException, Exception {
         Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
         
         limiters.put("c_ID = ?", toList(categorie));
@@ -136,7 +136,28 @@ public class ArticlesFactory {
         return total;
     }
     
-    public static int countArticles(String search, boolean valid) throws SQLException {
+    public static int countArticlesCategorie(int id, boolean valid) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     "WHERE c_ID = ? "+
+                     (valid ? "AND valid = 1 " : "");
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, id);
+
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        
+        int total = res.getInt("total");
+        
+        res.close();
+        stmt.close();
+        
+        return total;
+    }
+    
+    public static int countArticlesSearch(String search, boolean valid) throws SQLException {
         Connexion con = Connexion.getInstance();
         String fSearch = String.format("%%%s%%", search);
         

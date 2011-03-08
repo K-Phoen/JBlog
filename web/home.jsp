@@ -33,7 +33,9 @@ if(list.isEmpty()) {
             </h2>
 
             <div class="post_subdetails">
-                <span class="post_categories">Par <%= a.getAuthor().getDisplayName() %> dans <%= a.getCategory().getTitle() %></span>
+                <span class="post_categories">
+                    Par <%= a.getAuthor().getDisplayName() %> dans 
+                    <a href="./article/categorie/<%= a.getCategory().getSlug() %>"><%= a.getCategory().getTitle() %></a></span>
                 <span class="comments_box"><%= a.getNbComs() %> commentaires</span>
             </div>
 
