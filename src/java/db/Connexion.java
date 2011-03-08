@@ -22,6 +22,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 
 /**
@@ -58,6 +59,11 @@ public final class Connexion {
     public static void bindParams(PreparedStatement stmt, Object ... params) throws SQLException {
         for(int i=1; i <= params.length; ++i)
             stmt.setObject(i, params[i-1]);
+    }
+    
+    public static void bindParams(PreparedStatement stmt, List<Object> params) throws SQLException {
+        for(int i=1; i <= params.size(); ++i)
+            stmt.setObject(i, params.get(i-1));
     }
 
     @Override

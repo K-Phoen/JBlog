@@ -30,17 +30,36 @@ import metier.Comment;
 
 public class ArticlesModel {
     private static final int ARTICLES_PER_PAGE = 3;
-        
+    
+    
+    /**
+     * Retourne les N derniers articles publiés (et valides).
+     * 
+     * @param page Page en cours de visualisation
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @return La liste des articles.
+     */
     public List<Article> getLasts(int page) throws SQLException, Exception {
-        int first = (page - 1) * ARTICLES_PER_PAGE;
-        
-        return ArticlesFactory.getN(first, ARTICLES_PER_PAGE, true);
+        return ArticlesFactory.getNFirst(first(page), ARTICLES_PER_PAGE, true);
     }
     
+    /**
+     * Retourne les N derniers articles publiés (et valides) pour une recherche
+     * donnée.
+     * 
+     * @param page Page en cours de visualisation
+     * @param search Recherche en cours
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @return La liste des articles correspondants à la recherche.
+     */
     public List<Article> search(String search, int page) throws SQLException, Exception {
-        int first = (page - 1) * ARTICLES_PER_PAGE;
-        
-        return ArticlesFactory.getN(search, first, ARTICLES_PER_PAGE, true);
+        return ArticlesFactory.getNSearch(search, first(page), ARTICLES_PER_PAGE, true);
     }
     
     public int getNBPages() throws SQLException {
@@ -59,20 +78,63 @@ public class ArticlesModel {
         return CommentsFactory.count(true);
     }
 
+    /**
+     * Retrouve un article en fonction de son slug.
+     * 
+     * @param slug Slug servant à identifier l'article.
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @return L'article s'il existe, null sinon.
+     */
     public Article getBySlug(String slug) throws SQLException, Exception {
         return ArticlesFactory.getBySlug(slug);
     }
     
-    public void saveComment(Comment c) throws SQLException, Exception {
+    /**
+     * Enregistre un commentaire.
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @param a Article dans lequel a été posté le commentaire. Son nombre de
+     *          commentaires sera mis à jour.
+     * @param c Commentaire à enregistrer.
+     */
+    public void saveComment(Article a, Comment c) throws SQLException, Exception {
+        // mise à ajour de l'article
+        a.addComment(c);
+        saveArticle(a);
+                
         CommentsFactory.save(c);
     }
 
+    /**
+     * Enregistre un article.
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @param a Article à enregistrer
+     */
     public void saveArticle(Article a) throws SQLException, Exception {
         ArticlesFactory.save(a);
     }
     
-    public List<Category> getCategories() throws SQLException, Exception
-    {
+    /**
+     * Retourne les catégories disponibles
+     * 
+     * @throws SQLException
+     * @throws Exception 
+     * 
+     * @return La liste des catégories du blog.
+     */
+    public List<Category> getCategories() throws SQLException, Exception {
         return CategoryFactory.getAll();
+    }
+    
+    private int first(int page) {
+        return (page - 1) * ARTICLES_PER_PAGE;
     }
 }

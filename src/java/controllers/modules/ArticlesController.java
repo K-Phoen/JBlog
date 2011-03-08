@@ -233,11 +233,8 @@ public class ArticlesController extends ModuleController {
                 c.setValid(true);
                 c.setDate(new Date());
                 
-                a.addComment(c);
-                
                 try {
-                    mdl.saveComment(c);
-                    mdl.saveArticle(a);
+                    mdl.saveComment(a, c);
                 } catch (Exception ex) {
                     error("Impossible d'enregistrer le commentaire : "+ex.getMessage(), request, response);
                 }

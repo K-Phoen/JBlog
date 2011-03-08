@@ -10,42 +10,63 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import metier.Article;
 import metier.Category;
 import metier.User;
 
 
 public class ArticlesFactory {
-    public static List<Article> getN(int first, int nb, boolean valid) throws SQLException, Exception {
-        Connexion con = Connexion.getInstance();
-        List<Article> articles = new ArrayList<Article>();
+    public static List<Article> getNFirst(int first, int nb, boolean valid) throws SQLException, Exception {
+        Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
         
-        String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
-                     "nb_coms, valid, uID, login, first_name, last_name, cID, "+
-                     "c.slug, c.title "+
-                     "FROM articles a "+
-                     "LEFT JOIN users ON users.uID = a.u_ID "+
-                     "LEFT JOIN categories c ON c.cID = a.c_ID "+
-                     (valid ? "WHERE valid = 1 " : "")+
-                     "ORDER BY aID DESC LIMIT ?, ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, first, nb);
-
-        ResultSet res = stmt.executeQuery();
-        while(res.next())
-            articles.add(resultToArticle(res));
+        if(valid)
+            limiters.put("valid = ?", toList(1));
         
-        res.close();
-        stmt.close();
-
-        return articles;
+        return getList(first, nb, limiters);
     }
     
-    public static List<Article> getN(String search, int first, int nb, boolean valid) throws SQLException, Exception {
+    public static List<Article> getNSearch(String search, int first, int nb, boolean valid) throws SQLException, Exception {
+        Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
+        String fSearch = String.format("%%%s%%", search);
+        
+        limiters.put("(a.title LIKE ? OR content LIKE ?)", toList(fSearch, fSearch));
+        if(valid)
+            limiters.put("valid = ?", toList(1));
+        
+        return getList(first, nb, limiters);
+    }
+    
+    public static List<Article> getNCategories(int categorie, int first, int nb, boolean valid) throws SQLException, Exception {
+        Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
+        
+        limiters.put("c_ID = ?", toList(categorie));
+        if(valid)
+            limiters.put("valid = ?", toList(1));
+        
+        return getList(first, nb, limiters);
+    }
+    
+    public static List<Article> getList(int first, int nb, Map<String, List<Object>> limiters)throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Article> articles = new ArrayList<Article>();
-        String fSearch = String.format("%%%s%%", search);
+        StringBuilder where_clause = new StringBuilder();
+        List<Object> params = new ArrayList<Object>();
+        
+        boolean lFirst = true;
+        for(String key : limiters.keySet()) {
+            params.addAll(limiters.get(key));
+            
+            if(lFirst) {
+                where_clause.append("WHERE ").append(key);
+                lFirst = false;
+                continue;
+            }
+            
+            where_clause.append(" AND ").append(key);
+        }
         
         String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
                      "nb_coms, valid, uID, login, first_name, last_name, cID, "+
@@ -53,11 +74,14 @@ public class ArticlesFactory {
                      "FROM articles a "+
                      "LEFT JOIN users ON users.uID = a.u_ID "+
                      "LEFT JOIN categories c ON c.cID = a.c_ID "+
-                     "WHERE (a.title LIKE ? OR content LIKE ?) "+
-                     (valid ? "AND valid = 1 " : "")+
-                     "ORDER BY aID DESC LIMIT ?, ?";
+                     where_clause.toString()+
+                     " ORDER BY aID DESC LIMIT ?, ?";
+        
         PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, fSearch, fSearch, first, nb);
+        
+        Connexion.bindParams(stmt, params);
+        stmt.setObject(params.size()+1, first);
+        stmt.setObject(params.size()+2, nb);
 
         ResultSet res = stmt.executeQuery();
         while(res.next())
@@ -152,6 +176,15 @@ public class ArticlesFactory {
         a.setCId(res.getInt("c_ID"));
 
         return a;
+    }
+    
+    private static List<Object> toList(Object ... params) {
+        List<Object> list = new ArrayList<Object>();
+        
+        for(int i=0; i < params.length; ++i)
+            list.add(params[i]);
+        
+        return list;
     }
 
     public static void save(Article a) throws SQLException, Exception {
