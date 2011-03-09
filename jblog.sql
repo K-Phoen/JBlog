@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Ven 25 Février 2011 à 14:28
+-- Généré le : Mer 09 Mars 2011 à 10:02
 -- Version du serveur: 5.1.36
 -- Version de PHP: 5.3.0
 
@@ -36,16 +36,18 @@ CREATE TABLE IF NOT EXISTS `articles` (
   `nb_coms` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `valid` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`aID`),
+  UNIQUE KEY `slug` (`slug`),
   KEY `c_ID_idx` (`c_ID`),
   KEY `user_id_idx` (`u_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `articles`
 --
 
 INSERT INTO `articles` (`aID`, `u_ID`, `c_ID`, `slug`, `title`, `content`, `date`, `nb_coms`, `valid`) VALUES
-(1, 1, 1, 'toto', 'Toto', '<p>\r\ncontenu de l''article !\r\n</p>', '2011-02-23', 0, 1);
+(1, 1, 1, 'toto', 'Toto', '<p>\r\ncontenu de l''article !\r\n</p>', '2011-02-23', 3, 1),
+(2, 1, 2, 'salut', 'Salut', '<p>\r\nSalut ça gaze ??\r\n</p>', '2011-03-02', 4, 1);
 
 -- --------------------------------------------------------
 
@@ -58,14 +60,15 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `slug` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
   PRIMARY KEY (`cID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `categories`
 --
 
 INSERT INTO `categories` (`cID`, `slug`, `title`) VALUES
-(1, 'general', 'Général');
+(1, 'divers', 'Divers'),
+(2, 'kewl-stuff', 'Kewl stuff');
 
 -- --------------------------------------------------------
 
@@ -83,12 +86,20 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   `valide` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`coID`),
   KEY `a_ID_idx` (`a_ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Contenu de la table `commentaires`
 --
 
+INSERT INTO `commentaires` (`coID`, `a_ID`, `pseudo`, `mail`, `content`, `date`, `valide`) VALUES
+(1, 1, 'Kévin', 'contact@kevingomez.fr', 'Contenu du commentaire !', '2011-03-01 13:00:31', 1),
+(3, 1, 'Kevin', 'contact@kevingomez.fr', 'tutu !', '2011-03-01 16:34:17', 1),
+(4, 1, 'tutu', 'titi@titi.fr', 'moi-même.', '2011-03-01 17:06:49', 1),
+(5, 2, 'DA SILVA', 'jonathandasilva@sfr.fr', 'C sa kcé bon !!!', '2011-03-02 14:58:46', 1),
+(6, 2, 'Kévin Gomez', 'geek63@gmail.com', 'Toto.', '2011-03-08 11:28:49', 1),
+(7, 2, 'Moi', 'moi@toi.fr', 'yoooo', '2011-03-08 11:32:30', 1),
+(8, 2, 'Kévin Gomez', 'geek63@gmail.com', 't', '2011-03-08 15:58:20', 1);
 
 -- --------------------------------------------------------
 
@@ -104,14 +115,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   `first_name` varchar(255) NOT NULL,
   `mail` varchar(255) NOT NULL,
   PRIMARY KEY (`uID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `users`
 --
 
 INSERT INTO `users` (`uID`, `login`, `pass`, `last_name`, `first_name`, `mail`) VALUES
-(1, 'Kévin', '7de1291b75768fed8150cd53bb7dbd8525efea36', 'Gomez', 'Kévin', 'geek63@gmail.com');
+(1, 'Kevin', '7de1291b75768fed8150cd53bb7dbd8525efea36', 'Gomez', 'Kévin', 'geek63@gmail.com'),
+(2, 'test', 'test', '', '', 'geek63@gmail.com');
 
 --
 -- Contraintes pour les tables exportées
