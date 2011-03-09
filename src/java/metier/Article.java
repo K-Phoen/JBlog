@@ -1,11 +1,14 @@
 package metier;
 
+import java.text.Normalizer;
+import java.text.Normalizer.Form;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Pattern;
 
 
 public class Article extends Entity {
@@ -22,7 +25,14 @@ public class Article extends Entity {
     private Category category;
     private List<Comment> comments;
 
+    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
+    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
+
+    public Article() {
+        super();
+    }
+    
     public Article(int id, int nbComs) {
         super(id);
         this.nbComs = nbComs;
@@ -34,6 +44,7 @@ public class Article extends Entity {
 
     public void setAuthor(User author) {
         this.author = author;
+        setUId(author.getId());
     }
     
     public Category getCategory() {
@@ -42,6 +53,7 @@ public class Article extends Entity {
 
     public void setCategory(Category category) {
         this.category = category;
+        setCId(category.getId());
     }
 
     /**
@@ -56,19 +68,28 @@ public class Article extends Entity {
      */
     public void setTitle(String title) {
         this.title = title;
+        setSlug(null);
     }
 
     /**
      * @return the url
      */
     public String getSlug() {
+        if(url == null || url.isEmpty()) {
+            String nowhitespace = WHITESPACE.matcher(getTitle()).replaceAll("-");
+            String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
+            String slug = NONLATIN.matcher(normalized).replaceAll("");
+
+            url = slug.toLowerCase(Locale.ENGLISH);
+        }
+
         return url;
     }
 
     /**
      * @param url the url to set
      */
-    public void setUrl(String url) {
+    public void setSlug(String url) {
         this.url = url;
     }
 

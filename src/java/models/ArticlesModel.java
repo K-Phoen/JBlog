@@ -128,6 +128,10 @@ public class ArticlesModel {
     public Article getBySlug(String slug) throws SQLException, Exception {
         return ArticlesFactory.getBySlug(slug);
     }
+
+    public Article get(int id) throws SQLException, Exception {
+        return ArticlesFactory.get(id);
+    }
     
     /**
      * Enregistre un commentaire.

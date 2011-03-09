@@ -72,6 +72,18 @@
         <from>^/admin/articles/$</from>
         <to>/index?module=admin&amp;section=articles&amp;act=index</to>
     </rule>
+    <rule>
+        <from>^/admin/articles/new/$</from>
+        <to>/index?module=admin&amp;section=articles&amp;act=edit</to>
+    </rule>
+    <rule>
+        <from>^/admin/articles/edit/([0-9]+)/$</from>
+        <to>/index?module=admin&amp;section=articles&amp;act=edit&amp;id=$1</to>
+    </rule>
+    <rule>
+        <from>^/admin/articles/delete/([0-9]+)/$</from>
+        <to>/index?module=admin&amp;section=articles&amp;act=delete&amp;id=$1</to>
+    </rule>
 
     <!--
 

@@ -54,25 +54,27 @@ public class ConnectionController extends ModuleController {
         
         if(request.getAttribute("HTTP_METHOD").equals("POST")) {
             form.bind(request);
-            
-            String login = request.getParameter("login");
-            String pass = request.getParameter("pass");
-            
-            boolean auth = false;
-            
-            try {
-                auth = mdl.authenticate(login, pass, true);
-            } catch (SQLException ex) {
-                error(ex.getMessage(), request, response);
-                return;
+
+            if(form.isValid()) {
+                String login = request.getParameter("login");
+                String pass = request.getParameter("pass");
+
+                boolean auth = false;
+
+                try {
+                    auth = mdl.authenticate(login, pass, true);
+                } catch (SQLException ex) {
+                    error(ex.getMessage(), request, response);
+                    return;
+                }
+
+                if(auth) {
+                    redirect("./", "Connexion réussie !", request, response);
+                    return;
+                }
+
+                form.triggerError(form.field("login"), "Identifiants incorrects.");
             }
-            
-            if(auth) {
-                redirect("./", "Connexion réussie !", request, response);
-                return;
-            }
-            
-            form.triggerError(form.field("login"), "Identifiants incorrects.");
         }
         
         forward(JSP.FORM, request, response);

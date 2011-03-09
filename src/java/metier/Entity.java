@@ -8,7 +8,8 @@ package metier;
 
 public abstract class Entity {
     private int id = 0;
-    
+
+
     public Entity() {
     }
 

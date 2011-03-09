@@ -116,6 +116,30 @@ public class ArticlesFactory {
         
         return a;
     }
+
+    public static Article get(int id) throws SQLException, Exception {
+        Connexion con = Connexion.getInstance();
+        Article a = null;
+
+        String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
+                     "nb_coms, valid, uID, login, first_name, last_name, cID, "+
+                     "c.slug, c.title "+
+                     "FROM articles a "+
+                     "LEFT JOIN users ON users.uID = a.u_ID "+
+                     "LEFT JOIN categories c ON c.cID = a.c_ID "+
+                     "WHERE a.aID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, id);
+
+        ResultSet res = stmt.executeQuery();
+        if(res.next())
+            a = CommentsFactory.get(resultToArticle(res));
+
+        res.close();
+        stmt.close();
+
+        return a;
+    }
     
     public static int countArticles(boolean valid) throws SQLException {
         Connexion con = Connexion.getInstance();
@@ -191,7 +215,7 @@ public class ArticlesFactory {
         a.setTitle(res.getString("a_title")); 
         a.setDate(res.getString("date"));
         a.setContent(res.getString("content"));
-        a.setUrl(res.getString("a_slug"));
+        a.setSlug(res.getString("a_slug"));
         a.setValid(res.getBoolean("valid"));
         a.setUId(res.getInt("u_ID"));
         a.setCId(res.getInt("c_ID"));
@@ -217,7 +241,12 @@ public class ArticlesFactory {
     
     
     private static void insert(Article a) throws SQLException, Exception {
-        throw new UnsupportedOperationException("Not yet implemented");
+        Connexion con = Connexion.getInstance();
+        String sql = "INSERT INTO articles (u_ID, c_ID, slug, title, content, date, nb_coms, valid) "+
+                     "VALUES (?, ?, ?, ?, ?, ?, 0, ?)";
+        
+        con.execute(sql, a.getUId(), a.getCId(), a.getSlug(), a.getTitle(),
+                    a.getContent(), a.dateToString("yyyy-MM-dd"), a.isValid());
     }
 
     private static void update(Article a) throws SQLException, Exception {
