@@ -15,6 +15,9 @@ public class BBCode {
         // souligné
         text = text.replaceAll("\\[u\\](.+?)\\[/u\\]", "<u>$1</u>");
 
+        // sauts de ligne
+        text = text.replaceAll("\n", "<br />");
+
         return text;
     }
 }
