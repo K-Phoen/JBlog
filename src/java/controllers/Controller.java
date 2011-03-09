@@ -116,7 +116,6 @@ public class Controller extends HttpServlet {
         }
         
         // on passe le relai au sous-contrôleur
-        System.out.println(controller);
         controller.handle(request, response);
     }
     
@@ -136,8 +135,8 @@ public class Controller extends HttpServlet {
         }
         
         // variable indiquant si le membre actuel est connecté
-        //request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
-        request.setAttribute("IS_LOGGED_IN",new Boolean(true) );
+        request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
+        
         // catégories
         ArticlesModel articlesMdl = new ArticlesModel();
         try {

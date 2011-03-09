@@ -12,6 +12,16 @@ label {
     float:left;
 }
 
+#admin_home span {
+    float: left;
+    text-align: center;
+    margin: 20px;
+}
+
+#admin_home span a {
+    text-decoration: none;
+}
+
 /* Begin Typography & Colors */
 html{
 background:url(images/html_bg.jpg) repeat-x top  #016b93;

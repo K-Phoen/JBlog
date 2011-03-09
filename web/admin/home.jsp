@@ -4,10 +4,37 @@
 
 <h2>Administration</h2>
 
-<p>
+<p id="admin_home">
     <span>
-        <img src="images/articles.png" />
-        Gérer les articles
+        <a href="">
+            <img src="images/articles.png" />
+            <br />
+            Gérer les articles
+        </a>
+    </span>
+
+    <span>
+        <a href="">
+            <img src="images/comments.png" />
+            <br />
+            Gérer les commentaires
+        </a>
+    </span>
+
+    <span>
+        <a href="">
+            <img src="images/categories.png" />
+            <br />
+            Gérer les catégories
+        </a>
+    </span>
+
+    <span>
+        <a href="">
+            <img src="images/users.png" />
+            <br />
+            Gérer les utilisateurs
+        </a>
     </span>
 </p>
 
