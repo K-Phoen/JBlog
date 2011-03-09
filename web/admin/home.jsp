@@ -6,8 +6,8 @@
 
 <p id="admin_home">
     <span>
-        <a href="./admin/articles">
-            <img src="images/articles.png" />
+        <a href="./admin/articles/">
+            <img src="images/articles.png" alt="" />
             <br />
             Gérer les articles
         </a>
@@ -15,7 +15,7 @@
 
     <span>
         <a href="">
-            <img src="images/comments.png" />
+            <img src="images/comments.png" alt="" />
             <br />
             Gérer les commentaires
         </a>
@@ -23,7 +23,7 @@
 
     <span>
         <a href="">
-            <img src="images/categories.png" />
+            <img src="images/categories.png" alt="" />
             <br />
             Gérer les catégories
         </a>
@@ -31,7 +31,7 @@
 
     <span>
         <a href="">
-            <img src="images/users.png" />
+            <img src="images/users.png" alt="" />
             <br />
             Gérer les utilisateurs
         </a>

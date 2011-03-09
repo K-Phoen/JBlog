@@ -8,8 +8,6 @@
 
 <%
 List<Article> list = (List<Article>) request.getAttribute("elems");
-if(list == null)
-    list = new ArrayList<Article>();
 
 if(list.isEmpty()) {
 %>
@@ -29,13 +27,13 @@ if(list.isEmpty()) {
 
         <div class="post_content_right">
             <h2 class="post_title">
-                <a href="./article/<%= a.getSlug() %>" rel="bookmark"><%= a.getTitle() %></a>
+                <a href="./article/<%= HTML.escape(a.getSlug()) %>" rel="bookmark"><%= HTML.escape(a.getTitle()) %></a>
             </h2>
 
             <div class="post_subdetails">
                 <span class="post_categories">
-                    Par <%= a.getAuthor().getDisplayName() %> dans 
-                    <a href="./article/categorie/<%= a.getCategory().getSlug() %>"><%= a.getCategory().getTitle() %></a></span>
+                    Par <%= HTML.escape(a.getAuthor().getDisplayName()) %> dans
+                    <a href="./article/categorie/<%= HTML.escape(a.getCategory().getSlug()) %>"><%= HTML.escape(a.getCategory().getTitle()) %></a></span>
                 <span class="comments_box"><%= a.getNbComs() %> commentaires</span>
             </div>
 

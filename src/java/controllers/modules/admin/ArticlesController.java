@@ -57,8 +57,8 @@ public class ArticlesController extends ModuleController {
         int nbPages = -1;
 
         try {
-            elems = mdl.getLasts(page);
-            nbPages = mdl.getNBPages();
+            elems = mdl.getAll(page);
+            nbPages = mdl.getNBPages(false);
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -70,7 +70,8 @@ public class ArticlesController extends ModuleController {
             request.setAttribute("PREV_PAGE", page - 1);
         if(page < nbPages)
             request.setAttribute("NEXT_PAGE", page + 1);
+        
         request.setAttribute("PAGE_TITLE", "toto");
-        forward(JSP.INDEX, request, response);
+        forward(JSP.ADMIN_LIST_ARTICLES, request, response);
     }
 }

@@ -23,6 +23,8 @@ public interface JSP {
     String ARTICLE  = "/article.jsp";
     
     String ADMIN_HOME = "/admin/home.jsp";
+
+    String ADMIN_LIST_ARTICLES = "/admin/articles/list.jsp";
     
     String FORM     = "/form.jsp";
     

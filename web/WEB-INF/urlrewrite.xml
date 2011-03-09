@@ -69,7 +69,7 @@
 
     <!-- Admin : articles -->
     <rule>
-        <from>^/admin/articles$</from>
+        <from>^/admin/articles/$</from>
         <to>/index?module=admin&amp;section=articles&amp;act=index</to>
     </rule>
 

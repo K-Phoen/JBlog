@@ -21,10 +21,13 @@ Article article = (Article) request.getAttribute("article");
     </div>
     
     <div class="post_content_right">
-        <h2 class="post_title"><a href="" rel="bookmark"><%= article.getTitle() %></a></h2>
+        <h2 class="post_title"><a href="" rel="bookmark"><%= HTML.escape(article.getTitle()) %></a></h2>
         
         <div class="post_subdetails">
-            <span class="post_categories">Par <%= article.getAuthor().getDisplayName() %> dans <%= article.getCategory().getTitle() %></span>
+            <span class="post_categories">
+                Par <%= HTML.escape(article.getAuthor().getDisplayName()) %> dans
+                <a href="./article/categorie/<%= HTML.escape(article.getCategory().getSlug()) %>"><%= HTML.escape(article.getCategory().getTitle()) %></a>
+            </span>
         </div>
         
         <div class="entry">
@@ -104,7 +107,7 @@ function insertTag(startTag, endTag, textareaId) {
 
 <%@include file="jspf/erreurs.jspf" %>
 
-<form method="post" > 
+<form method="post" action="">
     <%
     if(!((Boolean) request.getAttribute("IS_LOGGED_IN"))) {
     %>

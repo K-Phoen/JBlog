@@ -45,6 +45,20 @@ public class ArticlesModel {
     public List<Article> getLasts(int page) throws SQLException, Exception {
         return ArticlesFactory.getNFirst(first(page), ARTICLES_PER_PAGE, true);
     }
+
+    /**
+     * Retourne les N derniers articles publiés (sans distinction).
+     *
+     * @param page Page en cours de visualisation
+     *
+     * @throws SQLException
+     * @throws Exception
+     *
+     * @return La liste des articles.
+     */
+    public List<Article> getAll(int page) throws SQLException, Exception {
+        return ArticlesFactory.getNFirst(first(page), ARTICLES_PER_PAGE, false);
+    }
     
     /**
      * Retourne les N derniers articles publiés (et valides) dans une catégorie.
@@ -78,7 +92,11 @@ public class ArticlesModel {
     }
     
     public int getNBPages() throws SQLException {
-        return ArticlesFactory.countArticles(true) / ARTICLES_PER_PAGE;
+        return getNBPages(true);
+    }
+
+    public int getNBPages(boolean justValid) throws SQLException {
+        return ArticlesFactory.countArticles(justValid) / ARTICLES_PER_PAGE;
     }
     
     public int getNBPagesSearch(String search) throws SQLException {
