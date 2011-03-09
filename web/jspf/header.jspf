@@ -29,6 +29,16 @@
 
     <link rel="stylesheet" href="./style.css" type="text/css" media="screen" />
     <link rel="alternate" type="application/rss+xml" title="Articles" href="./rss" />
+
+    <%
+    if(request.getAttribute("SHOW_TINY_MCE") != null) {
+    %>
+    <script type="text/javascript" src="./js/tiny_mce/jquery.pack.js"></script>
+    <script type="text/javascript" src="./js/tiny_mce/tiny_mce.js"></script>
+    <script type="text/javascript" src="./js/launch_tiny_mce.js"></script>
+    <%
+    }
+    %>
 </head>
 <body>
 <div id="main_container"/>

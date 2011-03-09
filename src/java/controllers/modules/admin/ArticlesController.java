@@ -162,6 +162,7 @@ public class ArticlesController extends ModuleController {
 
         // affichage de la page
         request.setAttribute("form", form);
+        request.setAttribute("SHOW_TINY_MCE", 1);
         request.setAttribute("PAGE_TITLE", a.isNew() ? "Nouvel article" : "Edition d'un article");
 
         forward(JSP.FORM, request, response);

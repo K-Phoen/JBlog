@@ -65,7 +65,7 @@ if(list.isEmpty()) {
 <h2>Accès rapide</h2>
 
 <ul>
-    <li><a href="./admin/articles/new/">Réiger un article</a></li>
+    <li><a href="./admin/articles/new/">Rédiger un article</a></li>
     <li><a href="./admin/categories/edit/">Créer une nouvelle catégorie</a></li>
     <li><a href="./admin/categories/">Gérer les catégories</a></li>
 </ul>
