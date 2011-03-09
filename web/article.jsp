@@ -1,3 +1,4 @@
+<%@page import="models.SessionModel"%>
 <%@page import="libs.form.Form"%>
 <%@page import="libs.BBCode"%>
 <%@page import="libs.HTML"%>
@@ -104,6 +105,9 @@ function insertTag(startTag, endTag, textareaId) {
 <%@include file="jspf/erreurs.jspf" %>
 
 <form method="post" > 
+    <%
+    if(!((Boolean) request.getAttribute("IS_LOGGED_IN"))) {
+    %>
 	<p> 
 		<label for=nom>Nom : </label> 
 		<%= form.field("nom") %>
@@ -112,6 +116,9 @@ function insertTag(startTag, endTag, textareaId) {
 		<label for=mail>Mail : </label> 
         <%= form.field("mail") %>
 	</p> 
+    <%
+    }
+    %>
 	<p> 
 		<label for=comment>Commentaire : </label> 
         

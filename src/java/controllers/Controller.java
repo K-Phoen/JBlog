@@ -37,7 +37,7 @@ public class Controller extends HttpServlet {
     private void initModules() {
         addModule("articles", new ArticlesController(this));
         addModule("connection", new ConnectionController(this));
-        addModule("admin", new AdminController(this));
+        //addModule("admin", new AdminController(this));
     }
     
     protected final void addModule(String name, ModuleController ctrl) {
