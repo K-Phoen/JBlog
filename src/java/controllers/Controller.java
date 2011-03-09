@@ -37,7 +37,7 @@ public class Controller extends HttpServlet {
     private void initModules() {
         addModule("articles", new ArticlesController(this));
         addModule("connection", new ConnectionController(this));
-        //addModule("admin", new AdminController(this));
+        addModule("admin", new AdminController(this));
     }
     
     protected final void addModule(String name, ModuleController ctrl) {
@@ -116,6 +116,7 @@ public class Controller extends HttpServlet {
         }
         
         // on passe le relai au sous-contrôleur
+        System.out.println(controller);
         controller.handle(request, response);
     }
     
@@ -135,23 +136,19 @@ public class Controller extends HttpServlet {
         }
         
         // variable indiquant si le membre actuel est connecté
-        request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
-        
+        //request.setAttribute("IS_LOGGED_IN", new Boolean(((SessionModel) request.getAttribute("session")).isLoggedIn()));
+        request.setAttribute("IS_LOGGED_IN",new Boolean(true) );
         // catégories
         ArticlesModel articlesMdl = new ArticlesModel();
         try {
             request.setAttribute("LIST_CATEGORIES", articlesMdl.getCategories());
         } catch (Exception ex) {
-            error(ex.getMessage(), request, response);
-            return;
         }
         try {
             // statistiques
             request.setAttribute("STATS_NB_ARTICLES", articlesMdl.getNBArticles(true));
             request.setAttribute("STATS_NB_COMS", articlesMdl.getNBComments(true));
         } catch (SQLException ex) {
-            error(ex.getMessage(), request, response);
-            return;
         }
     }
     
@@ -179,6 +176,6 @@ public class Controller extends HttpServlet {
     public final void error(String msg, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         request.setAttribute("error_msg", msg);
-        forward(JSP.ERROR, request, response);
+        getServletContext().getRequestDispatcher(JSP.ERROR).forward(request, response);
     }
 }

@@ -2,8 +2,13 @@
 
 <%@include file="../jspf/header.jspf" %>
 
+<h2>Administration</h2>
+
 <p>
-    toto
+    <span>
+        <img src="images/articles.png" />
+        Gérer les articles
+    </span>
 </p>
 
 <%@include file="../jspf/footer.jspf" %>

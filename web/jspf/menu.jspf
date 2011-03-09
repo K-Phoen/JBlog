@@ -5,7 +5,7 @@
     <%
     if((Boolean) request.getAttribute("IS_LOGGED_IN")) {
     %>
-        <li><a href="./admin">Administration</a></li>
+        <li><a href="./admin/">Administration</a></li>
         <li><a href="./deconnexion">Déconnexion</a></li>
     <%
     } else {

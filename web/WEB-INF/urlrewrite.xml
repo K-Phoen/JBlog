@@ -63,8 +63,8 @@
     
     <!-- Administration -->
     <rule>
-        <from>^/admin$</from>
-        <to>/index?module=connection</to>
+        <from>^/admin/$</from>
+        <to>/index?module=admin&amp;act=index</to>
     </rule>
 
     <!--
