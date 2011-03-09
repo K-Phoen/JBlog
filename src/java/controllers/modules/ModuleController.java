@@ -22,6 +22,29 @@ public abstract class ModuleController {
     public abstract void handle(HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException;
 
+
+    protected final Controller getRootController() {
+        return ctrl;
+    }
+
+    protected final int getCurrentPage(HttpServletRequest request) {
+        int page = 1;
+
+        if(request.getParameter("page") != null) {
+            String p = request.getParameter("page");
+
+            try {
+                page = Integer.parseInt(p);
+            } catch(NumberFormatException e) {
+                page = 1;
+            }
+
+            if(page <= 0)
+                page = 1;
+        }
+
+        return page;
+    }
     
     protected final void redirect(String to, String msg, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {

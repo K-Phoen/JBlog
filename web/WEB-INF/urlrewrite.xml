@@ -64,7 +64,13 @@
     <!-- Administration -->
     <rule>
         <from>^/admin/$</from>
-        <to>/index?module=admin&amp;act=index</to>
+        <to>/index?module=admin&amp;section=index&amp;act=index</to>
+    </rule>
+
+    <!-- Admin : articles -->
+    <rule>
+        <from>^/admin/articles$</from>
+        <to>/index?module=admin&amp;section=articles&amp;act=index</to>
     </rule>
 
     <!--

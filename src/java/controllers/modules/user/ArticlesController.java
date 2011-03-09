@@ -356,23 +356,4 @@ public class ArticlesController extends ModuleController {
 
         forward(JSP.INDEX, request, response);
     }
-    
-    private int getCurrentPage(HttpServletRequest request) {
-        int page = 1;
-        
-        if(request.getParameter("page") != null) {
-            String p = request.getParameter("page");
-            
-            try {
-                page = Integer.parseInt(p);
-            } catch(NumberFormatException e) {
-                page = 1;
-            }
-            
-            if(page <= 0)
-                page = 1;
-        }
-        
-        return page;
-    }
 }

@@ -6,7 +6,7 @@
 
 <p id="admin_home">
     <span>
-        <a href="">
+        <a href="./admin/articles">
             <img src="images/articles.png" />
             <br />
             Gérer les articles
