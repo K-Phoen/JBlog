@@ -38,6 +38,48 @@ public class CommentsFactory {
         return a;
     }
     
+    public static List<Comment> getNFirst(int first, int nb) throws SQLException, Exception {
+        List<Comment> comments = new ArrayList<Comment>();
+        String sql = "SELECT coID, a_ID, pseudo, mail, c.content, c.date, valide, a.title "+
+                     "FROM commentaires c "+
+                     "LEFT JOIN articles a "+
+                     "ON a.aID = c.a_ID "+
+                     "ORDER BY date DESC LIMIT ?, ?";
+        
+        PreparedStatement stmt = Connexion.getInstance().prepareStatement(sql);
+        
+        Connexion.bindParams(stmt, first, nb);
+
+        ResultSet res = stmt.executeQuery();
+        while(res.next())
+            comments.add(resultToComment(res));
+        
+        res.close();
+        stmt.close();
+
+        return comments;
+    }
+    
+    public static Comment get(int id) throws SQLException, Exception {
+        Connexion con = Connexion.getInstance();
+        Comment c = null;
+
+        String sql = "SELECT coID, a_ID, pseudo, mail, content, date, valide "+
+                     "FROM commentaires "+
+                     "WHERE coID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, id);
+
+        ResultSet res = stmt.executeQuery();
+        if(res.next())
+            c = resultToComment(res);
+
+        res.close();
+        stmt.close();
+
+        return c;
+    }
+    
     public static int count(boolean valid) throws SQLException {
         Connexion con = Connexion.getInstance();
         
@@ -81,8 +123,14 @@ public class CommentsFactory {
                     c.dateToString("yyyy-MM-dd HH:mm:ss"), c.isValid());
     }
 
-    private static void update(Comment c) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    private static void update(Comment c) throws SQLException, Exception {
+        Connexion con = Connexion.getInstance();
+        String sql = "UPDATE commentaires SET a_ID = ?, pseudo = ?, mail = ?, "+
+                     "content = ?, date = ?, valide = ? "+
+                     "WHERE coID = ?";
+        
+        con.execute(sql, c.getaID(), c.getAuthor(), c.getMail(), c.getContent(),
+                    c.dateToString("yyyy-MM-dd HH:mm:ss"), c.isValid(), c.getId());
     }
     
     private static Comment resultToComment(ResultSet res) throws SQLException, Exception {
@@ -93,7 +141,20 @@ public class CommentsFactory {
         c.setContent(res.getString("content"));
         c.setDate(res.getString("date"));
         c.setValid(res.getBoolean("valide"));
+        c.setaID(res.getInt("a_ID"));
+        
+        try {
+            c.setArticleTitle(res.getString("title"));
+        } catch (SQLException e) {
+            // pas grave
+        }
         
         return c;
+    }
+
+    public static void delete(int id) throws SQLException {
+        String sql = "DELETE FROM commentaires WHERE coID = ?";
+        
+        Connexion.getInstance().execute(sql, id);
     }
 }

@@ -12,6 +12,7 @@ public class Comment extends Entity {
     private String content;
     private Date date;
     private boolean valid = true;
+    private String articleTitle;
 
     
     public Comment() {
@@ -117,5 +118,13 @@ public class Comment extends Entity {
     public String dateToString(String format) throws Exception {
         SimpleDateFormat sdf = new SimpleDateFormat(format);
         return sdf.format(date);
+    }
+
+    public void setArticleTitle(String title) {
+        articleTitle = title;
+    }
+    
+    public String getArticleTitle() {
+        return articleTitle;
     }
 }

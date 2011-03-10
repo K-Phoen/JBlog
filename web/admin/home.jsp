@@ -14,7 +14,7 @@
     </span>
 
     <span>
-        <a href="./admin/commentaires/">
+        <a href="./admin/comments/">
             <img src="images/comments.png" alt="" />
             <br />
             Gérer les commentaires

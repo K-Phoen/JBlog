@@ -30,6 +30,7 @@ import metier.Comment;
 
 public class ArticlesModel {
     private static final int ARTICLES_PER_PAGE = 3;
+    private static final int COMMENTS_PER_PAGE = 10;
     
     
     /**
@@ -107,6 +108,10 @@ public class ArticlesModel {
         return ArticlesFactory.countArticlesCategorie(id, true) / ARTICLES_PER_PAGE;
     }
     
+    public int getNBPagesComments() throws SQLException {
+        return CommentsFactory.count(false) / COMMENTS_PER_PAGE;
+    }
+    
     public int getNBArticles(boolean valid) throws SQLException {
         return ArticlesFactory.countArticles(true);
     }
@@ -143,12 +148,12 @@ public class ArticlesModel {
      *          commentaires sera mis à jour.
      * @param c Commentaire à enregistrer.
      */
-    public void saveComment(Article a, Comment c) throws SQLException, Exception {
+    public void newComment(Article a, Comment c) throws SQLException, Exception {
         // mise à ajour de l'article
         a.addComment(c);
-        saveArticle(a);
+        c.setaID(a.getId());
                 
-        CommentsFactory.save(c);
+        saveComment(c);
     }
 
     /**
@@ -201,5 +206,23 @@ public class ArticlesModel {
             throw new IllegalStateException("Cette catégorie contient des articles !");
         
         CategoryFactory.delete(id);
+    }
+
+    public List<Comment> getAllComments(int page) throws SQLException, Exception {
+        return CommentsFactory.getNFirst(first(page), COMMENTS_PER_PAGE);
+    }
+
+    public Comment getComment(int id) throws SQLException, Exception {
+        return CommentsFactory.get(id);
+    }
+
+    public void saveComment(Comment c) throws SQLException, Exception {
+        CommentsFactory.save(c);
+        ArticlesFactory.fixNBComs(c.getaID());
+    }
+
+    public void deleteComment(Comment c) throws SQLException {
+        CommentsFactory.delete(c.getId());
+        ArticlesFactory.fixNBComs(c.getaID());
     }
 }

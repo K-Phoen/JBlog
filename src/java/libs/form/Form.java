@@ -59,14 +59,18 @@ public class Form {
     }
 
     public void bind(HttpServletRequest request) {
-        for(Object key : request.getParameterMap().keySet()){
-            FormField field = field((String) key);
+        for(String key : fieldsNames){
+            FormField field = field(key);
 
             if(field == null || field.getType().equals("submit"))
                 continue;
-
-            String val = (String) ((String[]) request.getParameterMap().get(key))[0];
-            field.setValue(val);
+            
+            try {
+                String val = (String) ((String[]) request.getParameterMap().get(key))[0];
+                field.setValue(val);
+            } catch (NullPointerException e) {
+                field.setValue(null);
+            }
         }
     }
 
@@ -96,10 +100,8 @@ public class Form {
     /**
      * Ajoute un message d'erreur à la liste des erreurs
      *
-     * @param $field nom du champ ou objet représentant le champ lié à l'erreur
-     * @param $error_text message d'erreur à afficher
-     *
-     * @return void
+     * @param field nom du champ ou objet représentant le champ lié à l'erreur
+     * @param errorText message d'erreur à afficher
      */
     public void triggerError(FormField field, String errorText)
     {
@@ -118,7 +120,7 @@ public class Form {
     /**
      * Change l'attribut "name" du formulaire
      *
-     * @param $name La nouvelle valeur de l'attribut
+     * @param name La nouvelle valeur de l'attribut
      *
      * @return this
      */
@@ -131,7 +133,7 @@ public class Form {
     /**
      * Change l'ID du formulaire
      *
-     * @param $text nouvelle valeur
+     * @param id nouvelle valeur
      *
      * @return obj (le champ en question)
      */

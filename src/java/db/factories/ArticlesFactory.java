@@ -223,6 +223,14 @@ public class ArticlesFactory {
         return total;
     }
     
+    public static void fixNBComs(int aID) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        String sql = "UPDATE articles SET nb_coms = (SELECT COUNT(1) FROM commentaires WHERE a_ID = ? AND valide = 1) "+
+                     "WHERE aID = ?";
+        
+        con.execute(sql, aID, aID);
+    }
+    
 
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
@@ -260,10 +268,9 @@ public class ArticlesFactory {
     }
     
     public static void delete(int id) throws SQLException {
-        Connexion con = Connexion.getInstance();
         String sql = "DELETE FROM articles WHERE aID = ?";
         
-        con.execute(sql, id);
+        Connexion.getInstance().execute(sql, id);
     }
     
     

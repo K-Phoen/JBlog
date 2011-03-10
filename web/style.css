@@ -12,6 +12,14 @@ label {
     float:left;
 }
 
+table {
+    width: 100%;
+}
+
+table a, table a:hover {
+    text-decoration: none;
+}
+
 #admin_home span {
     float: left;
     text-align: center;

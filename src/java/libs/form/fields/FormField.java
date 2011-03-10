@@ -56,7 +56,7 @@ public abstract class FormField {
     /**
      * Rend obligatoire le champ ou pas
      *
-     * @param $bool status du champ
+     * @param bool status du champ
      *
      * @return obj (le champ en question)
      */
@@ -73,7 +73,7 @@ public abstract class FormField {
     /**
      * Dés/active un champ
      *
-     * @param $bool état d'activation
+     * @param bool état d'activation
      *
      * @return obj (le champ en question)
      */
@@ -89,7 +89,7 @@ public abstract class FormField {
     /**
      * Dés/active la lecture seule
      *
-     * @param $bool état d'activation
+     * @param bool état d'activation
      *
      * @return obj (le champ en question)
      */
@@ -106,7 +106,7 @@ public abstract class FormField {
      * Dés/Active la remplissage auto lors de l'appel à la méthode bound()
      * Empêche simplement la valeur de s'afficher, mais elle reste présente et récupérable via getValue() par ex
      *
-     * @param $bool état (True == activé)
+     * @param bool état (True == activé)
      *
      * @return obj (le champ en question)
      */
@@ -188,9 +188,9 @@ public abstract class FormField {
     }
 
     /**
-     * Ajoute une _class CSS au champ
+     * Ajoute une classe CSS au champ
      *
-     * @param $class nom de la class
+     * @param className nom de la class
      *
      * @return obj (le champ en question)
      */
@@ -224,7 +224,7 @@ public abstract class FormField {
     /**
      * Change la valeur d'un champ du formulaire
      *
-     * @param $text nouvelle valeur
+     * @param val nouvelle valeur
      *
      * @return obj (le champ en question)
      */
@@ -237,7 +237,7 @@ public abstract class FormField {
     /**
      * Change la valeur du label
      *
-     * @param $text nouvelle valeur
+     * @param text nouvelle valeur
      *
      * @return obj (le champ en question)
      */
@@ -250,7 +250,7 @@ public abstract class FormField {
     /**
      * Change la valeur de l'ID du champ
      *
-     * @param $text nouvelle valeur
+     * @param text nouvelle valeur
      *
      * @return obj (le champ en question)
      */
@@ -263,8 +263,8 @@ public abstract class FormField {
     /**
      * Permet de changer le message affiché lors d'une erreur
      *
-     * @param $error_id id du message d'erreur
-     * @param $text nouveau message
+     * @param errorId id du message d'erreur
+     * @param text nouveau message
      *
      * @return obj (le champ en question)
      */
@@ -275,11 +275,10 @@ public abstract class FormField {
     }
 
     /**
-     * Ajoute le message d'erreur correspondant à $id dans la liste d'erreurs
+     * Ajoute le message d'erreur correspondant à id dans la liste d'erreurs
      *
-     * @param $id identifiant de l'erreur
-     *
-     * @return void
+     * @param msg identifiant de l'erreur
+     * @param params paramètres du message d'erreur
      */
     protected final void error(String msg, Object ... params)  {
         String errorMsg = error_list.get(msg);

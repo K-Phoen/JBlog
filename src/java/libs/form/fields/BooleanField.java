@@ -18,7 +18,7 @@ public class BooleanField extends TextField {
     /**
      * Coche ou décoche la checkbox
      *
-     * @param $bool état de la checkbox
+     * @param bool état de la checkbox
      *
      * @return obj (le champ en question)
      */
@@ -30,7 +30,7 @@ public class BooleanField extends TextField {
 
     @Override
     public final BooleanField setValue(String val) {
-        setValue(val != null);
+        setValue(val != null && !val.trim().isEmpty());
 
         return this;
     }
