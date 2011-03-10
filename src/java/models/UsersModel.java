@@ -23,4 +23,8 @@ public class UsersModel {
     public void save(User u) throws SQLException {
         UsersFactory.save(u);
     }
+
+    public void delete(int id) throws SQLException {
+        UsersFactory.delete(id);
+    }
 }

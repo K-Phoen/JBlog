@@ -279,8 +279,9 @@ public class ArticlesFactory {
         String sql = "INSERT INTO articles (u_ID, c_ID, slug, title, content, date, nb_coms, valid) "+
                      "VALUES (?, ?, ?, ?, ?, ?, 0, ?)";
         
-        con.execute(sql, a.getUId(), a.getCId(), a.getSlug(), a.getTitle(),
-                    a.getContent(), a.dateToString("yyyy-MM-dd"), a.isValid());
+        int id = con.execute(sql, a.getUId(), a.getCId(), a.getSlug(), a.getTitle(),
+                             a.getContent(), a.dateToString("yyyy-MM-dd"), a.isValid());
+        a.setId(id);
     }
 
     private static void update(Article a) throws SQLException, Exception {

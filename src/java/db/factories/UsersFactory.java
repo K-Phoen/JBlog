@@ -53,7 +53,7 @@ public class UsersFactory {
                      "FROM users WHERE uID = ?";
         PreparedStatement stmt = con.prepareStatement(sql);
         Connexion.bindParams(stmt, id);
-
+        
         return getOne(stmt);
     }
     
@@ -82,8 +82,9 @@ public class UsersFactory {
         String sql = "INSERT INTO users (login, last_name, first_name, mail, pass) "+
                      "VALUES (?, ?, ?, ?, ?)";
 
-        con.execute(sql, u.getLogin(), u.getLastName(), u.getFirstName(),
-                    u.getMail(), u.getPass());
+        int id = con.execute(sql, u.getLogin(), u.getLastName(), u.getFirstName(),
+                             u.getMail(), u.getPass());
+        u.setId(id);
     }
 
     private static void update(User u) throws SQLException {

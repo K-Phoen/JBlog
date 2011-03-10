@@ -22,11 +22,18 @@ public abstract class Entity {
     }
 
     public Entity(int id) {
-        this.id = id;
+        setId(id);
     }
     
     public int getId() {
         return id;
+    }
+    
+    public final void setId(int id) {
+        if(!isNew())
+            throw new IllegalAccessError("Impossible de modifier l'id");
+        
+        this.id = id;
     }
     
     public boolean isNew() {

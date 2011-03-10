@@ -21,7 +21,9 @@ package db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 
@@ -43,13 +45,25 @@ public final class Connexion {
             throw new IllegalStateException("La méthode initConnexion doit être appelée avant d'utiliser la classe !");
     }
 
-    public void execute(String sql, Object ... params) throws SQLException {
-        PreparedStatement stmt = con.prepareStatement(sql);
+    public int execute(String sql, Object ... params) throws SQLException {
+        PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
         bindParams(stmt, params);
 
         stmt.execute();
+        
+        int id = -1;
+        try {
+            ResultSet rs = stmt.executeQuery("SELECT LAST_INSERT_ID()");
+
+            if (rs.next())
+                id = rs.getInt(1);
+        } catch (SQLException e) {
+            
+        }
         stmt.close();
+        
+        return id;
     }
     
     public PreparedStatement prepareStatement(String sql) throws SQLException {

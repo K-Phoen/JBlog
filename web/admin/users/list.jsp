@@ -43,5 +43,11 @@ List<User> list = (List<User>) request.getAttribute("elems");
         %>
 	</tbody>
 </table>
+    
+<h2>Accès rapide</h2>
+
+<ul>
+    <li><a href="./admin/users/new/">Nouvel utilisateur</a></li>
+</ul>
 
 <%@include file="../../jspf/footer.jspf" %>

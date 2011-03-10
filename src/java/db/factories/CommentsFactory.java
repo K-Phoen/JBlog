@@ -119,8 +119,9 @@ public class CommentsFactory {
         String sql = "INSERT INTO commentaires (a_ID, pseudo, mail, content, date, valide) "+
                      "VALUES (?, ?, ?, ?, ?, ?)";
         
-        con.execute(sql, c.getaID(), c.getAuthor(), c.getMail(), c.getContent(),
-                    c.dateToString("yyyy-MM-dd HH:mm:ss"), c.isValid());
+        int id = con.execute(sql, c.getaID(), c.getAuthor(), c.getMail(), c.getContent(),
+                             c.dateToString("yyyy-MM-dd HH:mm:ss"), c.isValid());
+        c.setId(id);
     }
 
     private static void update(Comment c) throws SQLException, Exception {

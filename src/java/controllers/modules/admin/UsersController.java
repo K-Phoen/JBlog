@@ -152,7 +152,7 @@ public class UsersController extends ModuleController {
 
     private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = -1;
-        ArticlesModel mdl = new ArticlesModel();
+        UsersModel mdl = new UsersModel();
         
         try {
             id = Integer.parseInt(request.getParameter("id"));
@@ -166,7 +166,7 @@ public class UsersController extends ModuleController {
         }
         
         try {
-            mdl.deleteArticle(id);
+            mdl.delete(id);
             redirect("./admin/users/", "Utilisateur supprimé.", request, response);
         } catch (SQLException ex) {
             redirect("./admin/users/", "Erreur à la suppression de l'utilisateur : "+ex.getMessage(), request, response);

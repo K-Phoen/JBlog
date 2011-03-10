@@ -88,7 +88,8 @@ public class CategoryFactory {
         String sql = "INSERT INTO categories (title, slug) "+
                      "VALUES (?, ?)";
         
-        con.execute(sql, c.getTitle(), c.getSlug());
+        int id = con.execute(sql, c.getTitle(), c.getSlug());
+        c.setId(id);
     }
 
     private static void update(Category c) throws SQLException {
