@@ -239,6 +239,13 @@ public class ArticlesFactory {
             update(a);
     }
     
+    public static void delete(int id) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        String sql = "DELETE FROM articles WHERE aID = ?";
+        
+        con.execute(sql, id);
+    }
+    
     
     private static void insert(Article a) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();

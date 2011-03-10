@@ -182,4 +182,9 @@ public class ArticlesModel {
     private int first(int page) {
         return (page - 1) * ARTICLES_PER_PAGE;
     }
+
+    public void deleteArticle(int id) throws SQLException {
+        CommentsFactory.deleteFromArticle(id);
+        ArticlesFactory.delete(id);
+    }
 }

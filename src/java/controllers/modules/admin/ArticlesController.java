@@ -9,6 +9,7 @@ import conf.JSP;
 import controllers.Controller;
 import controllers.modules.ModuleController;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,8 @@ public class ArticlesController extends ModuleController {
             doIndex(request, response);
         else if(act.equals("edit"))
             doEdit(request, response);
+        else if(act.equals("delete"))
+            doDelete(request, response);
         else
             error("Page inconnue", request, response);
     }
@@ -113,7 +116,7 @@ public class ArticlesController extends ModuleController {
 
         // si on a demandé l'édition d'un article, on le charge
         if(request.getParameter("id") != null) {
-            int id = Integer.parseInt((String) request.getParameter("id"));
+            int id = Integer.parseInt(request.getParameter("id"));
             
             try {
                 a = mdl.get(id);
@@ -166,5 +169,28 @@ public class ArticlesController extends ModuleController {
         request.setAttribute("PAGE_TITLE", a.isNew() ? "Nouvel article" : "Edition d'un article");
 
         forward(JSP.FORM, request, response);
+    }
+
+    private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int id = -1;
+        ArticlesModel mdl = new ArticlesModel();
+        
+        try {
+            id = Integer.parseInt(request.getParameter("id"));
+        } catch (NumberFormatException e) {
+            id  = -1;
+        }
+        
+        if(id == -1) {
+            redirect("./admin/articles/", "Requête incorrecte", request, response);
+            return;
+        }
+        
+        try {
+            mdl.deleteArticle(id);
+            redirect("./admin/articles/", "Article supprimé.", request, response);
+        } catch (SQLException ex) {
+            redirect("./admin/articles/", "Erreur à la suppression de l'article : "+ex.getMessage(), request, response);
+        }
     }
 }

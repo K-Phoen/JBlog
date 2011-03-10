@@ -49,8 +49,12 @@ if(list.isEmpty()) {
 			<td><%= HTML.escape(a.getAuthor().getDisplayName()) %></td>
             <td><%= a.dateToString("dd-MM-yyyy") %></td>
 			<td>
-                <a href="./admin/articles/edit/<%= a.getId() %>/"><img src="images/pencil.png" alt="Editer" title="Editer" /></a>
-                <a href="./admin/articles/delete/<%= a.getId() %>/"><img src="images/delete.png" alt="Supprimer" title="Supprimer" /></a>
+                <a href="./admin/articles/edit/<%= a.getId() %>/">
+                    <img src="images/pencil.png" alt="Editer" title="Editer" />
+                </a>
+                <a href="./admin/articles/delete/<%= a.getId() %>/" onclick="return confirm('Etes-vous certain de vouloir supprimer cet article ?');">
+                    <img src="images/delete.png" alt="Supprimer" title="Supprimer" />
+                </a>
             </td>
 		</tr>
 		<%

@@ -33,7 +33,7 @@
     <%
     if(request.getAttribute("SHOW_TINY_MCE") != null) {
     %>
-    <script type="text/javascript" src="./js/tiny_mce/jquery.pack.js"></script>
+    <script type="text/javascript" src="./js/jquery.pack.js"></script>
     <script type="text/javascript" src="./js/tiny_mce/tiny_mce.js"></script>
     <script type="text/javascript" src="./js/launch_tiny_mce.js"></script>
     <%

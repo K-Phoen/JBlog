@@ -64,6 +64,13 @@ public class CommentsFactory {
             update(c);
     }
     
+    public static void deleteFromArticle(int id) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        String sql = "DELETE FROM commentaires WHERE a_ID = ?";
+        
+        con.execute(sql, id);
+    }
+    
     
     private static void insert(Comment c) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
