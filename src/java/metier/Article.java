@@ -1,21 +1,18 @@
 package metier;
 
-import java.text.Normalizer;
-import java.text.Normalizer.Form;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Pattern;
 
 
 public class Article extends Entity {
     private int u_ID = 0;
     private int c_ID = 0;
     private String title;
-    private String url;
+    private String slug;
     private String content;
     private Date date;
     private boolean valid;
@@ -24,9 +21,6 @@ public class Article extends Entity {
     private User author;
     private Category category;
     private List<Comment> comments;
-
-    private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
-    private static final Pattern WHITESPACE = Pattern.compile("[\\s]");
 
 
     public Article() {
@@ -75,22 +69,17 @@ public class Article extends Entity {
      * @return the url
      */
     public String getSlug() {
-        if(url == null || url.isEmpty()) {
-            String nowhitespace = WHITESPACE.matcher(getTitle()).replaceAll("-");
-            String normalized = Normalizer.normalize(nowhitespace, Form.NFD);
-            String slug = NONLATIN.matcher(normalized).replaceAll("");
+        if(slug == null || slug.isEmpty())
+            slug = slugify(getTitle());
 
-            url = slug.toLowerCase(Locale.ENGLISH);
-        }
-
-        return url;
+        return slug;
     }
 
     /**
      * @param url the url to set
      */
     public void setSlug(String url) {
-        this.url = url;
+        this.slug = url;
     }
 
     /**

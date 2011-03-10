@@ -163,6 +163,10 @@ public class ArticlesModel {
         ArticlesFactory.save(a);
     }
     
+    public void saveCategorie(Category c) throws SQLException {
+        CategoryFactory.save(c);
+    }
+    
     /**
      * Retourne les catégories disponibles
      * 
@@ -179,6 +183,10 @@ public class ArticlesModel {
         return CategoryFactory.get(slug);
     }
     
+    public Category getCategorie(int id) throws SQLException {
+        return CategoryFactory.get(id);
+    }
+    
     private int first(int page) {
         return (page - 1) * ARTICLES_PER_PAGE;
     }
@@ -186,5 +194,12 @@ public class ArticlesModel {
     public void deleteArticle(int id) throws SQLException {
         CommentsFactory.deleteFromArticle(id);
         ArticlesFactory.delete(id);
+    }
+
+    public void deleteCategorie(int id) throws SQLException {
+        if(ArticlesFactory.NBInCategory(id) != 0)
+            throw new IllegalStateException("Cette catégorie contient des articles !");
+        
+        CategoryFactory.delete(id);
     }
 }

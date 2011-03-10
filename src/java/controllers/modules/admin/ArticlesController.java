@@ -112,7 +112,7 @@ public class ArticlesController extends ModuleController {
         form.add(new SelectField("c_ID").addOptions(categories).setLabel("Catégorie"));
         form.add(new TextArea("contenu").setLabel("Contenu"));
         form.add(new BooleanField("valid").setLabel("Valide").required(false));
-        form.add(new SubmitButton("Connexion"));
+        form.add(new SubmitButton("Envoyer"));
 
         // si on a demandé l'édition d'un article, on le charge
         if(request.getParameter("id") != null) {
@@ -129,7 +129,7 @@ public class ArticlesController extends ModuleController {
                 form.field("contenu").setValue(a.getContent());
                 ((BooleanField)form.field("valid")).setValue(a.isValid());
             } catch (Exception ex) {
-                redirect("./admin/articles", "Impossible de charger l'article demandé : "+ex.getMessage(), request, response);
+                redirect("./admin/articles/", "Impossible de charger l'article demandé : "+ex.getMessage(), request, response);
                 return;
             }
         }

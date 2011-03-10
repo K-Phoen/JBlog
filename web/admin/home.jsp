@@ -14,7 +14,7 @@
     </span>
 
     <span>
-        <a href="">
+        <a href="./admin/commentaires/">
             <img src="images/comments.png" alt="" />
             <br />
             Gérer les commentaires
@@ -22,7 +22,7 @@
     </span>
 
     <span>
-        <a href="">
+        <a href="./admin/categories/">
             <img src="images/categories.png" alt="" />
             <br />
             Gérer les catégories
@@ -30,7 +30,7 @@
     </span>
 
     <span>
-        <a href="">
+        <a href="./admin/users/">
             <img src="images/users.png" alt="" />
             <br />
             Gérer les utilisateurs

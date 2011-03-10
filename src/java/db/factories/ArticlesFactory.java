@@ -203,6 +203,26 @@ public class ArticlesFactory {
         return total;
     }
     
+    public static int NBInCategory(int cID) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     "WHERE c_ID = ?";
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, cID);
+
+        ResultSet res = stmt.executeQuery();
+        res.next();
+        
+        int total = res.getInt("total");
+        
+        res.close();
+        stmt.close();
+        
+        return total;
+    }
+    
 
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
