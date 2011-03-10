@@ -57,6 +57,7 @@ public class AdminController extends ModuleController {
         addSubModule("articles", new ArticlesController(getRootController()));
         addSubModule("categories", new CategoriesController(getRootController()));
         addSubModule("comments", new CommentsController(getRootController()));
+        addSubModule("users", new UsersController(getRootController()));
     }
 
     protected final void addSubModule(String name, ModuleController ctrl) {

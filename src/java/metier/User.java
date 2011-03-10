@@ -20,6 +20,9 @@ public class User extends Entity {
         super(id);
     }
 
+    public User() {
+    }
+
     /**
      * @return the login
      */

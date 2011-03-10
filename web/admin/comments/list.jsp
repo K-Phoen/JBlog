@@ -5,7 +5,7 @@
 
 <%@include file="../../jspf/header.jspf" %>
 
-<h2>Gestion des catégories</h2>
+<h2>Gestion des commentaires</h2>
 
 <%
 List<Comment> list = (List<Comment>) request.getAttribute("elems");
@@ -13,7 +13,7 @@ List<Comment> list = (List<Comment>) request.getAttribute("elems");
 if(list.isEmpty()) {
 %>
 <p>
-    Aucune catégorie à afficher.
+    Aucun commentaire à afficher.
 </p>
 <%
 } else {
@@ -44,7 +44,7 @@ if(list.isEmpty()) {
                 <a href="./admin/comments/edit/<%= c.getId() %>/">
                     <img src="images/pencil.png" alt="Editer" title="Editer" />
                 </a>
-                <a href="./admin/comments/delete/<%= c.getId() %>/" onclick="return confirm('Etes-vous certain de vouloir supprimer ce commentaire ? ?');">
+                <a href="./admin/comments/delete/<%= c.getId() %>/" onclick="return confirm('Etes-vous certain de vouloir supprimer ce commentaire ?');">
                     <img src="images/delete.png" alt="Supprimer" title="Supprimer" />
                 </a>
             </td>

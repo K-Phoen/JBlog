@@ -120,5 +120,23 @@
         <from>^/admin/comments/delete/([0-9]+)/$</from>
         <to>/index?module=admin&amp;section=comments&amp;act=delete&amp;id=$1</to>
     </rule>
+
+    <!-- Admin : utilisateurs -->
+    <rule>
+        <from>^/admin/users/$</from>
+        <to>/index?module=admin&amp;section=users&amp;act=index</to>
+    </rule>
+    <rule>
+        <from>^/admin/users/new/$</from>
+        <to>/index?module=admin&amp;section=users&amp;act=edit</to>
+    </rule>
+    <rule>
+        <from>^/admin/users/edit/([0-9]+)/$</from>
+        <to>/index?module=admin&amp;section=users&amp;act=edit&amp;id=$1</to>
+    </rule>
+    <rule>
+        <from>^/admin/users/delete/([0-9]+)/$</from>
+        <to>/index?module=admin&amp;section=users&amp;act=delete&amp;id=$1</to>
+    </rule>
 </urlrewrite>
 

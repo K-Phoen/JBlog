@@ -27,6 +27,7 @@ public interface JSP {
     String ADMIN_LIST_ARTICLES = "/admin/articles/list.jsp";
     String ADMIN_LIST_CATEGORIES = "/admin/categories/list.jsp";
     String ADMIN_LIST_COMMENTS = "/admin/comments/list.jsp";
+    String ADMIN_LIST_USERS = "/admin/users/list.jsp";
     
     String FORM     = "/form.jsp";
     
