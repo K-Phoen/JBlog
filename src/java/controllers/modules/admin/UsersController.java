@@ -183,8 +183,11 @@ public class UsersController extends ModuleController {
                 form.triggerError(form.field("confirm"), "Les mots de passe doivent correspondre");
                 return false;
             }
-
-            return pass.equals(confirm);
+            
+            if(!pass.equals(confirm)) {
+                form.triggerError(form.field("confirm"), "Les mots de passe doivent correspondre");
+                return false;
+            }
         }
 
         return true;
