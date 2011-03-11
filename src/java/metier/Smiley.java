@@ -32,4 +32,10 @@ public class Smiley extends Entity {
     public final void setImg(String img) {
         this.img = img;
     }
+    
+    public String toHTML() {
+        String html = "<img src=\"./smileys/%s\" alt=\"%s\" />";
+        
+        return String.format(html, getImg(), getCode());
+    }
 }

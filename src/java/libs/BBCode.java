@@ -5,17 +5,18 @@
 
 package libs;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.regex.Pattern;
+import metier.Smiley;
 
 
 public class BBCode {
-    private static Map<String, String> smileys = new HashMap<String, String>();
+    private static List<Smiley> smileys = new ArrayList<Smiley>();
     
-    public static void setSmileys(Map<String, String> smileys) {
-        BBCode.smileys = Collections.unmodifiableMap(smileys);
+    public static void setSmileys(List<Smiley> smileys) {
+        BBCode.smileys = Collections.unmodifiableList(smileys);
     }
     
     public static String parse(String input) {
@@ -29,9 +30,8 @@ public class BBCode {
         text = text.replaceAll("\\[s\\](.+?)\\[/s\\]", "<strike>$1</strike>");
         
         // remplacement des smileys
-        String html = "<img src=\"./smileys/%s\" alt=\"%s\" />";
-        for(String smiley : smileys.keySet())
-            text = text.replaceAll(Pattern.quote(smiley), String.format(html, smileys.get(smiley), smiley));
+        for(Smiley smiley : smileys)
+            text = text.replaceAll(Pattern.quote(smiley.getCode()), smiley.toHTML());
 
         // sauts de ligne
         text = text.replaceAll("\n", "<br />");

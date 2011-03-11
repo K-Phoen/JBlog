@@ -1,3 +1,5 @@
+<%@page import="java.util.ArrayList"%>
+<%@page import="metier.Smiley"%>
 <%@page import="libs.MD5"%>
 <%@page import="models.SessionModel"%>
 <%@page import="libs.form.Form"%>
@@ -127,6 +129,16 @@ Article article = (Article) request.getAttribute("article");
         <img src="images/text_italic.png" onclick="insertTag('[i]', '[/i]', 'comment')" title="Mettre en italique" alt="Italique" />
         <img src="images/text_underline.png" onclick="insertTag('[u]', '[/u]', 'comment')" title="Souligner" alt="Souligné" />
         <img src="images/text_strikethrough.png" onclick="insertTag('[s]', '[/s]', 'comment')" title="Barrer" alt="Barré" />
+        <br />
+        
+        <%
+        List<Smiley> smileys = (List<Smiley>) request.getAttribute("SMILEYS");
+        if(smileys == null)
+            smileys = new ArrayList<Smiley>();
+        
+        for(Smiley smiley : smileys)
+            out.print(String.format("<img src=\"./smileys/%s\" onclick=\"insertTag('%s', '', 'comment')\" alt=\"\" />", smiley.getImg(), smiley.getCode()));
+        %>
         <br />
         
 		<%= form.field("comment") %>

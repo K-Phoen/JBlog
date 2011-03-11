@@ -14,16 +14,6 @@ import metier.Smiley;
 
 
 public class SmileysModel {
-    public static Map<String, String> getAllRaw() throws SQLException {
-        Map<String, String> smileys = new HashMap<String, String>();
-        
-        List<Smiley> list = SmileysFactory.getAll();
-        for(Smiley s : list)
-            smileys.put(s.getCode(), s.getImg());
-        
-        return smileys;
-    }
-    
     public static List<Smiley> getAll() throws SQLException {
         return SmileysFactory.getAll();
     }
