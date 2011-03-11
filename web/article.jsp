@@ -1,3 +1,4 @@
+<%@page import="libs.MD5"%>
 <%@page import="models.SessionModel"%>
 <%@page import="libs.form.Form"%>
 <%@page import="libs.BBCode"%>
@@ -68,7 +69,7 @@ Article article = (Article) request.getAttribute("article");
         <li class="comment even thread-even depth-1" id="comment-1"> 
             <div id="div-comment-1" class="comment-body"> 
                 <div class="comment-author vcard"> 
-                    <img alt="" src="http://0.gravatar.com/avatar/ad516503a11cd5ca435acc9bb6523536?s=32" class="avatar avatar-32 photo avatar-default" height="32" width="32" />
+                    <img alt="" src="http://www.gravatar.com/avatar/<%= MD5.md5Hex(c.getMail()) %>?s=32&d=wavatar" class="avatar avatar-32 photo avatar-default" height="32" width="32" />
                     Le <%=  c.dateToString("dd-MM-yyyy") %>,
                     <cite class="fn">    
                         <a href="mailto:<%= c.getMail() %>" rel="external nofollow" class="url"><%= c.getAuthor() %></a>
