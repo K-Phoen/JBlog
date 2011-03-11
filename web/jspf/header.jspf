@@ -39,6 +39,14 @@
     <%
     }
     %>
+    
+    <%
+    if(request.getAttribute("SHOW_BBCODE_JS") != null) {
+    %>
+    <script type="text/javascript" src="./js/bbcode.js"></script>
+    <%
+    }
+    %>
 </head>
 <body>
 <div id="main_container"/>

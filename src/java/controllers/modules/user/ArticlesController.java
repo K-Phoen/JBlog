@@ -207,7 +207,7 @@ public class ArticlesController extends ModuleController {
             if(c == null)
                 throw new Exception("Catégorie inconnue");
             
-            elems = mdl.getLastsCategorie(c.getId(), page);
+            elems = mdl.getByCategorie(c.getId(), page);
             nbPages = mdl.getNBPagesCategorie(c.getId());
         } catch(Exception e) {
             error(e.getMessage(), request, response);
@@ -247,13 +247,12 @@ public class ArticlesController extends ModuleController {
         /* formulaire d'ajout de commentaire */
         Form form = new Form();
 
-        // Nom
-        if(!sessionMdl.isLoggedIn())
+        if(!sessionMdl.isLoggedIn()) {
+            // Nom
             form.add(new TextField("nom").setLabel("Nom").setValue(sessionMdl.getName()));
-        
-        // mail
-        if(!sessionMdl.isLoggedIn())
+            // mail
             form.add(new EmailField("mail").setLabel("Mail").setValue(sessionMdl.getMail()));
+        }
         
         // commentaire
         form.add(
@@ -291,6 +290,7 @@ public class ArticlesController extends ModuleController {
                     mdl.newComment(a, c);
                 } catch (Exception ex) {
                     error("Impossible d'enregistrer le commentaire : "+ex.getMessage(), request, response);
+                    return;
                 }
                 
                 redirect("./article/"+a.getSlug(), "Commentaire enregistré", request, response);
@@ -301,6 +301,7 @@ public class ArticlesController extends ModuleController {
         request.setAttribute("form", form);
         request.setAttribute("article", a);
         request.setAttribute("PAGE_TITLE", a.getTitle());
+        request.setAttribute("SHOW_BBCODE_JS", true);
 
         forward(JSP.ARTICLE, request, response);
     }

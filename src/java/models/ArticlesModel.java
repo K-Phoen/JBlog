@@ -72,7 +72,7 @@ public class ArticlesModel {
      * 
      * @return La liste des articles de la catégorie.
      */
-    public List<Article> getLastsCategorie(int cId, int page) throws SQLException, Exception {
+    public List<Article> getByCategorie(int cId, int page) throws SQLException, Exception {
         return ArticlesFactory.getNCategorie(cId, first(page), ARTICLES_PER_PAGE, true);
     }
     

@@ -16,8 +16,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import libs.BBCode;
 import models.ArticlesModel;
 import models.SessionModel;
+import models.SmileysModel;
 
 
 public class Controller extends HttpServlet {
@@ -132,6 +134,13 @@ public class Controller extends HttpServlet {
             } catch (Exception e) {
 
             }
+        }
+        
+        try {
+            // récupération des smileys pour le BBCode
+            BBCode.setSmileys(SmileysModel.getAllRaw());
+        } catch (SQLException ex) {
+            // pas de smileys !
         }
         
         // variable indiquant si le membre actuel est connecté
