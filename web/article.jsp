@@ -74,6 +74,17 @@ Article article = (Article) request.getAttribute("article");
                         <a href="mailto:<%= c.getMail() %>" rel="external nofollow" class="url"><%= c.getAuthor() %></a>
                     </cite>
                     <span class="says">dit :</span>
+                    
+                    <%
+                    if((Boolean) request.getAttribute("IS_LOGGED_IN")) {
+                    %>
+                    <a href="./admin/comments/edit/<%= c.getId() %>/"><img src="images/pencil.png" alt="Editer" /></a>
+                    <a href="./admin/comments/delete/<%= c.getId() %>/" onclick="return confirm('Etes-vous certain de vouloir supprimer ce commentaire ?');">
+                        <img src="images/delete.png" alt="Supprimer" title="Supprimer" />
+                    </a>
+                    <%
+                    }
+                    %>
                 </div>
 
                 <p>
