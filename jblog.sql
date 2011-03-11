@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Mer 09 Mars 2011 à 10:02
+-- Généré le : Ven 11 Mars 2011 à 17:33
 -- Version du serveur: 5.1.36
 -- Version de PHP: 5.3.0
 
@@ -46,8 +46,8 @@ CREATE TABLE IF NOT EXISTS `articles` (
 --
 
 INSERT INTO `articles` (`aID`, `u_ID`, `c_ID`, `slug`, `title`, `content`, `date`, `nb_coms`, `valid`) VALUES
-(1, 1, 1, 'toto', 'Toto', '<p>\r\ncontenu de l''article !\r\n</p>', '2011-02-23', 3, 1),
-(2, 1, 2, 'salut', 'Salut', '<p>\r\nSalut ça gaze ??\r\n</p>', '2011-03-02', 4, 1);
+(1, 1, 1, 'toto', 'Toto', '<p>\r\ncontenu de l''article !\r\n</p>', '2011-02-23', 2, 1),
+(2, 1, 2, 'salut', 'Salut', '<p>Salut &ccedil;a gaze ??</p>', '2011-03-02', 6, 1);
 
 -- --------------------------------------------------------
 
@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `cID` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `slug` varchar(255) NOT NULL,
   `title` varchar(255) NOT NULL,
-  PRIMARY KEY (`cID`)
+  PRIMARY KEY (`cID`),
+  UNIQUE KEY `slug` (`slug`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
@@ -67,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 --
 
 INSERT INTO `categories` (`cID`, `slug`, `title`) VALUES
-(1, 'divers', 'Divers'),
+(1, 'divers-trucs', 'Divers trucs'),
 (2, 'kewl-stuff', 'Kewl stuff');
 
 -- --------------------------------------------------------
@@ -86,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   `valide` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`coID`),
   KEY `a_ID_idx` (`a_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
 
 --
 -- Contenu de la table `commentaires`
@@ -95,11 +96,40 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
 INSERT INTO `commentaires` (`coID`, `a_ID`, `pseudo`, `mail`, `content`, `date`, `valide`) VALUES
 (1, 1, 'Kévin', 'contact@kevingomez.fr', 'Contenu du commentaire !', '2011-03-01 13:00:31', 1),
 (3, 1, 'Kevin', 'contact@kevingomez.fr', 'tutu !', '2011-03-01 16:34:17', 1),
-(4, 1, 'tutu', 'titi@titi.fr', 'moi-même.', '2011-03-01 17:06:49', 1),
-(5, 2, 'DA SILVA', 'jonathandasilva@sfr.fr', 'C sa kcé bon !!!', '2011-03-02 14:58:46', 1),
 (6, 2, 'Kévin Gomez', 'geek63@gmail.com', 'Toto.', '2011-03-08 11:28:49', 1),
 (7, 2, 'Moi', 'moi@toi.fr', 'yoooo', '2011-03-08 11:32:30', 1),
-(8, 2, 'Kévin Gomez', 'geek63@gmail.com', 't', '2011-03-08 15:58:20', 1);
+(8, 2, 'Kévin Gomez', 'geek63@gmail.com', 't [édité]', '2011-03-08 00:00:00', 1),
+(9, 2, 'Kévin Gomez', 'geek63@gmail.com', 'to[s]t[/s]o', '2011-03-11 12:32:55', 1),
+(10, 2, 'Kévin Gomez', 'geek63@gmail.com', ':D', '2011-03-11 18:16:21', 1),
+(11, 2, 'Kévin Gomez', 'geek63@gmail.com', ':D:p smileys', '2011-03-11 18:29:58', 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `smileys`
+--
+
+CREATE TABLE IF NOT EXISTS `smileys` (
+  `sID` mediumint(8) NOT NULL AUTO_INCREMENT,
+  `code` varchar(255) COLLATE utf8_bin NOT NULL,
+  `img` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`sID`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+
+--
+-- Contenu de la table `smileys`
+--
+
+INSERT INTO `smileys` (`sID`, `code`, `img`) VALUES
+(1, 'xD', 'emoticon_evilgrin.png'),
+(2, ':)', 'emoticon_smile.png'),
+(3, ':(', 'emoticon_unhappy.png'),
+(4, ':D', 'emoticon_grin.png'),
+(5, ':o', 'emoticon_surprised.png'),
+(6, ';)', 'emoticon_wink.png'),
+(7, '^^', 'emoticon_happy.png'),
+(8, ':p', 'emoticon_tongue.png');
 
 -- --------------------------------------------------------
 
@@ -114,7 +144,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `last_name` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `mail` varchar(255) NOT NULL,
-  PRIMARY KEY (`uID`)
+  PRIMARY KEY (`uID`),
+  UNIQUE KEY `login` (`login`,`pass`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 --
@@ -123,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`uID`, `login`, `pass`, `last_name`, `first_name`, `mail`) VALUES
 (1, 'Kevin', '7de1291b75768fed8150cd53bb7dbd8525efea36', 'Gomez', 'Kévin', 'geek63@gmail.com'),
-(2, 'test', 'test', '', '', 'geek63@gmail.com');
+(2, 'test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', '', '', 'geek63@gmail.com');
 
 --
 -- Contraintes pour les tables exportées
