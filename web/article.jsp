@@ -21,7 +21,19 @@ Article article = (Article) request.getAttribute("article");
     </div>
     
     <div class="post_content_right">
-        <h2 class="post_title"><a href="" rel="bookmark"><%= HTML.escape(article.getTitle()) %></a></h2>
+        <h2 class="post_title">
+            <a href="" rel="bookmark"><%= HTML.escape(article.getTitle()) %></a>
+            <%
+            if((Boolean) request.getAttribute("IS_LOGGED_IN")) {
+            %>
+            <a href="./admin/articles/edit/<%= article.getId() %>/"><img src="images/pencil.png" alt="Editer" /></a>
+            <a href="./admin/articles/delete/<%= article.getId() %>/" onclick="return confirm('Etes-vous certain de vouloir supprimer cet article ?');">
+                <img src="images/delete.png" alt="Supprimer" title="Supprimer" />
+            </a>
+            <%
+            }
+            %>
+        </h2>
         
         <div class="post_subdetails">
             <span class="post_categories">

@@ -28,6 +28,16 @@ if(list.isEmpty()) {
         <div class="post_content_right">
             <h2 class="post_title">
                 <a href="./article/<%= HTML.escape(a.getSlug()) %>" rel="bookmark"><%= HTML.escape(a.getTitle()) %></a>
+                <%
+                if((Boolean) request.getAttribute("IS_LOGGED_IN")) {
+                %>
+                <a href="./admin/articles/edit/<%= a.getId() %>/"><img src="images/pencil.png" alt="Editer" /></a>
+                <a href="./admin/articles/delete/<%= a.getId() %>/" onclick="return confirm('Etes-vous certain de vouloir supprimer cet article ?');">
+                    <img src="images/delete.png" alt="Supprimer" title="Supprimer" />
+                </a>
+                <%
+                }
+                %>
             </h2>
 
             <div class="post_subdetails">
