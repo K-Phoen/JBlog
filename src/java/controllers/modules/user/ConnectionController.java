@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.user;
 
 import conf.JSP;
@@ -20,6 +15,9 @@ import libs.form.fields.TextField;
 import models.SessionModel;
 
 
+/**
+ * Sous-contrôleur gérant la connexion et déconnexion.
+ */
 public class ConnectionController extends ModuleController {
     
     public ConnectionController(Controller parent) {
@@ -36,6 +34,14 @@ public class ConnectionController extends ModuleController {
             doLogout(request, response);
     }
 
+    /**
+     * Page de login.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doLogin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Form form = new Form();
         SessionModel mdl = (SessionModel) request.getAttribute("session");
@@ -80,6 +86,14 @@ public class ConnectionController extends ModuleController {
         forward(JSP.FORM, request, response);
     }
 
+    /**
+     * Page de déconnexion.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doLogout(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("PAGE_TITLE", "Déconnexion");
         

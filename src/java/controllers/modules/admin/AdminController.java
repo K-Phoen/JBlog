@@ -17,6 +17,20 @@ import javax.servlet.http.HttpServletResponse;
 import models.SessionModel;
 
 
+/**
+ * Contrôleur principal de la partie admin. Il reprent le même rôle que le 
+ * controleur de l'application au niveau de l'admin. Il vérifie les autorisations
+ * avant de passer le relai à des sous-contrôleurs.
+ * 
+*                                        AdminCtrl
+*                                       /  |   |  \
+*                                      /   /   |   \
+*                                     /   /    |    \
+*                                    /   /     |     \
+*                                   /   /      |      \
+*                                  /    |      |       \
+*                          Articles    Com.    Users.  Cat.
+ */
 public class AdminController extends ModuleController {
     private Map<String, ModuleController> subControllers = new HashMap<String, ModuleController>();
 
@@ -27,6 +41,15 @@ public class AdminController extends ModuleController {
         initSubModules();
     }
 
+    /**
+     * Avant de passer le relai à un sous-contrôleur, on vérifie que l'user
+     * courant a bien les droits nécessaires. Ensuite, soit il a demandé la page
+     * d'accueil de l'admin, soit il a demandé une page gérée par un sous-module.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(!((SessionModel) request.getAttribute("session")).isLoggedIn()) {
@@ -67,6 +90,14 @@ public class AdminController extends ModuleController {
         subControllers.put(name, ctrl);
     }
 
+    /**
+     * Affiche la page d'accueil de l'administration.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("PAGE_TITLE", "Administration");
         forward(JSP.ADMIN_HOME, request, response);

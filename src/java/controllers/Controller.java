@@ -28,6 +28,23 @@ import models.SmileysModel;
 /**
  * Contrôleur principal de l'application. Toutes les requêtes passent par ici et
  * sont redirigées vers des "sous-contrôleurs".
+ *                        
+ *                        requête
+ *                           |
+ *                           ↓
+ *                      Controller
+ *                     /      |    \
+ *                    /       |     \
+ *                   /        |      \___
+ *                  /         |          \
+ *      ArticlesCtrl    ConnectionCtrl    AdminCtrl
+ *                                       /  |   |  \
+ *                                      /   /   |   \
+ *                                     /   /    |    \
+ *                                    /   /     |     \
+ *                                   /   /      |      \
+ *                                  /    |      |       \
+ *                          Articles    Com.    Users.  Cat.
  */
 public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
