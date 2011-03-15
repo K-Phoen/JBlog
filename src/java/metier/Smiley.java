@@ -1,13 +1,18 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package metier;
 
 
+/**
+ * Classe représentant un smiley
+ */
 public class Smiley extends Entity {
+    /**
+     * Code du smiley (:D, ;p, etc.)
+     */
     private String code;
+    
+    /**
+     * Image correspondant au smiley
+     */
     private String img;
 
     

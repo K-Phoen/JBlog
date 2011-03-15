@@ -3,6 +3,7 @@ package controllers;
 import controllers.modules.user.ArticlesController;
 import controllers.modules.*;
 import conf.Blog;
+import conf.DB;
 import conf.JSP;
 import controllers.modules.admin.AdminController;
 import controllers.modules.user.ConnectionController;
@@ -24,26 +25,47 @@ import models.SessionModel;
 import models.SmileysModel;
 
 
+/**
+ * Contrôleur principal de l'application. Toutes les requêtes passent par ici et
+ * sont redirigées vers des "sous-contrôleurs".
+ */
 public class Controller extends HttpServlet {
     private static final long serialVersionUID = 1L;
    
+    /**
+     * Dictionnaire des "sous-contrôleurs" connus.
+     */
     private Map<String, ModuleController> modulesControllers = new HashMap<String, ModuleController>();
 
     
+    /**
+     * Initialise le contrôleur. C'est ici que sont créés les sous-contrôleurs
+     * et renseignés les identifiants de connexion à la DB.
+     */
     @Override
-    public void init() throws ServletException {
-        Connexion.setCredentials("root", "");
-        Connexion.setUrl("jdbc:mysql://localhost/jblog");
+    public void init() {
+        Connexion.setCredentials(DB.LOGIN, DB.PASS);
+        Connexion.setUrl(String.format("jdbc:%s://%s/%s", DB.TYPE, DB.HOST, DB.NAME));
         
         initModules();
     }
     
+    /**
+     * Initialise les sous-contrôleurs et les ajoute à la liste des contrôleurs
+     * connus.
+     */
     private void initModules() {
         addModule("articles", new ArticlesController(this));
         addModule("connection", new ConnectionController(this));
         addModule("admin", new AdminController(this));
     }
     
+    /**
+     * Enregistre un nouveau sous-contrôleur.
+     * 
+     * @param name Identifiant (ne doit pas déjà être présent)
+     * @param ctrl Instance du contrôleur
+     */
     protected final void addModule(String name, ModuleController ctrl) {
         if(modulesControllers.containsKey(name))
             throw new IllegalArgumentException("Ce module est déjà enregistré");
@@ -51,6 +73,13 @@ public class Controller extends HttpServlet {
         modulesControllers.put(name, ctrl);
     }
     
+    /**
+     * Permet d'accéder à un sous-contrôleur.
+     * 
+     * @param name Identifiant du contrôleur.
+     * 
+     * @return Le contrôleur s'il existe, null sinon.
+     */
     protected final ModuleController getModuleController(String name) {
         return modulesControllers.get(name);
     }
@@ -89,6 +118,16 @@ public class Controller extends HttpServlet {
         dispatchToModulesControllers(request, response);
     }
 
+    /**
+     * Dispatche les requêtes vers les sous-contrôleurs adaptés. On s'occupe
+     * ici de connecter la DB et de créer la session liée à la requête (que l'on
+     * place dans request).
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void dispatchToModulesControllers(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         ModuleController controller = getModuleController(request.getParameter("module"));
@@ -124,7 +163,15 @@ public class Controller extends HttpServlet {
     }
     
     
-    
+    /**
+     * Définit quelques variables qui seront transmises à chaque requête dans la
+     * vue.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void defineViewVariables(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // variables de configuration
         for(Field key : Blog.class.getFields()) {
@@ -165,7 +212,16 @@ public class Controller extends HttpServlet {
         }
     }
     
-    
+    /**
+     * Effectue une redirection.
+     * 
+     * @param to URL vers laquelle on redirige.
+     * @param msg Message à afficher lors de la redirection
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     public final void redirect(String to, String msg, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         request.setAttribute("redir_msg", msg);
@@ -175,17 +231,43 @@ public class Controller extends HttpServlet {
         forward(JSP.MESSAGE, request, response);
     }
     
+    /**
+     * Transmet la requête à la vue
+     * 
+     * @param to Vue à utiliser
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     public final void forward(String to, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         defineViewVariables(request, response);
         getServletContext().getRequestDispatcher(to).forward(request, response);
     }
 
+    /**
+     * Affiche une page d'erreur.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     public final void error(HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         error(null, request, response);
     }
 
+    /**
+     * Affiche une page d'erreur.
+     * 
+     * @param msg Message d'erreur à afficher dans la page.
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     public final void error(String msg, HttpServletRequest request, HttpServletResponse response)
                          throws ServletException, IOException {
         request.setAttribute("error_msg", msg);

@@ -33,12 +33,23 @@ import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 
 
+/**
+ * Contrôleur gérant la partie publique des articles
+ */
 public class ArticlesController extends ModuleController {
     
     public ArticlesController(Controller parent) {
         super(parent);
     }
 
+    /**
+     * Réparti les requêtes arrivant sur le contrôleur.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String act = request.getParameter("act");
@@ -218,6 +229,15 @@ public class ArticlesController extends ModuleController {
         displayArticles(elems, nbPages, request, response);
     }
 
+    /**
+     * Affiche la page d'un article (donc la liste des commentaires et l'ajout
+     * d'un nouveau)
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doArticlePage(HttpServletRequest request, HttpServletResponse response)
                  throws ServletException, IOException {
         String slug = request.getParameter("slug");
@@ -306,6 +326,14 @@ public class ArticlesController extends ModuleController {
         forward(JSP.ARTICLE, request, response);
     }
 
+    /**
+     * Page de transition pour la recherche.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doSearchRedirect(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String search = request.getParameter("search");
         
@@ -318,6 +346,14 @@ public class ArticlesController extends ModuleController {
                  request, response);
     }
 
+    /**
+     * Affiche la page de résultats d'une recherche.
+     * 
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Article> elems;
         ArticlesModel mdl = new ArticlesModel();
@@ -345,6 +381,16 @@ public class ArticlesController extends ModuleController {
         displayArticles(elems, nbPages, request, response);
     }
     
+    /**
+     * Réalise l'affichage vers la vue d'une liste d'articles.
+     * 
+     * @param elems Articles à afficher
+     * @param nbPages Nombre de pages au total
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void displayArticles(List<Article> elems, int nbPages, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int page = getCurrentPage(request);
 

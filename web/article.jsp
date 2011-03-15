@@ -49,10 +49,6 @@ Article article = (Article) request.getAttribute("article");
             <%= article.getContent() %>
         </div>
         
-        <p class="postmetadata">
-            Tags: tata, tutu
-        </p>
-        
         <p class="postmetadata alt">
             <small>
                 Posté le <%=  article.dateToString("dd-MM-yyyy") %> par <%= article.getAuthor().getDisplayName() %>
@@ -64,6 +60,15 @@ Article article = (Article) request.getAttribute("article");
 <h2>Commentaires</h2>
 
 <div class="comments_content">
+    <%
+    if(article.getComments().isEmpty()) {
+    %>
+    <p>
+        Aucun commentaire pour le moment. Soyez le premier à réagir !
+    </p>
+    <%
+    } else {
+    %>
     <ol class="commentlist">
         <%
         for(Comment c : article.getComments()) {
@@ -99,6 +104,9 @@ Article article = (Article) request.getAttribute("article");
         }
         %>
     </ol>
+    <%
+    }
+    %>
 </div>
     
     

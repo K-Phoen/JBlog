@@ -7,6 +7,17 @@
 <%@include file="jspf/header.jspf" %>
 
 <%
+if(request.getAttribute("IS_LOGGED_IN") != null) {
+%>
+<p style="float:right">
+    <a href="./admin/articles/new/"><img src="images/add.png" alt="" /> Nouvel article</a></span>
+</p>
+<div style="clear:both"></div>
+<%
+}
+%>
+
+<%
 List<Article> list = (List<Article>) request.getAttribute("elems");
 
 if(list.isEmpty()) {

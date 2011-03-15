@@ -90,7 +90,7 @@ public class CommentsController extends ModuleController {
 
         // création du formulaire
         Form form = new Form();
-        form.add(new TextArea("contenu").setLabel("Contenu"));
+        form.add(new TextArea("contenu").rows(8).cols(35).setLabel("Contenu"));
         form.add(new BooleanField("valid").setLabel("Valide").required(false));
         form.add(new SubmitButton("Envoyer"));
 

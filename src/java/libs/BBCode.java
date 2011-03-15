@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package libs;
 
 import java.util.ArrayList;
@@ -12,13 +7,35 @@ import java.util.regex.Pattern;
 import metier.Smiley;
 
 
+/**
+ * Classe de gestion du BBCode et des smileys. Elle permet de transformer le
+ * BBCode en HTML.
+ */
 public class BBCode {
+    /**
+     * Liste des smileys connus.
+     */
     private static List<Smiley> smileys = new ArrayList<Smiley>();
     
+    
+    /**
+     * Change la liste des smileys connus. La liste passée en paramètre ne sera
+     * pas modifiée (ses éléments non plus).
+     * 
+     * @param smileys Nouvelle liste de smileys.
+     */
     public static void setSmileys(List<Smiley> smileys) {
         BBCode.smileys = Collections.unmodifiableList(smileys);
     }
     
+    /**
+     * Remplace dans le texte passé en paramètre le BBCode par son équivalent
+     * HTML.
+     * 
+     * @param input Texte en BBCode.
+     * 
+     * @return Equivalent en HTML.
+     */
     public static String parse(String input) {
         // italique
         String text = input.replaceAll("\\[i\\](.+?)\\[/i\\]", "<em>$1</em>");

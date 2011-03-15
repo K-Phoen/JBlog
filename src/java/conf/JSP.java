@@ -18,6 +18,11 @@
 
 package conf;
 
+
+/**
+ * Liste des JSP accessibles (vues)
+ * @author Kévin
+ */
 public interface JSP {
     String INDEX    = "/home.jsp";
     String ARTICLE  = "/article.jsp";
