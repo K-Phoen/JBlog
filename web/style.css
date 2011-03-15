@@ -6,6 +6,10 @@ Author: csstemplatesmarket.com
 Author URI: http://csstemplatesmarket.com
 */
 
+.form_error {
+    border: 1px dashed #EE0000;
+}
+
 label {
     display:block;
     width:120px;

@@ -106,7 +106,41 @@ Article article = (Article) request.getAttribute("article");
 
 <%@include file="jspf/erreurs.jspf" %>
 
-<form method="post" action="">
+<script type="text/javascript">
+function verifForm(form) {
+    var error = false;
+    
+    var nom = form.elements["nom"];
+    if(nom != undefined) {
+        nom.className = "";
+        
+        if(nom.value == "") {
+            error = true;
+            nom.className = "form_error";
+        }
+    }
+    
+    var mail = form.elements["mail"];
+    if(mail != undefined) {
+        mail.className = "";
+        
+        if(mail.value == "") {
+            error = true;
+            mail.className = "form_error";
+        }
+    }
+    
+    var comment = form.elements["comment"];
+    if(comment.value == "") {
+        error = true;
+        comment.className = "form_error";
+    }
+    
+    return !error;
+}
+</script>
+
+<form method="post" onsubmit="return verifForm(this);" action="">
     <%
     if(!((Boolean) request.getAttribute("IS_LOGGED_IN"))) {
     %>
