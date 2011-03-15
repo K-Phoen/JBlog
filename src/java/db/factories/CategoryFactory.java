@@ -37,43 +37,11 @@ public class CategoryFactory {
     }
     
     public static Category get(String slug) throws SQLException {
-        Connexion con = Connexion.getInstance();
-        Category c = null;
-        
-        String sql = "SELECT cID, title, slug "+
-                     "FROM categories "+
-                     "WHERE slug = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, slug);
-
-        ResultSet res = stmt.executeQuery();
-        if(res.next())
-            c = resultToCategory(res);
-        
-        res.close();
-        stmt.close();
-        
-        return c;
+        return getOne("slug = ?", slug);
     }
     
     public static Category get(int id) throws SQLException {
-        Connexion con = Connexion.getInstance();
-        Category c = null;
-        
-        String sql = "SELECT cID, title, slug "+
-                     "FROM categories "+
-                     "WHERE cID = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, id);
-
-        ResultSet res = stmt.executeQuery();
-        if(res.next())
-            c = resultToCategory(res);
-        
-        res.close();
-        stmt.close();
-        
-        return c;
+       return getOne("cID = ?", id);
     }
     
     public static void save(Category c) throws SQLException {
@@ -82,6 +50,18 @@ public class CategoryFactory {
         else
             update(c);
     }
+    
+    /**
+     * Supprime une catégorie.
+     * 
+     * @param id Identifiant de la catégorie.
+     * 
+     * @throws SQLException 
+     */
+    public static void delete(int id) throws SQLException {
+        Connexion.getInstance().execute("DELETE FROM categories WHERE cID = ?", id);
+    }
+    
     
     private static void insert(Category c) throws SQLException {
         Connexion con = Connexion.getInstance();
@@ -103,8 +83,24 @@ public class CategoryFactory {
     static Category resultToCategory(ResultSet res) throws SQLException {
         return new Category(res.getInt("cID"), res.getString("slug"), res.getString("title"));
     }
+    
+    private static Category getOne(String clause, Object param) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        Category c = null;
+        
+        String sql = "SELECT cID, title, slug "+
+                     "FROM categories "+
+                     "WHERE "+clause;
+        PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, param);
 
-    public static void delete(int id) throws SQLException {
-        Connexion.getInstance().execute("DELETE FROM categories WHERE cID = ?", id);
+        ResultSet res = stmt.executeQuery();
+        if(res.next())
+            c = resultToCategory(res);
+        
+        res.close();
+        stmt.close();
+        
+        return c;
     }
 }

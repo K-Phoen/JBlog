@@ -202,7 +202,7 @@ public class ArticlesModel {
     }
 
     public void deleteCategorie(int id) throws SQLException {
-        if(ArticlesFactory.NBInCategory(id) != 0)
+        if(ArticlesFactory.countArticlesCategorie(id, false) != 0)
             throw new IllegalStateException("Cette catégorie contient des articles !");
         
         CategoryFactory.delete(id);

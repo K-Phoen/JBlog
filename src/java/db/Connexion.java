@@ -31,9 +31,19 @@ import java.util.List;
  * Classe de gestion de la connexion à la base de données
  */
 public final class Connexion {
+    /**
+     * Unique instance de la classe
+     */
     private static Connexion instance;
+    
+    /**
+     * Connexion à la DB
+     */
     private static Connection con;
     
+    /*
+     * Paramètres de la connexion
+     */
     private static String url;
     private static String driver = "com.mysql.jdbc.Driver";
     private static String login;
@@ -45,6 +55,16 @@ public final class Connexion {
             throw new IllegalStateException("La méthode initConnexion doit être appelée avant d'utiliser la classe !");
     }
 
+    /**
+     * Exécute une requête de type INSERT ou UPDATE.
+     * 
+     * @param sql Code SQL à exécuter
+     * @param params Paramètres de la requête SQL
+     * 
+     * @throws SQLException Si l'exécution de la requête cause une erreur.
+     * 
+     * @return Le résultat de "SELECT LAST_INSERT_ID()", ou -1
+     */
     public int execute(String sql, Object ... params) throws SQLException {
         PreparedStatement stmt = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -66,15 +86,40 @@ public final class Connexion {
         return id;
     }
     
+    /**
+     * Crée une requête préparée
+     * 
+     * @param sql Code SQL de la requête.
+     * 
+     * @throws SQLException 
+     * 
+     * @return L'instance de l'objet représentant la requête
+     */
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return con.prepareStatement(sql);
     }
 
+    /**
+     * Lie les valeurs passées en paramètre à la requête préparée.
+     * 
+     * @param stmt
+     * @param params
+     * 
+     * @throws SQLException 
+     */
     public static void bindParams(PreparedStatement stmt, Object ... params) throws SQLException {
         for(int i=1; i <= params.length; ++i)
             stmt.setObject(i, params[i-1]);
     }
     
+    /**
+     * Lie les valeurs passées en paramètre à la requête préparée.
+     * 
+     * @param stmt
+     * @param params
+     * 
+     * @throws SQLException 
+     */
     public static void bindParams(PreparedStatement stmt, List<Object> params) throws SQLException {
         for(int i=1; i <= params.size(); ++i)
             stmt.setObject(i, params.get(i-1));

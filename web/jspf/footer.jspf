@@ -66,7 +66,7 @@
             </div>
 
             <div class="footer_center">
-                &copy; Copyright Website.com. All Rights Reserved.
+                &copy; Me, myself &amp; I. All Rights Reserved.
             </div>
 
             <div class="clear"></div>
@@ -77,5 +77,16 @@
         </div> <!--end of main_content-->
     </div> <!--end of page-->
 </div><!--end of main container-->
+
+<script type="text/javascript">
+function checkSearch(form) {
+    if(form.elements["s"].value == "") {
+        alert("On ne recherche pas le vide habituellement ...")
+        return false;
+    }
+    
+    return true;
+}
+</script>
 </body>
 </html>

@@ -106,6 +106,19 @@ public class CommentsFactory {
             update(c);
     }
     
+    /**
+     * Supprime un commentaire.
+     * 
+     * @param id Identifiant du commentaire.
+     * 
+     * @throws SQLException 
+     */
+    public static void delete(int id) throws SQLException {
+        String sql = "DELETE FROM commentaires WHERE coID = ?";
+        
+        Connexion.getInstance().execute(sql, id);
+    }
+    
     public static void deleteFromArticle(int id) throws SQLException {
         Connexion con = Connexion.getInstance();
         String sql = "DELETE FROM commentaires WHERE a_ID = ?";
@@ -151,11 +164,5 @@ public class CommentsFactory {
         }
         
         return c;
-    }
-
-    public static void delete(int id) throws SQLException {
-        String sql = "DELETE FROM commentaires WHERE coID = ?";
-        
-        Connexion.getInstance().execute(sql, id);
     }
 }

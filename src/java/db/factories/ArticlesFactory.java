@@ -19,6 +19,20 @@ import metier.User;
 
 
 public class ArticlesFactory {
+    /**
+     * Retourne la liste des nb articles à partir du numéro first.
+     * 
+     * @param first Position du premier article à retourner
+     * @param nb Nombre d'articles à retourner à partir de cette position
+     * @param valid Les articles doivent-ils être valides ?
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return La liste des articles
+     */
     public static List<Article> getNFirst(int first, int nb, boolean valid) throws SQLException, Exception {
         Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
         
@@ -28,6 +42,22 @@ public class ArticlesFactory {
         return getList(first, nb, limiters);
     }
     
+    /**
+     * Retourne la liste des nb articles à partir du numéro first, correspondants
+     * à une recherche.
+     * 
+     * @param search Termes de la recherche
+     * @param first Position du premier article à retourner
+     * @param nb Nombre d'articles à retourner à partir de cette position
+     * @param valid Les articles doivent-ils être valides ?
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return La liste des articles correspondant à la recherche
+     */
     public static List<Article> getNSearch(String search, int first, int nb, boolean valid) throws SQLException, Exception {
         Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
         String fSearch = String.format("%%%s%%", search);
@@ -39,6 +69,22 @@ public class ArticlesFactory {
         return getList(first, nb, limiters);
     }
     
+    /**
+     * Retourne la liste des nb articles à partir du numéro first, appartenant
+     * à une catégorie.
+     * 
+     * @param categorie Identifiant de la catégorie
+     * @param first Position du premier article à retourner
+     * @param nb Nombre d'articles à retourner à partir de cette position
+     * @param valid Les articles doivent-ils être valides ?
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return La liste des articles d'une catégorie
+     */
     public static List<Article> getNCategorie(int categorie, int first, int nb, boolean valid) throws SQLException, Exception {
         Map<String, List<Object>> limiters = new HashMap<String, List<Object>>();
         
@@ -49,7 +95,130 @@ public class ArticlesFactory {
         return getList(first, nb, limiters);
     }
     
-    public static List<Article> getList(int first, int nb, Map<String, List<Object>> limiters)throws SQLException, Exception {
+    /**
+     * Retourne un article à partir de son slug.
+     * 
+     * @param slug Slug de l'article.
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return L'article voulu.
+     */
+    public static Article getBySlug(String slug) throws SQLException, Exception {
+        return getOne("a.slug = ?", slug);
+    }
+
+    /**
+     * Retourne un article à partir de son id.
+     * 
+     * @param id Id de l'article.
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return L'article voulu.
+     */
+    public static Article get(int id) throws SQLException, Exception {
+        return getOne("a.aID = ?", id);
+    }
+    
+    /**
+     * Retourne le nombre d'articles.
+     * 
+     * @param valid Indique on ne doit comptabiliser que les articles valides.
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * 
+     * @return Le nombre d'articles.
+     */
+    public static int countArticles(boolean valid) throws SQLException {
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     (valid ? "WHERE valid = 1 " : "");
+        
+        return getTotal(sql);
+    }
+    
+    /**
+     * Retourne le nombre d'articles d'une catégorie.
+     * 
+     * @param id Identifiant de la catégorie
+     * @param valid Indique on ne doit comptabiliser que les articles valides.
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * 
+     * @return Le nombre d'articles de cette catégorie.
+     */
+    public static int countArticlesCategorie(int id, boolean valid) throws SQLException {
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     "WHERE c_ID = ? "+
+                     (valid ? "AND valid = 1 " : "");
+        
+        return getTotal(sql, id);
+    }
+    
+    /**
+     * Retourne le nombre d'articles correspondants à une recherche.
+     * 
+     * @param search Termes de la recherche.
+     * @param valid Indique on ne doit comptabiliser que les articles valides.
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * 
+     * @return Le nombre d'articles retournés par la recherche.
+     */
+    public static int countArticlesSearch(String search, boolean valid) throws SQLException {
+        String fSearch = String.format("%%%s%%", search);
+        
+        String sql = "SELECT COUNT(1) as total "+
+                     "FROM articles "+
+                     "WHERE (title LIKE ? OR content LIKE ?) "+
+                     (valid ? "AND valid = 1 " : "");
+        
+        return getTotal(sql, fSearch, fSearch);
+    }
+    
+    /**
+     * Met à jour le nombre de commentaires d'un article.
+     * 
+     * @param aID Article à corriger
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     */
+    public static void fixNBComs(int aID) throws SQLException {
+        Connexion con = Connexion.getInstance();
+        String sql = "UPDATE articles SET nb_coms = (SELECT COUNT(1) FROM commentaires WHERE a_ID = ? AND valide = 1) "+
+                     "WHERE aID = ?";
+        
+        con.execute(sql, aID, aID);
+    }
+    
+
+    /**
+     * Retourne une liste d'articles correspondant aux critères passés.
+     * 
+     * @param first Position du premier article à retourner
+     * @param nb Nombre d'articles à retourner à partir de cette position
+     * @param limiters Critères
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return Les articles.
+     */
+    private static List<Article> getList(int first, int nb, Map<String, List<Object>> limiters) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         List<Article> articles = new ArrayList<Article>();
         StringBuilder where_clause = new StringBuilder();
@@ -93,7 +262,20 @@ public class ArticlesFactory {
         return articles;
     }
     
-    public static Article getBySlug(String slug) throws SQLException, Exception {
+    /**
+     * Retourne un article correspondant à la clause passée en paramètre.
+     * 
+     * @param clause Clause permettant d'identifier l'article.
+     * @param param Paramètre de cette clause
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return Le premier article correspondant à la clause.
+     */
+    private static Article getOne(String clause, Object param) throws SQLException, Exception {
         Connexion con = Connexion.getInstance();
         Article a = null;
         
@@ -103,9 +285,9 @@ public class ArticlesFactory {
                      "FROM articles a "+
                      "LEFT JOIN users ON users.uID = a.u_ID "+
                      "LEFT JOIN categories c ON c.cID = a.c_ID "+
-                     "WHERE a.slug = ?";
+                     "WHERE "+clause;
         PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, slug);
+        Connexion.bindParams(stmt, param);
 
         ResultSet res = stmt.executeQuery();
         if(res.next())
@@ -116,38 +298,12 @@ public class ArticlesFactory {
         
         return a;
     }
-
-    public static Article get(int id) throws SQLException, Exception {
-        Connexion con = Connexion.getInstance();
-        Article a = null;
-
-        String sql = "SELECT aID, u_ID, c_ID, a.slug as a_slug, a.title as a_title, content, date, "+
-                     "nb_coms, valid, uID, login, first_name, last_name, cID, "+
-                     "c.slug, c.title "+
-                     "FROM articles a "+
-                     "LEFT JOIN users ON users.uID = a.u_ID "+
-                     "LEFT JOIN categories c ON c.cID = a.c_ID "+
-                     "WHERE a.aID = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, id);
-
-        ResultSet res = stmt.executeQuery();
-        if(res.next())
-            a = CommentsFactory.get(resultToArticle(res));
-
-        res.close();
-        stmt.close();
-
-        return a;
-    }
     
-    public static int countArticles(boolean valid) throws SQLException {
+    private static int getTotal(String sql, Object ... params) throws SQLException {
         Connexion con = Connexion.getInstance();
         
-        String sql = "SELECT COUNT(1) as total "+
-                     "FROM articles "+
-                     (valid ? "WHERE valid = 1 " : "");
         PreparedStatement stmt = con.prepareStatement(sql);
+        Connexion.bindParams(stmt, toList(params));
 
         ResultSet res = stmt.executeQuery();
         res.next();
@@ -160,78 +316,6 @@ public class ArticlesFactory {
         return total;
     }
     
-    public static int countArticlesCategorie(int id, boolean valid) throws SQLException {
-        Connexion con = Connexion.getInstance();
-        
-        String sql = "SELECT COUNT(1) as total "+
-                     "FROM articles "+
-                     "WHERE c_ID = ? "+
-                     (valid ? "AND valid = 1 " : "");
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, id);
-
-        ResultSet res = stmt.executeQuery();
-        res.next();
-        
-        int total = res.getInt("total");
-        
-        res.close();
-        stmt.close();
-        
-        return total;
-    }
-    
-    public static int countArticlesSearch(String search, boolean valid) throws SQLException {
-        Connexion con = Connexion.getInstance();
-        String fSearch = String.format("%%%s%%", search);
-        
-        String sql = "SELECT COUNT(1) as total "+
-                     "FROM articles "+
-                     "WHERE (title LIKE ? OR content LIKE ?) "+
-                     (valid ? "AND valid = 1 " : "");
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, fSearch, fSearch);
-
-        ResultSet res = stmt.executeQuery();
-        res.next();
-        
-        int total = res.getInt("total");
-        
-        res.close();
-        stmt.close();
-        
-        return total;
-    }
-    
-    public static int NBInCategory(int cID) throws SQLException {
-        Connexion con = Connexion.getInstance();
-        
-        String sql = "SELECT COUNT(1) as total "+
-                     "FROM articles "+
-                     "WHERE c_ID = ?";
-        PreparedStatement stmt = con.prepareStatement(sql);
-        Connexion.bindParams(stmt, cID);
-
-        ResultSet res = stmt.executeQuery();
-        res.next();
-        
-        int total = res.getInt("total");
-        
-        res.close();
-        stmt.close();
-        
-        return total;
-    }
-    
-    public static void fixNBComs(int aID) throws SQLException {
-        Connexion con = Connexion.getInstance();
-        String sql = "UPDATE articles SET nb_coms = (SELECT COUNT(1) FROM commentaires WHERE a_ID = ? AND valide = 1) "+
-                     "WHERE aID = ?";
-        
-        con.execute(sql, aID, aID);
-    }
-    
-
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
         User author = UsersFactory.resultToDisplayUser(res);

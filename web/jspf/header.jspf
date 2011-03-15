@@ -66,7 +66,7 @@
                 if(request.getAttribute("SEARCH") != null)
                     search = HTML.escape((String) request.getAttribute("SEARCH"));
                 %>
-                <form method="post" id="searchform" action="./search">
+                <form method="post" id="searchform" onsubmit="return checkSearch(this);" action="./search">
                     <input type="text" value="<%= search %>" name="search" id="s" class="searchfield" />
                     <input type="submit" value="Search" class="searchbutton" id="searchsubmit" />
                 </form>
