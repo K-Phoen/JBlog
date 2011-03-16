@@ -79,7 +79,7 @@ if(list.isEmpty()) {
         <%
         if(request.getAttribute("PREV_PAGE") != null) {
         %>
-            <span class="alignleft"><a href="./page/<%= request.getAttribute("PREV_PAGE") %>">Older</a></span>
+            <span class="alignleft"><a href="./page/<%= request.getAttribute("PREV_PAGE") %>">Newer</a></span>
         <%
         }
         %>
@@ -87,7 +87,7 @@ if(list.isEmpty()) {
         <%
         if(request.getAttribute("NEXT_PAGE") != null) {
         %>
-            <span class="alignright"><a href="./page/<%= request.getAttribute("NEXT_PAGE") %>">Newer</a></span>
+            <span class="alignright"><a href="./page/<%= request.getAttribute("NEXT_PAGE") %>">Older</a></span>
         <%
         }
         %>

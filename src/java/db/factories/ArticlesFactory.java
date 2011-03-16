@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package db.factories;
 
 import db.Connexion;
@@ -299,6 +294,19 @@ public class ArticlesFactory {
         return a;
     }
     
+    /**
+     * Retourne le total correspondant à une requête passée en paramètre.
+     * 
+     * @param sql La requête à exécuter.
+     * @param params Paramètres de la requête
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return Le résultat de la requête.
+     */
     private static int getTotal(String sql, Object ... params) throws SQLException {
         Connexion con = Connexion.getInstance();
         
@@ -316,6 +324,17 @@ public class ArticlesFactory {
         return total;
     }
     
+    /**
+     * Transforme un ResultSet en Article.
+     * 
+     * @param res Ligne de résultat à exploiter
+     * 
+     * @throws SQLException Si un champ nécessaire est manquant
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     * 
+     * @return L'article lu dans le ResultSet
+     */
     private static Article resultToArticle(ResultSet res) throws SQLException, Exception {
         Article a = new Article(res.getInt("aID"), res.getInt("nb_coms"));
         User author = UsersFactory.resultToDisplayUser(res);
@@ -344,6 +363,16 @@ public class ArticlesFactory {
         return list;
     }
 
+    /**
+     * Enregistre un article
+     * 
+     * @param a Article à enregistrer
+     * 
+     * @throws SQLException Si une erreur survient lors de l'exécution de la 
+     *                      requête?
+     * @throws Exception Si la transformation d'une ligne de résultat en article
+     *                   cause une erreur.
+     */
     public static void save(Article a) throws SQLException, Exception {
         if(a.isNew())
             insert(a);
@@ -351,6 +380,13 @@ public class ArticlesFactory {
             update(a);
     }
     
+    /**
+     * Supprime un article
+     * 
+     * @param id Identifiant de l'article.
+     * 
+     * @throws SQLException Si une erreur survient lors de la suppression.
+     */
     public static void delete(int id) throws SQLException {
         String sql = "DELETE FROM articles WHERE aID = ?";
         

@@ -29,6 +29,28 @@ if(list.isEmpty()) {
 			<th>Action</th>
 		</tr>
 	</thead>
+    
+    <tfoot>
+		<tr>
+			<td colspan="6">
+				<%
+                if(request.getAttribute("PREV_PAGE") != null) {
+                %>
+                    <span class="alignleft"><a href="./admin/comments/page/<%= request.getAttribute("PREV_PAGE") %>/">Newer</a></span>
+                <%
+                }
+                %>
+
+                <%
+                if(request.getAttribute("NEXT_PAGE") != null) {
+                %>
+                    <span class="alignright"><a href="./admin/comments/page/<%= request.getAttribute("NEXT_PAGE") %>/">Older</a></span>
+                <%
+                }
+                %>
+			</td>
+		</tr>
+	</tfoot>
 
 	<tbody>
         <%

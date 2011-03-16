@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.admin;
 
 import conf.JSP;
@@ -61,10 +56,9 @@ public class UsersController extends ModuleController {
     private void doIndex(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         List<User> elems;
-        UsersModel mdl = new UsersModel();
 
         try {
-            elems = mdl.getAll();
+            elems = UsersModel.getAll();
         } catch(SQLException e) {
             error(e.getMessage(), request, response);
             return;
@@ -78,7 +72,6 @@ public class UsersController extends ModuleController {
 
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         User u = new User();
-        UsersModel mdl = new UsersModel();
 
         // création du formulaire
         Form form = new Form();
@@ -95,7 +88,7 @@ public class UsersController extends ModuleController {
             int id = Integer.parseInt(request.getParameter("id"));
             
             try {
-                u = mdl.get(id);
+                u = UsersModel.get(id);
 
                 if(u == null)
                     throw new Exception("L'utilisateur n'existe pas");
@@ -131,7 +124,7 @@ public class UsersController extends ModuleController {
                     u.setPass(request.getParameter("pass"));
                 
                 try {
-                    mdl.save(u);
+                    UsersModel.save(u);
                 } catch (Exception ex) {
                     error("Erreur à la création de l'utilisateur : "+ex.getMessage(), request, response);
                     return;
@@ -151,7 +144,6 @@ public class UsersController extends ModuleController {
 
     private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = -1;
-        UsersModel mdl = new UsersModel();
         
         try {
             id = Integer.parseInt(request.getParameter("id"));
@@ -165,7 +157,7 @@ public class UsersController extends ModuleController {
         }
         
         try {
-            mdl.delete(id);
+            UsersModel.delete(id);
             redirect("./admin/users/", "Utilisateur supprimé.", request, response);
         } catch (SQLException ex) {
             redirect("./admin/users/", "Erreur à la suppression de l'utilisateur : "+ex.getMessage(), request, response);

@@ -32,9 +32,21 @@ if(list.isEmpty()) {
 	<tfoot>
 		<tr>
 			<td colspan="5">
-				<div class="pagination">
-					include tpl="pagination.html"
-				</div>
+				<%
+                if(request.getAttribute("PREV_PAGE") != null) {
+                %>
+                    <span class="alignleft"><a href="./admin/articles/page/<%= request.getAttribute("PREV_PAGE") %>/">Newer</a></span>
+                <%
+                }
+                %>
+
+                <%
+                if(request.getAttribute("NEXT_PAGE") != null) {
+                %>
+                    <span class="alignright"><a href="./admin/articles/page/<%= request.getAttribute("NEXT_PAGE") %>/">Older</a></span>
+                <%
+                }
+                %>
 			</td>
 		</tr>
 	</tfoot>

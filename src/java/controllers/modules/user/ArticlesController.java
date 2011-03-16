@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.user;
 
 import conf.Blog;
@@ -26,6 +21,8 @@ import metier.Article;
 import metier.Category;
 import metier.Comment;
 import models.ArticlesModel;
+import models.CategoriesModel;
+import models.CommentsModel;
 import models.SessionModel;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -89,7 +86,7 @@ public class ArticlesController extends ModuleController {
         List<Article> elems;
         
         try {
-            elems = (new ArticlesModel()).getLasts(1);
+            elems = ArticlesModel.getLasts(1);
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -172,14 +169,13 @@ public class ArticlesController extends ModuleController {
     private void doIndex(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         List<Article> elems;
-        ArticlesModel mdl = new ArticlesModel();
         
         int page = getCurrentPage(request);
         int nbPages = -1;
 
         try {
-            elems = mdl.getLasts(page);
-            nbPages = mdl.getNBPages();
+            elems = ArticlesModel.getLasts(page);
+            nbPages = ArticlesModel.getNBPages();
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -207,19 +203,18 @@ public class ArticlesController extends ModuleController {
         
         List<Article> elems;
         Category c;
-        ArticlesModel mdl = new ArticlesModel();
         
         int page = getCurrentPage(request);
         int nbPages = -1;
 
         try {
-            c = mdl.getCategorie(slug);
+            c = CategoriesModel.get(slug);
             
             if(c == null)
                 throw new Exception("Catégorie inconnue");
             
-            elems = mdl.getByCategorie(c.getId(), page);
-            nbPages = mdl.getNBPagesCategorie(c.getId());
+            elems = ArticlesModel.getByCategorie(c.getId(), page);
+            nbPages = ArticlesModel.getNBPagesCategorie(c.getId());
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -248,11 +243,10 @@ public class ArticlesController extends ModuleController {
         }
         
         Article a;
-        ArticlesModel mdl = new ArticlesModel();
         SessionModel sessionMdl = (SessionModel) request.getAttribute("session");
 
         try {
-            a = mdl.getBySlug(slug);
+            a = ArticlesModel.get(slug);
             
             if(a == null)
                 throw new Exception("Article inconnu.");
@@ -307,7 +301,7 @@ public class ArticlesController extends ModuleController {
                 c.setDate(new Date());
                 
                 try {
-                    mdl.newComment(a, c);
+                    CommentsModel.saveNew(a, c);
                 } catch (Exception ex) {
                     error("Impossible d'enregistrer le commentaire : "+ex.getMessage(), request, response);
                     return;
@@ -356,7 +350,6 @@ public class ArticlesController extends ModuleController {
      */
     private void doSearch(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         List<Article> elems;
-        ArticlesModel mdl = new ArticlesModel();
         String search = request.getParameter("search");
         
         if(search == null || search.isEmpty()) {
@@ -368,8 +361,8 @@ public class ArticlesController extends ModuleController {
         int nbPages = -1;
 
         try {
-            elems = mdl.search(search, page);
-            nbPages = mdl.getNBPagesSearch(search);
+            elems = ArticlesModel.search(search, page);
+            nbPages = ArticlesModel.getNBPagesSearch(search);
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;

@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import libs.BBCode;
 import metier.Smiley;
 import models.ArticlesModel;
+import models.CategoriesModel;
 import models.SessionModel;
 import models.SmileysModel;
 
@@ -218,7 +219,7 @@ public class Controller extends HttpServlet {
         // catégories
         ArticlesModel articlesMdl = new ArticlesModel();
         try {
-            request.setAttribute("LIST_CATEGORIES", articlesMdl.getCategories());
+            request.setAttribute("LIST_CATEGORIES", CategoriesModel.getAll());
         } catch (Exception ex) {
         }
         try {

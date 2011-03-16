@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.admin;
 
 import conf.JSP;
@@ -22,14 +17,14 @@ import models.SessionModel;
  * controleur de l'application au niveau de l'admin. Il vérifie les autorisations
  * avant de passer le relai à des sous-contrôleurs.
  * 
-*                                        AdminCtrl
-*                                       /  |   |  \
-*                                      /   /   |   \
-*                                     /   /    |    \
-*                                    /   /     |     \
-*                                   /   /      |      \
-*                                  /    |      |       \
-*                          Articles    Com.    Users.  Cat.
+ *                                        AdminCtrl
+ *                                       /  |   |  \
+ *                                      /   /   |   \
+ *                                     /   /    |    \
+ *                                    /   /     |     \
+ *                                   /   /      |      \
+ *                                  /    |      |       \
+ *                          Articles    Com.    Users.  Cat.
  */
 public class AdminController extends ModuleController {
     private Map<String, ModuleController> subControllers = new HashMap<String, ModuleController>();

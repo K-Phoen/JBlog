@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.admin;
 
 import conf.JSP;
@@ -18,7 +13,7 @@ import libs.form.Form;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextField;
 import metier.Category;
-import models.ArticlesModel;
+import models.CategoriesModel;
 
 
 public class CategoriesController extends ModuleController {
@@ -50,10 +45,9 @@ public class CategoriesController extends ModuleController {
     private void doIndex(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         List<Category> elems;
-        ArticlesModel mdl = new ArticlesModel();
         
         try {
-            elems = mdl.getCategories();
+            elems = CategoriesModel.getAll();
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -67,7 +61,6 @@ public class CategoriesController extends ModuleController {
 
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Category c = new Category();
-        ArticlesModel mdl = new ArticlesModel();
 
         // création du formulaire
         Form form = new Form();
@@ -79,7 +72,7 @@ public class CategoriesController extends ModuleController {
             int id = Integer.parseInt(request.getParameter("id"));
             
             try {
-                c = mdl.getCategorie(id);
+                c = CategoriesModel.get(id);
 
                 if(c == null)
                     throw new Exception("La catégorie n'existe pas.");
@@ -101,7 +94,7 @@ public class CategoriesController extends ModuleController {
                 c.setTitle(request.getParameter("nom"));
 
                 try {
-                    mdl.saveCategorie(c);
+                    CategoriesModel.save(c);
                 } catch (SQLException ex) {
                     error("Erreur à la création de l'article : "+ex.getMessage(), request, response);
                     return;
@@ -121,7 +114,6 @@ public class CategoriesController extends ModuleController {
 
     private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = -1;
-        ArticlesModel mdl = new ArticlesModel();
         
         try {
             id = Integer.parseInt(request.getParameter("id"));
@@ -135,7 +127,7 @@ public class CategoriesController extends ModuleController {
         }
         
         try {
-            mdl.deleteCategorie(id);
+            CategoriesModel.delete(id);
             redirect("./admin/categories/", "Catégorie supprimée.", request, response);
         } catch (Exception ex) {
             redirect("./admin/categories/", "Erreur à la suppression de la catégorie : "+ex.getMessage(), request, response);

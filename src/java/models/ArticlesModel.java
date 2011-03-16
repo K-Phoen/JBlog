@@ -2,16 +2,16 @@
  * Copyright (C) 2011 kevin
  *
  * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
+ * modify it under the terms of the GNU General public static License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ * GNU General public static License for more details.
  *
- * You should have received a copy of the GNU General Public License
+ * You should have received a copy of the GNU General public static License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
  */
@@ -19,18 +19,15 @@
 package models;
 
 import db.factories.ArticlesFactory;
-import db.factories.CategoryFactory;
 import db.factories.CommentsFactory;
 import java.sql.SQLException;
 import java.util.List;
 import metier.Article;
-import metier.Category;
 import metier.Comment;
 
 
 public class ArticlesModel {
     private static final int ARTICLES_PER_PAGE = 3;
-    private static final int COMMENTS_PER_PAGE = 10;
     
     
     /**
@@ -43,7 +40,7 @@ public class ArticlesModel {
      * 
      * @return La liste des articles.
      */
-    public List<Article> getLasts(int page) throws SQLException, Exception {
+    public static List<Article> getLasts(int page) throws SQLException, Exception {
         return ArticlesFactory.getNFirst(first(page), ARTICLES_PER_PAGE, true);
     }
 
@@ -57,7 +54,7 @@ public class ArticlesModel {
      *
      * @return La liste des articles.
      */
-    public List<Article> getAll(int page) throws SQLException, Exception {
+    public static List<Article> getAll(int page) throws SQLException, Exception {
         return ArticlesFactory.getNFirst(first(page), ARTICLES_PER_PAGE, false);
     }
     
@@ -72,7 +69,7 @@ public class ArticlesModel {
      * 
      * @return La liste des articles de la catégorie.
      */
-    public List<Article> getByCategorie(int cId, int page) throws SQLException, Exception {
+    public static List<Article> getByCategorie(int cId, int page) throws SQLException, Exception {
         return ArticlesFactory.getNCategorie(cId, first(page), ARTICLES_PER_PAGE, true);
     }
     
@@ -88,35 +85,31 @@ public class ArticlesModel {
      * 
      * @return La liste des articles correspondants à la recherche.
      */
-    public List<Article> search(String search, int page) throws SQLException, Exception {
+    public static List<Article> search(String search, int page) throws SQLException, Exception {
         return ArticlesFactory.getNSearch(search, first(page), ARTICLES_PER_PAGE, true);
     }
     
-    public int getNBPages() throws SQLException {
+    public static int getNBPages() throws SQLException {
         return getNBPages(true);
     }
 
-    public int getNBPages(boolean justValid) throws SQLException {
-        return ArticlesFactory.countArticles(justValid) / ARTICLES_PER_PAGE;
+    public static int getNBPages(boolean justValid) throws SQLException {
+        return (int) Math.ceil(ArticlesFactory.countArticles(justValid) / ((float)ARTICLES_PER_PAGE));
     }
     
-    public int getNBPagesSearch(String search) throws SQLException {
-        return ArticlesFactory.countArticlesSearch(search, true) / ARTICLES_PER_PAGE;
+    public static int getNBPagesSearch(String search) throws SQLException {
+        return (int) Math.ceil(ArticlesFactory.countArticlesSearch(search, true) / ((float)ARTICLES_PER_PAGE));
     }
     
-    public int getNBPagesCategorie(int id) throws SQLException {
-        return ArticlesFactory.countArticlesCategorie(id, true) / ARTICLES_PER_PAGE;
+    public static int getNBPagesCategorie(int id) throws SQLException {
+        return (int) Math.ceil(ArticlesFactory.countArticlesCategorie(id, true) / ((float)ARTICLES_PER_PAGE));
     }
     
-    public int getNBPagesComments() throws SQLException {
-        return CommentsFactory.count(false) / COMMENTS_PER_PAGE;
-    }
-    
-    public int getNBArticles(boolean valid) throws SQLException {
+    public static int getNBArticles(boolean valid) throws SQLException {
         return ArticlesFactory.countArticles(true);
     }
     
-    public int getNBComments(boolean valid) throws SQLException {
+    public static int getNBComments(boolean valid) throws SQLException {
         return CommentsFactory.count(true);
     }
 
@@ -130,30 +123,22 @@ public class ArticlesModel {
      * 
      * @return L'article s'il existe, null sinon.
      */
-    public Article getBySlug(String slug) throws SQLException, Exception {
+    public static Article get(String slug) throws SQLException, Exception {
         return ArticlesFactory.getBySlug(slug);
     }
 
-    public Article get(int id) throws SQLException, Exception {
-        return ArticlesFactory.get(id);
-    }
-    
     /**
-     * Enregistre un commentaire.
+     * Retrouve un article en fonction de son id.
+     * 
+     * @param id Identifiant servant à identifier l'article.
      * 
      * @throws SQLException
      * @throws Exception 
      * 
-     * @param a Article dans lequel a été posté le commentaire. Son nombre de
-     *          commentaires sera mis à jour.
-     * @param c Commentaire à enregistrer.
+     * @return L'article s'il existe, null sinon.
      */
-    public void newComment(Article a, Comment c) throws SQLException, Exception {
-        // mise à ajour de l'article
-        a.addComment(c);
-        c.setaID(a.getId());
-                
-        saveComment(c);
+    public static Article get(int id) throws SQLException, Exception {
+        return ArticlesFactory.get(id);
     }
 
     /**
@@ -164,65 +149,16 @@ public class ArticlesModel {
      * 
      * @param a Article à enregistrer
      */
-    public void saveArticle(Article a) throws SQLException, Exception {
+    public static void save(Article a) throws SQLException, Exception {
         ArticlesFactory.save(a);
     }
     
-    public void saveCategorie(Category c) throws SQLException {
-        CategoryFactory.save(c);
-    }
-    
-    /**
-     * Retourne les catégories disponibles
-     * 
-     * @throws SQLException
-     * @throws Exception 
-     * 
-     * @return La liste des catégories du blog.
-     */
-    public List<Category> getCategories() throws SQLException, Exception {
-        return CategoryFactory.getAll();
-    }
-    
-    public Category getCategorie(String slug) throws SQLException, Exception {
-        return CategoryFactory.get(slug);
-    }
-    
-    public Category getCategorie(int id) throws SQLException {
-        return CategoryFactory.get(id);
-    }
-    
-    private int first(int page) {
-        return (page - 1) * ARTICLES_PER_PAGE;
-    }
-
-    public void deleteArticle(int id) throws SQLException {
+    public static void delete(int id) throws SQLException {
         CommentsFactory.deleteFromArticle(id);
         ArticlesFactory.delete(id);
     }
-
-    public void deleteCategorie(int id) throws SQLException {
-        if(ArticlesFactory.countArticlesCategorie(id, false) != 0)
-            throw new IllegalStateException("Cette catégorie contient des articles !");
-        
-        CategoryFactory.delete(id);
-    }
-
-    public List<Comment> getAllComments(int page) throws SQLException, Exception {
-        return CommentsFactory.getNFirst(first(page), COMMENTS_PER_PAGE);
-    }
-
-    public Comment getComment(int id) throws SQLException, Exception {
-        return CommentsFactory.get(id);
-    }
-
-    public void saveComment(Comment c) throws SQLException, Exception {
-        CommentsFactory.save(c);
-        ArticlesFactory.fixNBComs(c.getaID());
-    }
-
-    public void deleteComment(Comment c) throws SQLException {
-        CommentsFactory.delete(c.getId());
-        ArticlesFactory.fixNBComs(c.getaID());
+    
+    private static int first(int page) {
+        return (page - 1) * ARTICLES_PER_PAGE;
     }
 }

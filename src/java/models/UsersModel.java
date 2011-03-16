@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package models;
 
 import db.factories.UsersFactory;
@@ -12,19 +7,19 @@ import metier.User;
 
 
 public class UsersModel {
-    public List<User> getAll() throws SQLException {
+    public static List<User> getAll() throws SQLException {
         return UsersFactory.getAll();
     }
 
-    public User get(int id) throws SQLException {
+    public static User get(int id) throws SQLException {
         return UsersFactory.get(id);
     }
 
-    public void save(User u) throws SQLException {
+    public static void save(User u) throws SQLException {
         UsersFactory.save(u);
     }
 
-    public void delete(int id) throws SQLException {
+    public static void delete(int id) throws SQLException {
         UsersFactory.delete(id);
     }
 }

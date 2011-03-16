@@ -1,15 +1,9 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.admin;
 
 import conf.JSP;
 import controllers.Controller;
 import controllers.modules.ModuleController;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +13,7 @@ import libs.form.fields.BooleanField;
 import libs.form.fields.SubmitButton;
 import libs.form.fields.TextArea;
 import metier.Comment;
-import models.ArticlesModel;
+import models.CommentsModel;
 
 
 public class CommentsController extends ModuleController {
@@ -60,14 +54,13 @@ public class CommentsController extends ModuleController {
     private void doIndex(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         List<Comment> elems;
-        ArticlesModel mdl = new ArticlesModel();
         
         int page = getCurrentPage(request);
         int nbPages = -1;
 
         try {
-            elems = mdl.getAllComments(page);
-            nbPages = mdl.getNBPagesComments();
+            elems = CommentsModel.getAll(page);
+            nbPages = CommentsModel.getNBPages();
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -86,7 +79,6 @@ public class CommentsController extends ModuleController {
 
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Comment c = new Comment();
-        ArticlesModel mdl = new ArticlesModel();
 
         // création du formulaire
         Form form = new Form();
@@ -99,7 +91,7 @@ public class CommentsController extends ModuleController {
             int id = Integer.parseInt(request.getParameter("id"));
             
             try {
-                c = mdl.getComment(id);
+                c = CommentsModel.get(id);
 
                 if(c == null)
                     throw new Exception("Le commentaire n'existe pas");
@@ -121,7 +113,7 @@ public class CommentsController extends ModuleController {
                 c.setValid(((BooleanField)form.field("valid")).isChecked());
                 System.out.println("isValid :"+((BooleanField)form.field("valid")).isChecked());
                 try {
-                    mdl.saveComment(c);
+                    CommentsModel.save(c);
                 } catch (Exception ex) {
                     error("Erreur à la sauvegarde du commentaire : "+ex.getMessage(), request, response);
                     return;
@@ -140,7 +132,6 @@ public class CommentsController extends ModuleController {
 
     private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = -1;
-        ArticlesModel mdl = new ArticlesModel();
         
         try {
             id = Integer.parseInt(request.getParameter("id"));
@@ -154,12 +145,12 @@ public class CommentsController extends ModuleController {
         }
         
         try {
-            Comment c = mdl.getComment(id);
+            Comment c = CommentsModel.get(id);
 
             if(c == null)
                 throw new Exception("Le commentaire n'existe pas");
             
-            mdl.deleteComment(c);
+            CommentsModel.delete(c);
             redirect("./admin/comments/", "Commentaire supprimé.", request, response);
         } catch (Exception ex) {
             redirect("./admin/v/", "Erreur à la suppression du commentaire : "+ex.getMessage(), request, response);

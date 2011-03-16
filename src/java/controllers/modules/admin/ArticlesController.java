@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package controllers.modules.admin;
 
 import conf.JSP;
@@ -27,6 +22,7 @@ import libs.form.fields.TextField;
 import metier.Article;
 import metier.Category;
 import models.ArticlesModel;
+import models.CategoriesModel;
 import models.SessionModel;
 
 
@@ -68,14 +64,13 @@ public class ArticlesController extends ModuleController {
     private void doIndex(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
         List<Article> elems;
-        ArticlesModel mdl = new ArticlesModel();
         
         int page = getCurrentPage(request);
         int nbPages = -1;
 
         try {
-            elems = mdl.getAll(page);
-            nbPages = mdl.getNBPages(false);
+            elems = ArticlesModel.getAll(page);
+            nbPages = ArticlesModel.getNBPages(false);
         } catch(Exception e) {
             error(e.getMessage(), request, response);
             return;
@@ -94,12 +89,11 @@ public class ArticlesController extends ModuleController {
 
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Article a = new Article();
-        ArticlesModel mdl = new ArticlesModel();
 
         // récupération de la liste des catégories
         Map<String, String> categories = new HashMap<String, String>();
         try {
-            for (Category c : mdl.getCategories())
+            for (Category c : CategoriesModel.getAll())
                 categories.put(String.valueOf(c.getId()), HTML.escape(c.getTitle()));
         } catch (Exception ex) {
             error("Impossible de lire la liste des catégories : "+ex.getMessage(), request, response);
@@ -119,7 +113,7 @@ public class ArticlesController extends ModuleController {
             int id = Integer.parseInt(request.getParameter("id"));
             
             try {
-                a = mdl.get(id);
+                a = ArticlesModel.get(id);
 
                 if(a == null)
                     throw new Exception("L'article n'existe pas");
@@ -152,7 +146,7 @@ public class ArticlesController extends ModuleController {
                 }
 
                 try {
-                    mdl.saveArticle(a);
+                    ArticlesModel.save(a);
                 } catch (Exception ex) {
                     error("Erreur à la création de l'article : "+ex.getMessage(), request, response);
                     return;
@@ -173,7 +167,6 @@ public class ArticlesController extends ModuleController {
 
     private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = -1;
-        ArticlesModel mdl = new ArticlesModel();
         
         try {
             id = Integer.parseInt(request.getParameter("id"));
@@ -187,7 +180,7 @@ public class ArticlesController extends ModuleController {
         }
         
         try {
-            mdl.deleteArticle(id);
+            ArticlesModel.delete(id);
             redirect("./admin/articles/", "Article supprimé.", request, response);
         } catch (SQLException ex) {
             redirect("./admin/articles/", "Erreur à la suppression de l'article : "+ex.getMessage(), request, response);

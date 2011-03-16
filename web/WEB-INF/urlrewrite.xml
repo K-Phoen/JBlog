@@ -73,6 +73,10 @@
         <to>/index?module=admin&amp;section=articles&amp;act=index</to>
     </rule>
     <rule>
+        <from>^/admin/articles/page/([0-9]+)/$</from>
+        <to>/index?module=admin&amp;section=articles&amp;act=index&amp;page=$1</to>
+    </rule>
+    <rule>
         <from>^/admin/articles/new/$</from>
         <to>/index?module=admin&amp;section=articles&amp;act=edit</to>
     </rule>
@@ -107,6 +111,10 @@
     <rule>
         <from>^/admin/comments/$</from>
         <to>/index?module=admin&amp;section=comments&amp;act=index</to>
+    </rule>
+    <rule>
+        <from>^/admin/comments/page/([0-9]+)/$</from>
+        <to>/index?module=admin&amp;section=comments&amp;act=index&amp;page=$1</to>
     </rule>
     <rule>
         <from>^/admin/comments/new/$</from>
