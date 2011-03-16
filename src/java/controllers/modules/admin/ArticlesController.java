@@ -58,6 +58,7 @@ public class ArticlesController extends ModuleController {
      *
      * @param request
      * @param response
+     * 
      * @throws ServletException
      * @throws IOException
      */
@@ -87,6 +88,15 @@ public class ArticlesController extends ModuleController {
         forward(JSP.ADMIN_LIST_ARTICLES, request, response);
     }
 
+    /**
+     * Page d'ajout et édition d'un article.
+     * 
+     * @param request
+     * @param response
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Article a = new Article();
 
@@ -164,7 +174,16 @@ public class ArticlesController extends ModuleController {
 
         forward(JSP.FORM, request, response);
     }
-
+    
+    /**
+     * Page de suppression d'un article.
+     * 
+     * @param request
+     * @param response
+     * 
+     * @throws ServletException
+     * @throws IOException 
+     */
     private void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = -1;
         

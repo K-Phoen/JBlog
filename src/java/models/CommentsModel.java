@@ -20,7 +20,7 @@ public class CommentsModel {
     }
     
     /**
-     * Enregistre un commentaire.
+     * Enregistre un nouveau commentaire.
      * 
      * @throws SQLException
      * @throws Exception 

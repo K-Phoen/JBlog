@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Ven 11 Mars 2011 à 17:33
+-- Généré le : Mer 16 Mars 2011 à 11:44
 -- Version du serveur: 5.1.36
 -- Version de PHP: 5.3.0
 
@@ -39,15 +39,17 @@ CREATE TABLE IF NOT EXISTS `articles` (
   UNIQUE KEY `slug` (`slug`),
   KEY `c_ID_idx` (`c_ID`),
   KEY `user_id_idx` (`u_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `articles`
 --
 
 INSERT INTO `articles` (`aID`, `u_ID`, `c_ID`, `slug`, `title`, `content`, `date`, `nb_coms`, `valid`) VALUES
-(1, 1, 1, 'toto', 'Toto', '<p>\r\ncontenu de l''article !\r\n</p>', '2011-02-23', 2, 1),
-(2, 1, 2, 'salut', 'Salut', '<p>Salut &ccedil;a gaze ??</p>', '2011-03-02', 6, 1);
+(1, 1, 1, 'toto', 'Toto', '<p>\r\ncontenu de l''article !\r\n</p>', '2011-02-23', 4, 1),
+(2, 1, 2, 'salut', 'Salut', '<p>Salut &ccedil;a gaze ??</p>', '2011-03-02', 8, 1),
+(3, 1, 2, 'toto-au-tibet', 'Toto au tibet', '<p>J''aime les saucisses made in 42 (''cause it''s the answer.)</p>', '2011-03-15', 1, 1),
+(4, 3, 3, 'cest-bon-ca-', 'C''est Bon ça !!', '<p><span style="text-decoration: underline;"><strong>C''est &ccedil;a que c''est bon !!</strong></span></p>', '2011-03-15', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -61,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `title` varchar(255) NOT NULL,
   PRIMARY KEY (`cID`),
   UNIQUE KEY `slug` (`slug`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `categories`
@@ -69,7 +71,8 @@ CREATE TABLE IF NOT EXISTS `categories` (
 
 INSERT INTO `categories` (`cID`, `slug`, `title`) VALUES
 (1, 'divers-trucs', 'Divers trucs'),
-(2, 'kewl-stuff', 'Kewl stuff');
+(2, 'kewl-stuff', 'Kewl stuff'),
+(3, 'ricard', 'Ricard');
 
 -- --------------------------------------------------------
 
@@ -87,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `commentaires` (
   `valide` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`coID`),
   KEY `a_ID_idx` (`a_ID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=12 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 --
 -- Contenu de la table `commentaires`
@@ -101,7 +104,12 @@ INSERT INTO `commentaires` (`coID`, `a_ID`, `pseudo`, `mail`, `content`, `date`,
 (8, 2, 'Kévin Gomez', 'geek63@gmail.com', 't [édité]', '2011-03-08 00:00:00', 1),
 (9, 2, 'Kévin Gomez', 'geek63@gmail.com', 'to[s]t[/s]o', '2011-03-11 12:32:55', 1),
 (10, 2, 'Kévin Gomez', 'geek63@gmail.com', ':D', '2011-03-11 18:16:21', 1),
-(11, 2, 'Kévin Gomez', 'geek63@gmail.com', ':D:p smileys', '2011-03-11 18:29:58', 1);
+(11, 2, 'Kévin Gomez', 'geek63@gmail.com', ':D:p smileys', '2011-03-11 18:29:58', 1),
+(12, 2, 'Kévin Gomez', 'geek63@gmail.com', 'to[b][u]^^itotozk[/u][/b]t$ ert', '2011-03-14 08:46:49', 1),
+(13, 2, 'Kévin Gomez', 'geek63@gmail.com', 'eztrert e\r\n[i]rt e ter[/i]<strong>titi</strong>\r\nt\r\nzet', '2011-03-14 00:00:00', 1),
+(14, 1, 'Kévin Gomez', 'geek63@gmail.com', '<strong>toto</strong>\r\n\r\net[i]erte[/i]rt  sd[b]fs[/b]fd  erte[u]rtertr[/u]et reter[s]terte[/s]rt \r\n:D:o;)^^:p\r\n', '2011-03-14 22:35:28', 1),
+(15, 1, 'Kévin Gomez', 'geek63@gmail.com', '[i]toto[/i]\r\n\r\n[i]tata[/i]', '2011-03-15 10:14:31', 1),
+(16, 3, 'Jonathan DA SILVA', 'jonathandasilva@sfr.fr', 'Cool !!!!  :)', '2011-03-15 21:43:14', 1);
 
 -- --------------------------------------------------------
 
@@ -146,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `mail` varchar(255) NOT NULL,
   PRIMARY KEY (`uID`),
   UNIQUE KEY `login` (`login`,`pass`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `users`
@@ -154,7 +162,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`uID`, `login`, `pass`, `last_name`, `first_name`, `mail`) VALUES
 (1, 'Kevin', '7de1291b75768fed8150cd53bb7dbd8525efea36', 'Gomez', 'Kévin', 'geek63@gmail.com'),
-(2, 'test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', '', '', 'geek63@gmail.com');
+(2, 'test', 'a94a8fe5ccb19ba61c4c0873d391e987982fbbd3', '', '', 'geek63@gmail.com'),
+(3, 'jojo', '13de8889aecf8f48d9c799a1f3fb520fa748372a', 'DA SILVA', 'Jonathan', 'jonathandasilva@sfr.fr');
 
 --
 -- Contraintes pour les tables exportées
